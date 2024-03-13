@@ -1,0 +1,14 @@
+site_name: JavaFAN Docs
+
+theme:
+  name: material
+  palette:
+    primary: black
+    accent: teal
+    
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+
+    - navigation.footer
