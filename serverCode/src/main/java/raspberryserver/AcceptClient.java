@@ -1,0 +1,25 @@
+package raspberryserver;
+
+import java.io.IOException;
+import java.net.Socket;
+
+public class AcceptClient extends Thread{
+    
+    String ip;
+    int port;
+
+    public AcceptClient(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+    }
+
+    @Override
+    public void run(){
+        try {
+            Socket socket = new Socket(ip, port);
+        } catch (IOException ex) {
+            System.out.println("Error with the abstract socket");
+        }
+    }
+
+}
