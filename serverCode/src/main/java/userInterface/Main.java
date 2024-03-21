@@ -1,5 +1,7 @@
 package userInterface;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import raspberryserver.InterfaceServer;
 import representation.SpeedDrawing;
@@ -47,7 +49,11 @@ public class Main {
         
         Thread controlThread = new Thread(() -> {
             control.setVisible(true); 
-            control.run(); 
+            try { 
+                control.run();
+            } catch (InterruptedException ex) {
+                System.out.println("Error on control");
+            }
             control.dispose();  
         });
         

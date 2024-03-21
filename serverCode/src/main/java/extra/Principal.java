@@ -1,14 +1,5 @@
 package extra;
-
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle.Control;
 import userInterface.ControlFrame;
 
 /**
