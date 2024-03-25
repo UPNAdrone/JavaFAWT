@@ -12,14 +12,9 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author mintxo
+ * @author Mintxoo - mintxosola@gmail.com
  */
 public class Index{
-    /*public static void main(String[] args) throws UnsupportedLookAndFeelException{
-        //UIManager.setLookAndFeel(new FlatLightLaf());
-        SwingUtilities.updateComponentTreeUI(principal);
-        principal.setVisible(true);
-    }*/
 
     public void getFunFile(Principal principal) throws InterruptedException{
         SwingUtilities.updateComponentTreeUI(principal);

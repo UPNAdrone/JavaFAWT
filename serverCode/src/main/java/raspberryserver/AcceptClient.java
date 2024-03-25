@@ -3,6 +3,10 @@ package raspberryserver;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ *
+ * @author Mintxoo - mintxosola@gmail.com
+ */
 public class AcceptClient extends Thread{
     
     String ip;
@@ -16,7 +20,7 @@ public class AcceptClient extends Thread{
     @Override
     public void run(){
         try {
-            Socket socket = new Socket(ip, port);
+            new Socket(ip, port);
         } catch (IOException ex) {
             System.out.println("Error with the abstract socket");
         }

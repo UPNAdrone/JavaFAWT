@@ -1,7 +1,5 @@
 package userInterface;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import raspberryserver.InterfaceServer;
 import representation.SpeedDrawing;

@@ -3,21 +3,20 @@ package extra;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import userInterface.ControlFrame;
 
 /**
  *
- * @author mintxo
+ * @author Mintxoo - mintxosola@gmail.com
  */
 public class PressureSensor extends javax.swing.JFrame {
-    /**
-     * Creates new form PressureSensor
-     */
-    public PressureSensor() {
+    public ControlFrame control;
+            
+    public PressureSensor(ControlFrame c) {
         initComponents();
+        this.control = c;
     }
 
     /**
@@ -53,20 +52,21 @@ public class PressureSensor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(showPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(showPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addGap(159, 159, 159)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(showPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(showPressure, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -111,22 +111,19 @@ public class PressureSensor extends javax.swing.JFrame {
     
     BufferedReader in;
     
-    public void conectPressureServer(){
-        String host = "192.168.1.190"; // Reemplaza con la IP del nanoDAQ-LT
-        int port = 101;
-
-        try {
-            Socket socket = new Socket(host, port);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            System.out.println("Se ha conectado jamon");
-            showPressure.add("----Conectado correctamente----");
-      
-        } catch (UnknownHostException e) {
-            System.err.println("No se pudo conectar al host: " + host);
-        } catch (IOException e) {
-            System.err.println("Error de E/S al comunicarse con el host: " + host);
+    public void conectPressureServer() throws InterruptedException{
+        if(control.pressureSensorIP == null || control.pressureSensorPort == -1){
+            NewPSensor ps = new NewPSensor(control);
+            ps.run();
+            ps.dispose();
         }
+        try {
+            Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            showPressure.add("----Conectado correctamente----");      
+        } catch (Exception e) {
+            System.err.println("No se pudo conectar al host: " + control.pressureSensorIP);
+        } 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

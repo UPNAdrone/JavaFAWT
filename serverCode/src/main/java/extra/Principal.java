@@ -4,7 +4,7 @@ import userInterface.ControlFrame;
 
 /**
  *
- * @author mintxo
+ * @author Mintxoo - mintxosola@gmail.com
  */
 public class Principal extends javax.swing.JFrame {
 
