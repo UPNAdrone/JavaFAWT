@@ -1,4 +1,4 @@
-package extra;
+package functionality;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

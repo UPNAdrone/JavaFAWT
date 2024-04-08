@@ -1,8 +1,10 @@
-package userInterface;
+package main;
 
 import javax.swing.JFrame;
 import raspberryserver.InterfaceServer;
 import representation.SpeedDrawing;
+import userInterface.ConectionFrame;
+import userInterface.ControlFrame;
 
 /**
  *

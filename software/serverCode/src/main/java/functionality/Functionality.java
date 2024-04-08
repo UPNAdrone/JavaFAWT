@@ -1,4 +1,4 @@
-package extra;
+package functionality;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -46,7 +46,8 @@ public class Functionality extends Thread{
                 Thread.sleep(time);
             }
         }catch(Exception e){
-            System.out.println("Functionality interrupted");}
+            System.out.println("Functionality interrupted");
+        }
         if(!realExec){
             speedDrawing.dispose();
         }

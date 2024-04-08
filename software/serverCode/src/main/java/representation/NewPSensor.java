@@ -1,4 +1,4 @@
-package extra;
+package representation;
 
 import javax.swing.JFrame;
 import userInterface.ControlFrame;

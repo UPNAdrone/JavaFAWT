@@ -1,10 +1,10 @@
 package userInterface;
 
 import extra.Fan;
-import extra.Functionality;
-import extra.Index;
-import extra.PressureSensor;
-import extra.Principal;
+import functionality.Functionality;
+import functionality.Index;
+import representation.PressureSensor;
+import functionality.Principal;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
@@ -383,7 +383,7 @@ public class ControlFrame extends javax.swing.JFrame {
             }
         });
 
-        funAction.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         funAction.setText("jLabel3");
         funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
@@ -454,29 +454,28 @@ public class ControlFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(110, 110, 110)
                                 .addComponent(addFunctionality))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(stopFun)
-                                                .addGap(14, 14, 14))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(40, 40, 40))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(104, 104, 104)
-                                                .addComponent(updateSpeed)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(speedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(13, 13, 13))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(139, 139, 139)
+                                            .addComponent(updateSpeed)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(79, 79, 79)
+                                            .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(13, 13, 13))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(35, 35, 35)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(stopFun)
+                                            .addGap(14, 14, 14))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(40, 40, 40)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(146, 146, 146)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -486,8 +485,11 @@ public class ControlFrame extends javax.swing.JFrame {
                                 .addComponent(currentSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pressureSensor)
-                                .addGap(67, 67, 67))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(pressureSensor)
+                                        .addGap(67, 67, 67))
+                                    .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(180, 180, 180)
                         .addComponent(stopAllFans)))
@@ -758,13 +760,27 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addFunctionalityActionPerformed
 
+    private static String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex > 0) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return ""; // Si no hay extensión, devolver una cadena vacía
+    }
+    
     private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
         try {
             funAction.setText("File"+funFile.getName()+"in proccess of execution");
             functionality = new Functionality(this, speedDrawing,true);
             functionality.start();
-            functionalityExecuting = true;
-            funAction.setText("Functionality is executing... please wait");
+            if(!getFileExtension(funFile.getName()).equals("xlsx")){
+                functionalityExecuting = false;
+                funAction.setText("Wrong file");
+            }else{
+                functionalityExecuting = true;
+                funAction.setText("Functionality is executing... please wait");
+            }
+            
         } catch (Exception ex) {
             System.out.println("Error reading functionality file");
             funAction.setText("Error reading functionality file");

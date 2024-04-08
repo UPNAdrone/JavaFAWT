@@ -1,4 +1,4 @@
-package extra;
+package functionality;
 import java.io.File;
 import userInterface.ControlFrame;
 

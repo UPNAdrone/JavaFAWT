@@ -14,6 +14,4 @@ public class Fan {
     public Fan(JButton button) {
         this.button = button;
     }
-    
-    
 }
