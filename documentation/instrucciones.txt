@@ -1,0 +1,2 @@
+python -m mkdocs serve (dentro de documentacion) te genera la página en local que se actualiza conforme vas editando la documentación. 
+Cuando terminas, si haces python -m mkdocs build te compila la página web y genera los archivos para subir al servidor (lo correspondiente a la carpeta public)
