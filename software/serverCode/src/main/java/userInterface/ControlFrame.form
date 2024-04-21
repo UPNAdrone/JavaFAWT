@@ -676,7 +676,7 @@
     <Component class="javax.swing.JLabel" name="funAction">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="jLabel3"/>
+        <Property name="text" type="java.lang.String" value="functionality info"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
     </Component>

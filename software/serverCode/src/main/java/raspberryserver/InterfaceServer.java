@@ -18,7 +18,7 @@ import userInterface.ConectionFrame;
  */
 public class InterfaceServer extends Thread{
     ConectionFrame conection;
-    public boolean ready = false, conected = false;
+    public boolean ready = false, connected = false;
     public int port;
     private int num = 0;
     
@@ -49,7 +49,7 @@ public class InterfaceServer extends Thread{
                     conection.addClient("Client "+i+": "+clientSocket.getInetAddress() +"\n");
                 }   
             }
-            conected = true;
+            connected = true;
         }catch(Exception ex){
             System.out.println("El cliente canceló la conexión");
         }

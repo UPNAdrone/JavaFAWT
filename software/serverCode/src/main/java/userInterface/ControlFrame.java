@@ -29,6 +29,13 @@ public class ControlFrame extends javax.swing.JFrame {
     public SpeedDrawing speedDrawing;
     public boolean functionalityExecuting = false;
     
+    public File funFile = null;
+    public Index index = new Index();
+    public Functionality functionality;
+    public boolean firstTime = true;
+    public String pressureSensorIP = null;
+    public int pressureSensorPort = -1;
+    
     
     /**
      * Creates new form MainFrame
@@ -384,7 +391,7 @@ public class ControlFrame extends javax.swing.JFrame {
         });
 
         funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        funAction.setText("jLabel3");
+        funAction.setText("functionality info");
         funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -838,12 +845,7 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pressureSensorMouseClicked
 
-    public File funFile = null;
-    public Index index = new Index();
-    public Functionality functionality;
-    public boolean firstTime = true;
-    public String pressureSensorIP = null;
-    public int pressureSensorPort = -1;
+    
     
     public void run() throws InterruptedException{
         enterFans(fanButtons);
@@ -868,20 +870,6 @@ public class ControlFrame extends javax.swing.JFrame {
                 funAction.setText("No file added");
             }
         }
-    }
-    
-    public void fanControl(int i){
-        selectedFan.setText("Fan "+(i+1)+" info");
-        if (fanButtons.get(i).selected){
-            fanButtons.get(i).selected = false;
-            fanButtons.get(i).button.setBackground(Color.white);
-        }else{
-            fanButtons.get(i).selected = true;
-            fanButtons.get(i).button.setBackground(Color.green);
-        }
-        currentSpeed.setText(""+fanButtons.get(i).speed);
-        speedSlider.setValue(fanButtons.get(i).speed);
-        showSpeed.setText(""+speedSlider.getValue());
     }
     
     public void enterFans(List<Fan> fanBottons){
@@ -910,7 +898,7 @@ public class ControlFrame extends javax.swing.JFrame {
         fanBottons.add(new Fan(fan23));
         fanBottons.add(new Fan(fan24));
     }
-    
+        
     public void setFansColor(int cant, List<Fan> fanBottons){
         for (int i = fanBottons.size()-1; i >= 6*cant; i--) {
             fanBottons.get(i).button.setBackground(Color.red);
@@ -923,6 +911,20 @@ public class ControlFrame extends javax.swing.JFrame {
             fanBottons.get(i).button.setBackground(Color.white);
             speedMessage[i] = 0;
         }
+    }
+    
+    public void fanControl(int i){
+        selectedFan.setText("Fan "+(i+1)+" info");
+        if (fanButtons.get(i).selected){
+            fanButtons.get(i).selected = false;
+            fanButtons.get(i).button.setBackground(Color.white);
+        }else{
+            fanButtons.get(i).selected = true;
+            fanButtons.get(i).button.setBackground(Color.green);
+        }
+        currentSpeed.setText(""+fanButtons.get(i).speed);
+        speedSlider.setValue(fanButtons.get(i).speed);
+        showSpeed.setText(""+speedSlider.getValue());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

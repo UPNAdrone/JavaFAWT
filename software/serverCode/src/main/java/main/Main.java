@@ -12,25 +12,25 @@ import userInterface.ControlFrame;
  */
 public class Main {
     public static void main(String args[]) throws InterruptedException {      
-        ConectionFrame conection = new ConectionFrame();
-        InterfaceServer server = new InterfaceServer(125,conection); // default port is 125
+        ConectionFrame connection = new ConectionFrame();
+        InterfaceServer server = new InterfaceServer(125,connection); // default port is 125
         server.start();
         
-        conection.setTitle("FAN CONECTION");
-        conection.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        conection.setResizable(false);
-        conection.setLocationRelativeTo(null);
-        conection.setVisible(true);
+        connection.setTitle("FAN CONECTION");
+        connection.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        connection.setResizable(false);
+        connection.setLocationRelativeTo(null);
+        connection.setVisible(true);
         
-        while (!conection.ready){
+        while (!connection.ready){
             Thread.sleep(100); // it is necessary
         }
         server.ready = true;
-        while (!server.conected){
+        while (!server.connected){
             Thread.sleep(100); // it is necessary
         }
         
-        conection.dispose(); 
+        connection.dispose(); 
         
         ControlFrame control = new ControlFrame(server);
         SpeedDrawing speedDrawing = new SpeedDrawing(control);

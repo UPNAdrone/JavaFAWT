@@ -13,6 +13,7 @@ import userInterface.ControlFrame;
  */
 public class PressureSensor extends javax.swing.JFrame {
     public ControlFrame control;
+    BufferedReader in;
             
     public PressureSensor(ControlFrame c) {
         initComponents();
@@ -79,20 +80,16 @@ public class PressureSensor extends javax.swing.JFrame {
      */
     public void run() throws InterruptedException, IOException {
         conectPressureServer();
-        
         char[] buffer = new char[1024]; // Buffer para almacenar los datos recibidos
         int bytesRead;
 
         while (true) {
             bytesRead = in.read(buffer);
-
             if (bytesRead == -1) {
                 break;
             }
 
-            // Convertir el buffer a una cadena
             String data = new String(buffer, 0, bytesRead);
-
             String[] values = data.split(",");
             for (int i = 0; i < values.length; i++) {
                 if (i == 33)
@@ -101,16 +98,12 @@ public class PressureSensor extends javax.swing.JFrame {
                 System.out.println(i + ": " + values[i]);
                 showPressure.add(i + ": " + values[i]);
             }
-
             showPressure.add("");
             Thread.sleep(15000);
         }
         showPressure.add("----Fin de lectura----");
     }
 
-    
-    BufferedReader in;
-    
     public void conectPressureServer() throws InterruptedException{
         if(control.pressureSensorIP == null || control.pressureSensorPort == -1){
             NewPSensor ps = new NewPSensor(control);

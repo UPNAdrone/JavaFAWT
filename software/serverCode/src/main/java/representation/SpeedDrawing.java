@@ -7,7 +7,7 @@ import userInterface.ControlFrame;
 
 /**
  *
- * @author mintxo
+ * @author Mintxoo - mintxosola@gmail.com
  */
 public class SpeedDrawing extends javax.swing.JFrame {
     public ControlFrame control;
@@ -24,9 +24,6 @@ public class SpeedDrawing extends javax.swing.JFrame {
     public void run() throws InterruptedException{
         
         while(true){
-            
-            //Thread.sleep(200);
-            
         }
     }
     
@@ -89,8 +86,6 @@ public class SpeedDrawing extends javax.swing.JFrame {
         try{
             for (int i = 1; i <= control.speedMessage.length; i++) {
                 dim = (int) ((control.speedMessage[i-1])*0.75);
-                //System.out.println("fan: "+(i-1)+" "+control.speedMessage[i-1]);
-                //System.out.println("fan: "+(i-1)+" "+dim);
                 switch (i) {
                     case 1, 2, 7, 8 -> {
                         g.setColor(Color.RED);
