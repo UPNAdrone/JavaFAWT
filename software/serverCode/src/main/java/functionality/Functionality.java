@@ -39,10 +39,8 @@ public class Functionality extends Thread{
                 int time = (int) row.getCell(0).getNumericCellValue();
                 if(realExec){
                     control.server.updateSpeed(control.speedMessage);
-                    speedDrawing.updateDrawing();
-                }else{
-                    speedDrawing.updateDrawing();
                 }
+                speedDrawing.updateDrawing();
                 Thread.sleep(time);
             }
         }catch(Exception e){

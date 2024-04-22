@@ -25,6 +25,7 @@ public class ControlFrame extends javax.swing.JFrame {
     public InterfaceServer server;
     
     public List<Fan> fanButtons = new LinkedList<>();
+    public List<Functionality> functionalityList = new LinkedList<>();
     public int[] speedMessage;
     public SpeedDrawing speedDrawing;
     public boolean functionalityExecuting = false;
@@ -479,9 +480,7 @@ public class ControlFrame extends javax.swing.JFrame {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(stopFun)
                                             .addGap(14, 14, 14))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(funPreview, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(40, 40, 40)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(146, 146, 146)
@@ -496,7 +495,10 @@ public class ControlFrame extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(pressureSensor)
                                         .addGap(67, 67, 67))
-                                    .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(96, 96, 96)
+                                .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(180, 180, 180)
                         .addComponent(stopAllFans)))
@@ -763,7 +765,7 @@ public class ControlFrame extends javax.swing.JFrame {
             firstTime = true;
         } catch (Exception e) {
             System.out.println("Error adding functionality file");
-             e.printStackTrace();
+            e.printStackTrace();
         }
     }//GEN-LAST:event_addFunctionalityActionPerformed
 
@@ -772,13 +774,13 @@ public class ControlFrame extends javax.swing.JFrame {
         if (lastDotIndex > 0) {
             return fileName.substring(lastDotIndex + 1);
         }
-        return ""; // Si no hay extensión, devolver una cadena vacía
+        return "";
     }
     
     private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
         try {
-            funAction.setText("File"+funFile.getName()+"in proccess of execution");
             functionality = new Functionality(this, speedDrawing,true);
+            functionalityList.add(functionality);
             functionality.start();
             if(!getFileExtension(funFile.getName()).equals("xlsx")){
                 functionalityExecuting = false;
@@ -796,7 +798,9 @@ public class ControlFrame extends javax.swing.JFrame {
 
     private void stopFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopFunActionPerformed
         try{
-            functionality.interrupt();
+            for (Functionality f : functionalityList) {
+                f.interrupt();
+            }
             functionalityExecuting = false;
             funAction.setText("No functionality executing");
         }catch(Exception e){
@@ -815,6 +819,7 @@ public class ControlFrame extends javax.swing.JFrame {
             speedDrawing_aux.setLocation(500, 100);
             
             functionality = new Functionality(this, speedDrawing_aux,false);
+            functionalityList.add(functionality);
             functionality.start();
             functionalityExecuting = true;
             funAction.setText("Preview is executing...");
@@ -825,6 +830,8 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_funPreviewMouseClicked
 
+    
+    
     private void pressureSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pressureSensorMouseClicked
         try {
            Thread pressureThread = new Thread(() -> {
@@ -836,7 +843,7 @@ public class ControlFrame extends javax.swing.JFrame {
                 pressure.setLocation(800, 200);
                try {
                    pressure.run();
-               } catch (Exception e) {System.out.println("error con el sensor");}
+               } catch (Exception e) {System.out.println("Error with the sensor");}
             });
             pressureThread.start();
             

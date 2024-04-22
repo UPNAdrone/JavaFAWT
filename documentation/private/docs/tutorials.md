@@ -1,5 +1,11 @@
 # Tutorial / Manual of use
 
+The following tutorial is just a quick guidance to the use of the software. If there is something that is not understood on the tutorial, it is recommended to visit the software documentation. There you will find much more information about each class.
+
+In case you need to change some protocol, ip address, ... just open the software documentation and there you will find where to change it.
+
+In any other case, please contact us and we will help you.
+
 ## CLIENT
 
 ### Raspberries settings
@@ -26,7 +32,7 @@
 
 6.	From now on, you won’t have to use the raspberries anymore. 
 
-##  SERVER
+##  SERVER (try to do a .jar)
 1.	Enter the software folder.
 
 2.	Open the serverCode project on NetBeans.
@@ -35,7 +41,7 @@
 
 4.	A window called FAN CONECTION will open. There you will see your server ip and your server port (comment1). Below, is a list where the connected clients will show up. Once you see all the clients connected, you can click on the Ready button to continue.
 
-5.	To connect the clients to the server, you will have to open the clientDocumentation file in the documentation folder.
+5.	The clien connection is explained above.
 
 6.	If the client successfully connects to the server, on the terminal a similar message will be displayed: I am client “x”. And on the server client list, your client will be displayed this way: Client “x”: /”ip”.
 
@@ -49,9 +55,17 @@
         - Real execution: If you click on execute preview the fans will receive their new speeds and the functionality will execute in real time. To stop it you can click on Stop Execution. During this execution, the manual fan control will be disabled.
         - Preview execution: If you click on Execute Preview the fans will not change. A window like SPEED SCHEMA will open, and there you will be able to see what will happen to the fans if you execute the functionality. To close it just close the window.
 
-10.	Apart from this, you can also click on Show Pressure to see the pressure values on real time on a window. For this, you will need and specific pressure sensor. The first time you open it you will have to introduce its IP address and its port number.
+10.	Apart from this, you can also click on Show Pressure to see the pressure values on real time on a window. For this, you will need an specific pressure sensor. The first time you open it you will have to introduce its IP address and its port number. In our case we have used a nanodaq-lts-32, that has 32 reading points.
 
 11.	Before closing the program don’t forget to Stop All the fans. Otherwise, they will keep the last speed value you gave them, and as soon as they connect to current, they will spin at this speed.
+
+##  FUNCTIONALITY FILES
+
+1. In the software folder, inside functionalities, there are some example files, that can be used to execute the fans with them.
+
+2. In case you do not want to use them, you can create new ones or just modify the existing ones. But remember that they need to have the .xlsx extension.
+
+3. The files are read row by row. Each row represents a speed update. The first column is the time (in miliseconds) you want the fans to be spining at these speeds, while the other columns are the speeds of each fan (in porcentage), in order. The fun_model.xlsx tries to explain it better.
  
 ### Comments
 - Comment 1

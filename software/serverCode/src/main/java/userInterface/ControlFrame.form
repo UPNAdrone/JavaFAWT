@@ -177,10 +177,7 @@
                                           <Component id="stopFun" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                          <Component id="funExecution" min="-2" pref="142" max="-2" attributes="0"/>
-                                          <Component id="funPreview" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="funPreview" alignment="1" min="-2" pref="142" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                               </Group>
@@ -203,6 +200,10 @@
                                   </Group>
                                   <Component id="funAction" alignment="1" min="-2" pref="263" max="-2" attributes="0"/>
                               </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                              <Component id="funExecution" min="-2" pref="156" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
