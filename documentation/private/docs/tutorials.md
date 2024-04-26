@@ -1,10 +1,15 @@
 # Tutorial / Manual of use
 
-The following tutorial is just a quick guidance to the use of the software. If there is something that is not understood on the tutorial, it is recommended to visit the software documentation. There you will find much more information about each class.
+The following tutorial is just a guidance to the use of the software. If there is something that is not understood on the tutorial, it is recommended to visit the software documentation. There you will find much more information about each class.
 
-In case you need to change some protocol, ip address, ... just open the software documentation and there you will find where to change it.
+In case you need to change some connection protocol, ip address, port number,... just open the software documentation and there you will find where to change it.
 
-In any other case, please contact us and we will help you.
+In any other case, please contact us.
+
+## INTRODUCTION
+
+To control the fan modules there is needed a computer and some raspberries. The raspberries are the ones that modify the speed of the fans, but we want to do this modifications from our computer. Hence, the computer has to be connected to each one of the raspberries.
+The computer 
 
 ## CLIENT
 

@@ -13,6 +13,7 @@ def splitCommas(inputStr, myFans, clientNum):
         speed = array[i + 6 * (clientNum - 1)]
         myFans[i].ChangeDutyCycle(speed)
         print(i, ": ", speed)
+    print()
 
 
 def main():
