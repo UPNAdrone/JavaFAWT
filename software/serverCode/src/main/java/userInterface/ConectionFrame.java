@@ -1,6 +1,6 @@
 package userInterface;
 
-import raspberryserver.AcceptClient;
+import connection.AcceptClient;
 
 /**
  *

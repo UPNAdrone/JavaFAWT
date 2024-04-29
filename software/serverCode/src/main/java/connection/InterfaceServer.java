@@ -1,6 +1,7 @@
-package raspberryserver;
+package connection;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import static java.lang.Thread.interrupted;
@@ -38,8 +39,7 @@ public class InterfaceServer extends Thread{
             while(!interrupted() && !ready){
                 Socket clientSocket = serverSocket.accept();
                 Thread.sleep(100);
-                if(!ready)
-                {
+                if(!ready){
                     ClientThread clientThread = new ClientThread(clients, clientSocket);
                     clientThread.start();
                     i++;
@@ -104,10 +104,9 @@ public class InterfaceServer extends Thread{
                     System.out.println(in.readLine());
                 }
                 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (IOException ex) {
             } finally { //we have finished or failed so let's close the socket and remove ourselves from the list
-                try{ socket.close(); } catch(Exception ex){} //this will make sure that the socket closes
+                try{ socket.close(); } catch(IOException ex){} //this will make sure that the socket closes
                 synchronized (clients) {
                     clients.remove(this);
                 }

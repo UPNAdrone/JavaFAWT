@@ -1,4 +1,4 @@
-package raspberryserver;
+package connection;
 
 import java.io.IOException;
 import java.net.Socket;

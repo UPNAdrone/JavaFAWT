@@ -8,7 +8,7 @@ import functionality.Principal;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
-import raspberryserver.InterfaceServer;
+import connection.InterfaceServer;
 
 
 import java.io.File;
