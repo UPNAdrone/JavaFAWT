@@ -5,11 +5,9 @@ JavaFAWT is a fan-array-wind tunnel (FAWT) open-source software and hardware arc
 * Modular low-cost FAWT architecture.
 * Individual or multiple fan speed control through a simple unified interface.
 * Websockets protocol implemented for wireless communication with each fan module.
-### File structure
-The files are organized as follows:
 
 ## How to install & run
-Detailed instructions for installing and running the software.
+Detailed instructions for installing and running the software can be found [here](https://github.com/UPNAdrone/JavaFAWT/blob/main/documentation/private/docs/installation.md).
 
 ## Files structure
 - Documentation
