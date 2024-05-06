@@ -6,6 +6,10 @@ JavaFAWT is a fan-array-wind tunnel (FAWT) open-source software and hardware arc
 * Individual or multiple fan speed control through a simple unified interface.
 * Websockets protocol implemented for wireless communication with each fan module.
 
+## Relevant links
+Bill of Materials (BOM) can be found [here](https://github.com/UPNAdrone/JavaFAWT/blob/main/hardware/Bill%20of%20Materials.xlsx)
+PCB Manufacturing project can be found [here](https://www.pcbway.com/project/shareproject/JavaFAWT_PCB_v0_1_1426b5d5.html)
+
 ## How to install & run
 Detailed instructions for installing and running the software can be found [here](https://github.com/UPNAdrone/JavaFAWT/blob/main/documentation/private/docs/installation.md).
 
