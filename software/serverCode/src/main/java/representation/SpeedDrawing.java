@@ -2,7 +2,6 @@ package representation;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import static org.mozilla.javascript.Context.exit;
 import userInterface.ControlFrame;
 
 /**
@@ -116,9 +115,6 @@ public class SpeedDrawing extends javax.swing.JFrame {
                         g.setColor(Color.RED);
                         g.fillOval((a+x6*b)-dim/2, (a+6*b)-dim/2, dim, dim);
                         x6++;
-                    }
-                    default -> {
-                        exit();
                     }
                 }
             }

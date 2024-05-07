@@ -9,9 +9,11 @@ import RPi.GPIO as GPIO
 
 def splitCommas(inputStr, myFans, clientNum):
     array = list(map(int, inputStr.split(",")))
+    print()
     for i in range(6):
         speed = array[i + 6 * (clientNum - 1)]
         myFans[i].ChangeDutyCycle(speed)
+        print(i,": ",speed)	
 
 
 def main():
@@ -55,16 +57,12 @@ def main():
 
         while True:
             data = client_socket.recv(1024).decode()
-            if data:
+            if data:g
                 if "Server says: exit" in data:
                     print("EXIT")
                     break
 
                 splitCommas(data, my_fans, client_number)
-                print("The read speeds for my fans are:")
-                for i in range(6):
-                    print(f"Fan {i}: {my_fans[i]}")
-
                 client_socket.send(message.encode())
 
         client_socket.close()

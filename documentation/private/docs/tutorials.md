@@ -15,7 +15,7 @@ In any other case, please contact us.
 
 
 To control the fan modules there is needed a computer and some raspberries. The raspberries are the ones that modify the speed of the fans, but we want to do these modifications from our computer. Hence, the computer has to be connected to each one of the raspberries.
-The computer
+
 
 
 ## CLIENT
@@ -47,7 +47,7 @@ The computer
 2. There are two places to connect current of 12V and 6V.
 
 
-3. Then you will find 6 different modules. Each of them corresponds to a fan. The module has 4 pins: PWM (blue), TACH (yellow), VIN (red) and GND (black). The fan has 4 different cables with different colors. This link can help identify where each cable goes (https://mans.io/files/viewer/1709981/1 ) by looking at the colors. The first fan is the one closer to the 12V current. Then connect them in order.
+3. Then you will find 6 different modules. Each of them corresponds to a fan. Each fan has cables with different colors: PWM (blue), TACH (yellow), VIN (red) and GND (black) to be connected. This link can help identify where each cable goes (https://mans.io/files/viewer/1709981/1 ) by looking at the colors. The first fan is the one closer to the 12V current. Then connect them in order.
 
 
 
@@ -71,7 +71,7 @@ The computer
 6.  From now on, you won’t have to use the raspberries anymore. During the execution, the raspberries will be printing the messages they are receiving in the terminal, just if necessary.
 
 
-##  SERVER (try to do a .jar)
+##  SERVER
 1.  Enter the “/software/serverCode” folder.
 
 
