@@ -1,13 +1,10 @@
 package functionality;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import representation.SpeedDrawing;
 import userInterface.ControlFrame;
+
 
 /**
  *
@@ -26,28 +23,26 @@ public class Functionality extends Thread{
     
     @Override
     public void run(){
-        try{                
-            InputStream inp = new FileInputStream(control.funFile);
-            Workbook wb = WorkbookFactory.create(inp);
-            Sheet sheet = wb.getSheetAt(0);
-            
-            for (Row row : sheet) {
-                for (int i = 1; i < control.speedMessage.length+1; i++) {
-                    if(row.getCell(i) != null)
-                        control.speedMessage[i-1] = (int) row.getCell(i).getNumericCellValue();
+        try (BufferedReader reader = new BufferedReader(new FileReader(control.funFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String info[] = line.split(",");
+                for (int i = 1; (i < control.speedMessage.length+1) && (i < info.length); i++) {
+                    control.speedMessage[i-1] = Integer.parseInt(info[i]);
                 }
-                int time = (int) row.getCell(0).getNumericCellValue();
                 if(realExec){
                     control.server.updateSpeed(control.speedMessage);
                 }
                 speedDrawing.updateDrawing();
-                Thread.sleep(time);
+                Thread.sleep(Integer.parseInt(info[0]));
             }
-        }catch(Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Functionality interrupted");
         }
         if(!realExec){
             speedDrawing.dispose();
         }
+        
     }
 }

@@ -72,10 +72,10 @@ To control the fan modules there is needed a computer and some raspberries. The 
 
 
 ##  SERVER
-1.  Enter the “/software/serverCode” folder.
+1.  Enter the “/software/serverCode/target” folder.
 
 
-2.  Execute the .jar file called “serverCode.jar”.
+2.  Execute the .jar file called "serverCode-1.0-SNAPSHOT.jar”. You may need to do it through the terminal.
 
 
 3.  A window called FAN CONNECTION will open. There you will see your server ip and your server port (comment1). Below, is a list where the connected clients will show up. When a client successfully connects to the server, it will appear on the list.
@@ -105,10 +105,10 @@ Use the scrolling bar to set the speed you want for the selected fans. Once set,
 1. In the software folder, inside functionalities, there are some example files that can be used to execute the fans with them.
 
 
-2. In case you do not want to use them, you can create new ones or just modify the existing ones. But remember that they need to have the .xlsx extension.
+2. In case you do not want to use them, you can create new ones or just modify the existing ones. But remember that they need to have the .svg extension.
 
 
-3. The files are read row by row. Each row represents a speed update. The first column is the time (in milliseconds) you want the fans to be spinning at these speeds, while the other columns are the speeds of each fan (in percentage), in order. The fun_model.xlsx tries to explain it better.
+3. The files are read row by row. Each row represents a speed update. The first column is the time (in milliseconds) you want the fans to be spinning at these speeds, while the other columns are the speeds of each fan (in percentage), in order.
  
 ### Comments
 - Comment 1
