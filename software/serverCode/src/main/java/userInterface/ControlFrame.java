@@ -782,7 +782,7 @@ public class ControlFrame extends javax.swing.JFrame {
             functionality = new Functionality(this, speedDrawing,true);
             functionalityList.add(functionality);
             functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("xlsx")){
+            if(!getFileExtension(funFile.getName()).equals("svg")){
                 functionalityExecuting = false;
                 funAction.setText("Wrong file");
             }else{
