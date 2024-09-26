@@ -36,8 +36,11 @@ To control the fan modules there is needed a computer and some raspberries. The 
 
 5.  On the raspberry’s terminal, find a location to save this file (for example on /desktop). Once you found it, type “nano pwm_client.py” and paste the content of the pwm_client.py in this file. Make sure you know the location of the file. Repeat it in all the raspberries.
 
+6. To execute the file you need some previous installations (type the following on this directory):
+    * sudo apt install python3
+    * pip3 install RPi.GPIO
 
-6. Your raspberries are ready to work. Do not forget that it requires 5V to work properly. More volts can break it.
+7. Your raspberries are ready to work. Do not forget that it requires 5V to work properly. More volts can break it.
 
 
 ### Connect fans to Raspberry (repeat for each raspberry)

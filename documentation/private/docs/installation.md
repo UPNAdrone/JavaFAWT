@@ -1,4 +1,4 @@
-# How to Install
+# How to Install the server
 
 1. Ensure Java is Installed:
     * The java version must be 17 or above
