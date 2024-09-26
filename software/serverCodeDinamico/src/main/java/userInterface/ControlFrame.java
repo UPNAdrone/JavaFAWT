@@ -12,6 +12,7 @@ import connection.InterfaceServer;
 
 
 import java.io.File;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import representation.SpeedDrawing;
 
@@ -80,31 +81,7 @@ public class ControlFrame extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         currentSpeed = new javax.swing.JLabel();
         stopAllFans = new javax.swing.JButton();
-        fan1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        fan2 = new javax.swing.JButton();
-        fan3 = new javax.swing.JButton();
-        fan4 = new javax.swing.JButton();
-        fan5 = new javax.swing.JButton();
-        fan6 = new javax.swing.JButton();
-        fan7 = new javax.swing.JButton();
-        fan8 = new javax.swing.JButton();
-        fan9 = new javax.swing.JButton();
-        fan10 = new javax.swing.JButton();
-        fan11 = new javax.swing.JButton();
-        fan12 = new javax.swing.JButton();
-        fan13 = new javax.swing.JButton();
-        fan14 = new javax.swing.JButton();
-        fan15 = new javax.swing.JButton();
-        fan16 = new javax.swing.JButton();
-        fan17 = new javax.swing.JButton();
-        fan18 = new javax.swing.JButton();
-        fan19 = new javax.swing.JButton();
-        fan20 = new javax.swing.JButton();
-        fan21 = new javax.swing.JButton();
-        fan22 = new javax.swing.JButton();
-        fan23 = new javax.swing.JButton();
-        fan24 = new javax.swing.JButton();
         addFunctionality = new javax.swing.JButton();
         funExecution = new javax.swing.JButton();
         stopFun = new javax.swing.JButton();
@@ -183,177 +160,9 @@ public class ControlFrame extends javax.swing.JFrame {
             }
         });
 
-        fan1.setText("1");
-        fan1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan1ActionPerformed(evt);
-            }
-        });
-
         jLabel1.setBackground(new java.awt.Color(255, 204, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("FANS SCHEMA");
-
-        fan2.setText("2");
-        fan2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan2ActionPerformed(evt);
-            }
-        });
-
-        fan3.setText("3");
-        fan3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan3ActionPerformed(evt);
-            }
-        });
-
-        fan4.setText("4");
-        fan4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan4ActionPerformed(evt);
-            }
-        });
-
-        fan5.setText("5");
-        fan5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan5ActionPerformed(evt);
-            }
-        });
-
-        fan6.setText("6");
-        fan6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan6ActionPerformed(evt);
-            }
-        });
-
-        fan7.setText("7");
-        fan7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan7ActionPerformed(evt);
-            }
-        });
-
-        fan8.setText("8");
-        fan8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan8ActionPerformed(evt);
-            }
-        });
-
-        fan9.setText("9");
-        fan9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan9ActionPerformed(evt);
-            }
-        });
-
-        fan10.setText("10");
-        fan10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan10ActionPerformed(evt);
-            }
-        });
-
-        fan11.setText("11");
-        fan11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan11ActionPerformed(evt);
-            }
-        });
-
-        fan12.setText("12");
-        fan12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan12ActionPerformed(evt);
-            }
-        });
-
-        fan13.setText("13");
-        fan13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan13ActionPerformed(evt);
-            }
-        });
-
-        fan14.setText("14");
-        fan14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan14ActionPerformed(evt);
-            }
-        });
-
-        fan15.setText("15");
-        fan15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan15ActionPerformed(evt);
-            }
-        });
-
-        fan16.setText("16");
-        fan16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan16ActionPerformed(evt);
-            }
-        });
-
-        fan17.setText("17");
-        fan17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan17ActionPerformed(evt);
-            }
-        });
-
-        fan18.setText("18");
-        fan18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan18ActionPerformed(evt);
-            }
-        });
-
-        fan19.setText("19");
-        fan19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan19ActionPerformed(evt);
-            }
-        });
-
-        fan20.setText("20");
-        fan20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan20ActionPerformed(evt);
-            }
-        });
-
-        fan21.setText("21");
-        fan21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan21ActionPerformed(evt);
-            }
-        });
-
-        fan22.setText("22");
-        fan22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan22ActionPerformed(evt);
-            }
-        });
-
-        fan23.setText("23");
-        fan23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan23ActionPerformed(evt);
-            }
-        });
-
-        fan24.setText("24");
-        fan24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan24ActionPerformed(evt);
-            }
-        });
 
         addFunctionality.setText("Add Functionality File");
         addFunctionality.addActionListener(new java.awt.event.ActionListener() {
@@ -402,76 +211,49 @@ public class ControlFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan17, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan18, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(fan23, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan24, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fan13, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fan14, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fan5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fan6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fan3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fan4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(fan15, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fan16, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(27, 27, 27)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(fan21, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(fan7, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(fan9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(fan11, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(fan19, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fan10, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan12, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan20, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan22, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(115, 115, 115)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(121, 121, 121)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(stopAllFans)))
+                .addGap(60, 60, 60)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(110, 110, 110)
+                                .addGap(146, 146, 146)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(currentSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(75, 75, 75)
                                 .addComponent(addFunctionality))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addGap(139, 139, 139)
+                                            .addGap(104, 104, 104)
                                             .addComponent(updateSpeed)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addGap(79, 79, 79)
+                                            .addGap(44, 44, 44)
                                             .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(13, 13, 13))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -482,108 +264,51 @@ public class ControlFrame extends javax.swing.JFrame {
                                             .addGap(14, 14, 14))
                                         .addComponent(funPreview, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(40, 40, 40)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(146, 146, 146)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(currentSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(pressureSensor)
-                                        .addGap(67, 67, 67))
-                                    .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(pressureSensor)
+                                .addGap(67, 67, 67))
+                            .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(stopAllFans)))
-                .addContainerGap(15, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(233, 233, 233))))
+                                .addGap(61, 61, 61)
+                                .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(149, Short.MAX_VALUE)
-                        .addComponent(executing))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(numActiveFans))
                         .addGap(14, 14, 14)
-                        .addComponent(jLabel4)
+                        .addComponent(jLabel1)
+                        .addGap(364, 364, 364)
+                        .addComponent(stopAllFans)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(executing)
+                                .addGap(99, 99, 99))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addComponent(selectedFan)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel8)
-                                    .addComponent(currentSpeed)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(numActiveFans))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan7, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan11, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan13, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan14, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan19, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan20, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan15, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan16, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan21, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan22, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan17, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan18, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan23, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan24, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+                                    .addComponent(currentSpeed))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(updateSpeed)
                             .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(35, 35, 35)
                         .addComponent(pressureSensor)
                         .addGap(33, 33, 33)
                         .addComponent(addFunctionality)
@@ -594,10 +319,8 @@ public class ControlFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(funAction)
                         .addGap(12, 12, 12)
-                        .addComponent(stopFun)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(stopAllFans)
-                .addGap(12, 12, 12))
+                        .addComponent(stopFun)
+                        .addGap(64, 64, 64))))
         );
 
         pack();
@@ -635,126 +358,6 @@ public class ControlFrame extends javax.swing.JFrame {
         currentSpeed.setText("0");
         speedSlider.setValue(0);
     }//GEN-LAST:event_stopAllFansMouseClicked
-
-    private void fan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan2ActionPerformed
-        activeFan = 1;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan2ActionPerformed
-
-    private void fan3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan3ActionPerformed
-        activeFan = 2;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan3ActionPerformed
-
-    private void fan4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan4ActionPerformed
-        activeFan = 3;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan4ActionPerformed
-
-    private void fan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan5ActionPerformed
-        activeFan = 4;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan5ActionPerformed
-
-    private void fan6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan6ActionPerformed
-        activeFan = 5;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan6ActionPerformed
-
-    private void fan7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan7ActionPerformed
-        activeFan = 6;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan7ActionPerformed
-
-    private void fan8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan8ActionPerformed
-        activeFan = 7;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan8ActionPerformed
-
-    private void fan9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan9ActionPerformed
-        activeFan = 8;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan9ActionPerformed
-
-    private void fan10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan10ActionPerformed
-        activeFan = 9;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan10ActionPerformed
-
-    private void fan11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan11ActionPerformed
-        activeFan = 10;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan11ActionPerformed
-
-    private void fan12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan12ActionPerformed
-        activeFan = 11;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan12ActionPerformed
-
-    private void fan13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan13ActionPerformed
-        activeFan = 12;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan13ActionPerformed
-
-    private void fan14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan14ActionPerformed
-        activeFan = 13;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan14ActionPerformed
-
-    private void fan15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan15ActionPerformed
-        activeFan = 14;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan15ActionPerformed
-
-    private void fan16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan16ActionPerformed
-        activeFan = 15;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan16ActionPerformed
-
-    private void fan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan1ActionPerformed
-        activeFan = 0;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan1ActionPerformed
-
-    private void fan17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan17ActionPerformed
-        activeFan = 16;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan17ActionPerformed
-
-    private void fan18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan18ActionPerformed
-        activeFan = 17;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan18ActionPerformed
-
-    private void fan19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan19ActionPerformed
-        activeFan = 18;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan19ActionPerformed
-
-    private void fan20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan20ActionPerformed
-        activeFan = 19;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan20ActionPerformed
-
-    private void fan21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan21ActionPerformed
-        activeFan = 20;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan21ActionPerformed
-
-    private void fan22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan22ActionPerformed
-        activeFan = 21;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan22ActionPerformed
-
-    private void fan23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan23ActionPerformed
-        activeFan = 22;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan23ActionPerformed
-
-    private void fan24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan24ActionPerformed
-        activeFan = 23;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan24ActionPerformed
 
     private void addFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFunctionalityActionPerformed
         try {
@@ -855,8 +458,9 @@ public class ControlFrame extends javax.swing.JFrame {
     
     
     public void run() throws InterruptedException{
-        enterFans(fanButtons);
+        
         int cant = server.clients.size();
+        enterFans(fanButtons,cant);
         setFansColor(cant,fanButtons);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
@@ -879,31 +483,20 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }
     
-    public void enterFans(List<Fan> fanBottons){
-        fanBottons.add(new Fan(fan1));
-        fanBottons.add(new Fan(fan2));
-        fanBottons.add(new Fan(fan3));
-        fanBottons.add(new Fan(fan4));
-        fanBottons.add(new Fan(fan5));
-        fanBottons.add(new Fan(fan6));
-        fanBottons.add(new Fan(fan7));
-        fanBottons.add(new Fan(fan8));
-        fanBottons.add(new Fan(fan9));
-        fanBottons.add(new Fan(fan10));
-        fanBottons.add(new Fan(fan11));
-        fanBottons.add(new Fan(fan12));
-        fanBottons.add(new Fan(fan13));
-        fanBottons.add(new Fan(fan14));
-        fanBottons.add(new Fan(fan15));
-        fanBottons.add(new Fan(fan16));
-        fanBottons.add(new Fan(fan17));
-        fanBottons.add(new Fan(fan18));
-        fanBottons.add(new Fan(fan19));
-        fanBottons.add(new Fan(fan20));
-        fanBottons.add(new Fan(fan21));
-        fanBottons.add(new Fan(fan22));
-        fanBottons.add(new Fan(fan23));
-        fanBottons.add(new Fan(fan24));
+    public void enterFans(List<Fan> fanBottons, int cant){   
+        cant = 1;
+        for (int i = 0; i < 6*cant; i++) {
+            JButton f = new JButton(""+i);
+            if (i%2!=0){ // impar --> primera columna
+                f.setBounds(50*(i%6), 200+i*50, 50, 50);  // x, y, width, height
+            }else{
+                f.setBounds(50*(i%6)+50, 200+i*50, 50, 50);  // x, y, width, height
+            }
+            
+            this.add(f);
+            fanBottons.add(new Fan(f));
+        }
+            
     }
         
     public void setFansColor(int cant, List<Fan> fanBottons){
@@ -938,30 +531,6 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JButton addFunctionality;
     private javax.swing.JLabel currentSpeed;
     private javax.swing.JLabel executing;
-    private javax.swing.JButton fan1;
-    private javax.swing.JButton fan10;
-    private javax.swing.JButton fan11;
-    private javax.swing.JButton fan12;
-    private javax.swing.JButton fan13;
-    private javax.swing.JButton fan14;
-    private javax.swing.JButton fan15;
-    private javax.swing.JButton fan16;
-    private javax.swing.JButton fan17;
-    private javax.swing.JButton fan18;
-    private javax.swing.JButton fan19;
-    private javax.swing.JButton fan2;
-    private javax.swing.JButton fan20;
-    private javax.swing.JButton fan21;
-    private javax.swing.JButton fan22;
-    private javax.swing.JButton fan23;
-    private javax.swing.JButton fan24;
-    private javax.swing.JButton fan3;
-    private javax.swing.JButton fan4;
-    private javax.swing.JButton fan5;
-    private javax.swing.JButton fan6;
-    private javax.swing.JButton fan7;
-    private javax.swing.JButton fan8;
-    private javax.swing.JButton fan9;
     private javax.swing.JLabel funAction;
     private javax.swing.JButton funExecution;
     private javax.swing.JButton funPreview;

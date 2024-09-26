@@ -1,10 +1,15 @@
 # How to Install
 
 1. Ensure Java is Installed:
-
-    * Visit https://www.java.com/download.
-    * Download the appropriate Java installer for your system.
-    * Run the installer and follow the on-screen instructions to complete the installation.
+    * The java version must be 17 or above
+    * You can see you java version by typing "java -version" on the windows or linux terminal
+    * Install Java for Windows:
+        - Visit https://www.java.com/download.
+        - Download the appropriate Java installer for your system.
+        - Run the installer and follow the on-screen instructions to complete the installation.
+    * Install Java for Linux:
+        - Open the terminal and type "sudo apt install openjdk-17-jdk"
+        - After that java will be installed
 
 2. Download or Clone the JavaFAWT Project: Either download the project as a ZIP file or clone the repository to your local machine.
 

@@ -11,6 +11,8 @@ public class Fan {
     public int speed = 0;
     public JButton button;
 
+    
+    
     public Fan(JButton button) {
         this.button = button;
     }

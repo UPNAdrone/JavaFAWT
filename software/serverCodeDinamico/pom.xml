@@ -11,7 +11,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.mavenproject1.Mavenproject1</exec.mainClass>
     </properties>
-    <name>serverCode</name>
+    <name>serverCodeDinamico</name>
     <build>
         <plugins>
             <plugin>
