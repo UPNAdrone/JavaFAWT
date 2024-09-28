@@ -49,7 +49,7 @@ public class ControlFrame extends javax.swing.JFrame {
         initComponents();
         this.server = server;
         openFileChooser = new JFileChooser();
-        openFileChooser.setCurrentDirectory(new File("../"));
+        openFileChooser.setCurrentDirectory(new File("../../functionalities"));
         openFileChooser.setFileFilter(new FileNameExtensionFilter("CSV","csv"));
     }
     
