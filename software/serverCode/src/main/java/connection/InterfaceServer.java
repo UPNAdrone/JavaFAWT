@@ -6,11 +6,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import static java.lang.Thread.interrupted;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import userInterface.ConectionFrame;
 
 /**
@@ -22,6 +27,7 @@ public class InterfaceServer extends Thread{
     public boolean ready = false, connected = false;
     public int port;
     private int num = 0;
+    public String ip;
     public List<ClientThread> clients = new LinkedList<>();
     
     public InterfaceServer(int port, ConectionFrame conection) {
@@ -31,8 +37,27 @@ public class InterfaceServer extends Thread{
 
     @Override
     public void run(){
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {continue;}
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress inetAddress = addresses.nextElement();
+                    if (inetAddress.isSiteLocalAddress()) {
+                        if (!inetAddress.getHostAddress().startsWith("127")){
+                            ip = inetAddress.getHostAddress();
+                        }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         try( ServerSocket serverSocket = new ServerSocket(port); ){
-            conection.setIPandPort(InetAddress.getLocalHost().getHostAddress(), port);
+            System.out.println("El puerto es: "+port);
+            conection.setIPandPort(ip, port);
             int i = 0;
             
             while(!interrupted() && !ready){
