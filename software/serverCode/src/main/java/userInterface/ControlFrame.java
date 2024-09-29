@@ -120,6 +120,7 @@ public class ControlFrame extends javax.swing.JFrame {
         funAction = new javax.swing.JLabel();
         browseFunctionality = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        unselectAll = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -412,6 +413,14 @@ public class ControlFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Add Functionality File");
 
+        unselectAll.setBackground(new java.awt.Color(102, 255, 255));
+        unselectAll.setText("Unselect All");
+        unselectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unselectAllActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -472,7 +481,12 @@ public class ControlFrame extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(stopAllFans)
+                        .addGap(60, 60, 60)
+                        .addComponent(unselectAll)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(speedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -519,10 +533,6 @@ public class ControlFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(233, 233, 233))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(180, 180, 180)
-                .addComponent(stopAllFans)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -588,7 +598,9 @@ public class ControlFrame extends javax.swing.JFrame {
                             .addComponent(fan23, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fan24, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(stopAllFans))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(stopAllFans)
+                            .addComponent(unselectAll)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -884,6 +896,13 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_browseFunctionalityActionPerformed
 
+    private void unselectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllActionPerformed
+        for (Fan f : fanButtons) {
+            f.selected = false;
+            f.button.setBackground(Color.white);
+        }
+    }//GEN-LAST:event_unselectAllActionPerformed
+
     
     
     public void run() throws InterruptedException{
@@ -1020,6 +1039,7 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;
     private javax.swing.JButton stopFun;
+    private javax.swing.JButton unselectAll;
     private javax.swing.JButton updateSpeed;
     // End of variables declaration//GEN-END:variables
     }

@@ -6,10 +6,12 @@ userInterface\ControlFrame$6.class
 userInterface\ControlFrame.class
 main\Main.class
 userInterface\ControlFrame$14.class
+userInterface\PortFrame$1.class
 userInterface\ControlFrame$21.class
 userInterface\ControlFrame$31.class
 userInterface\ControlFrame$9.class
 userInterface\ControlFrame$24.class
+userInterface\ControlFrame$34.class
 functionality\Principal$1.class
 userInterface\ControlFrame$10.class
 userInterface\ConectionFrame.class
@@ -33,6 +35,7 @@ userInterface\ControlFrame$1.class
 representation\NewPSensor$1.class
 representation\PressureSensor.class
 userInterface\ControlFrame$4.class
+userInterface\PortFrame.class
 userInterface\ControlFrame$19.class
 userInterface\ControlFrame$29.class
 functionality\Functionality.class
