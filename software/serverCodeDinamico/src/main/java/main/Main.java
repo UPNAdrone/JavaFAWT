@@ -5,6 +5,7 @@ import connection.InterfaceServer;
 import representation.SpeedDrawing;
 import userInterface.ConectionFrame;
 import userInterface.ControlFrame;
+import userInterface.PortFrame;
 
 /**
  *
@@ -12,8 +13,19 @@ import userInterface.ControlFrame;
  */
 public class Main {
     public static void main(String args[]) throws InterruptedException {      
+        PortFrame portFrame = new PortFrame();
+        portFrame.setTitle("PORT SELECTION");
+        portFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        portFrame.setResizable(false);
+        portFrame.setLocationRelativeTo(null);
+        portFrame.setVisible(true);
+        while (!portFrame.ready){
+            Thread.sleep(100); // it is necessary
+        }
+        
         ConectionFrame connection = new ConectionFrame();
-        InterfaceServer server = new InterfaceServer(125,connection); // default port is 125
+        InterfaceServer server = new InterfaceServer(portFrame.port,connection);
+        portFrame.dispose(); 
         server.start();
         
         connection.setTitle("FAN CONECTION");
@@ -32,14 +44,24 @@ public class Main {
         
         connection.dispose(); 
         
-        ControlFrame control = new ControlFrame(server);
+        ControlFrame control = new ControlFrame(server, connection.rows, connection.cols);
         SpeedDrawing speedDrawing = new SpeedDrawing(control);
         
         control.setSpeedInstance(speedDrawing);
         control.setTitle("FAN CONTROL");
         control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         control.setResizable(false);
-        control.setLocation(800, 100);
+        control.setLocation(500, 100);
+        int w = 50+(50*2*connection.cols)+75;
+        if (w < 870){
+            w = 870;
+        }
+        int h = 225+(50*3*connection.rows)+75;
+        if (h < 220){
+            h = 580;
+        }
+        control.setSize(w,h);
+        speedDrawing.setSize(w,h);
         
         speedDrawing.setVisible(true);
         speedDrawing.setTitle("SPEED SCHEMA");

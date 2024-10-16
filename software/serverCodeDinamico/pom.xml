@@ -57,5 +57,11 @@
             <version>5.2.5</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>ai.quantnet</groupId>
+            <artifactId>qnt-scala_2.13</artifactId>
+            <version>0.12</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 </project>

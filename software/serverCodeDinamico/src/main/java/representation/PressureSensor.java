@@ -2,9 +2,13 @@ package representation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import userInterface.ControlFrame;
 
 /**
@@ -13,7 +17,10 @@ import userInterface.ControlFrame;
  */
 public class PressureSensor extends javax.swing.JFrame {
     public ControlFrame control;
-    BufferedReader in;
+    InputStream in;
+    
+    public float full_scale_psi = (float) 0.1445092;
+    public float full_scale_pa = (float) (full_scale_psi * 6894.76);
             
     public PressureSensor(ControlFrame c) {
         initComponents();
@@ -79,44 +86,81 @@ public class PressureSensor extends javax.swing.JFrame {
      * @throws IOException
      */
     public void run() throws InterruptedException, IOException {
-        conectPressureServer();
-        char[] buffer = new char[1024]; // Buffer para almacenar los datos recibidos
-        int bytesRead;
+        connectPressureServer();
+        byte[] packet = new byte[75]; // Buffer para almacenar el paquete recibido
 
         while (true) {
-            bytesRead = in.read(buffer);
+            int bytesRead = in.read(packet, 0, packet.length);
             if (bytesRead == -1) {
                 break;
             }
 
-            String data = new String(buffer, 0, bytesRead);
-            String[] values = data.split(",");
-            for (int i = 0; i < values.length; i++) {
-                if (i == 33)
-                    showPressure.add("");
-                System.out.println("");
-                System.out.println(i + ": " + values[i]);
-                showPressure.add(i + ": " + values[i]);
+            try {
+                PacketData parsedData = parsePacket(packet);
+                System.out.printf("[%s]\n", parsedData.timestamp.toString());
+                for (int i = 0; i < parsedData.pressures.length; i++) {
+                    System.out.printf("%.2f, ", parsedData.pressures[i]);
+                }
+                System.out.println("\n--------------------");
+
+                Thread.sleep(10);
+            } catch (Exception e) {
+                System.err.println("Error parsing packet: " + e.getMessage());
             }
-            showPressure.add("");
-            Thread.sleep(15000);
         }
-        showPressure.add("----Fin de lectura----");
     }
 
-    public void conectPressureServer() throws InterruptedException{
-        if(control.pressureSensorIP == null || control.pressureSensorPort == -1){
+    public void connectPressureServer() throws InterruptedException {
+        if (control.pressureSensorIP == null || control.pressureSensorPort == -1) {
             NewPSensor ps = new NewPSensor(control);
             ps.run();
             ps.dispose();
         }
         try {
+            showPressure.add("----Buscando Conexión----");
             Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            showPressure.add("----Conectado correctamente----");      
-        } catch (Exception e) {
-            System.err.println("No se pudo conectar al host: " + control.pressureSensorIP);
-        } 
+            in = socket.getInputStream();
+            showPressure.add("----Conectado correctamente----");
+            System.out.println("Se conecto al socket "+socket);
+        } catch (IOException e) {
+            System.out.println("No se pudo conectar al host");
+            System.err.println("----No se pudo conectar al host: " + control.pressureSensorIP+"----");
+        }
+    }
+
+    private PacketData parsePacket(byte[] packet) throws IOException {
+        // Verify header
+        ByteBuffer buffer = ByteBuffer.wrap(packet);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        int header = buffer.getShort(0) & 0xFFFF;
+        if (header != 0x00FF) {
+            throw new IllegalArgumentException("Invalid packet: incorrect header");
+        }
+
+        // Parse timestamp (two 32-bit numbers)
+        long seconds = buffer.getInt(3) & 0xFFFFFFFFL;
+        long subseconds = buffer.getInt(7) & 0xFFFFFFFFL;
+        LocalDateTime timestamp = LocalDateTime.ofEpochSecond(seconds, (int) (subseconds * 1000), ZoneOffset.UTC);
+
+        // Parse 32 channels (16-bit integers)
+        double[] pressures = new double[32];
+        for (int i = 0; i < 32; i++) {
+            int rawValue = buffer.getShort(11 + i * 2) & 0xFFFF;
+            pressures[i] = (rawValue - 32768) * (full_scale_pa / 32768);
+        }
+
+        return new PacketData(timestamp, pressures);
+    }
+
+    // Helper class to store parsed data
+    private static class PacketData {
+        LocalDateTime timestamp;
+        double[] pressures;
+
+        public PacketData(LocalDateTime timestamp, double[] pressures) {
+            this.timestamp = timestamp;
+            this.pressures = pressures;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

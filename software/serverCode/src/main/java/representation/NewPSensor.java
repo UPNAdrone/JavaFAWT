@@ -108,6 +108,8 @@ public class NewPSensor extends javax.swing.JFrame {
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         control.pressureSensorIP = sensorIP;
         control.pressureSensorPort = sensorPort;
+        System.out.println(""+sensorIP);
+        System.out.println(""+sensorPort);
         finished = true;
     }//GEN-LAST:event_confirmActionPerformed
 

@@ -9,11 +9,18 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import connection.InterfaceServer;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 import java.io.File;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import representation.SpeedDrawing;
 
 
@@ -37,15 +44,24 @@ public class ControlFrame extends javax.swing.JFrame {
     public boolean firstTime = true;
     public String pressureSensorIP = null;
     public int pressureSensorPort = -1;
+    public final int rows, cols;
     
+    public final JFileChooser openFileChooser;
     
     /**
      * Creates new form MainFrame
      * @param server
+     * @param rows
+     * @param cols
      */
-    public ControlFrame(InterfaceServer server) {
+    public ControlFrame(InterfaceServer server, int rows, int cols) {
         initComponents();
         this.server = server;
+        openFileChooser = new JFileChooser();
+        openFileChooser.setCurrentDirectory(new File("../../functionalities"));
+        openFileChooser.setFileFilter(new FileNameExtensionFilter("CSV","csv"));
+        this.rows = rows;
+        this.cols = cols;
     }
     
     public void setSpeedInstance(SpeedDrawing speedDrawing) {
@@ -71,24 +87,24 @@ public class ControlFrame extends javax.swing.JFrame {
         menu5 = new java.awt.Menu();
         menu6 = new java.awt.Menu();
         jLabel2 = new javax.swing.JLabel();
-        speedSlider = new javax.swing.JSlider();
-        showSpeed = new javax.swing.JLabel();
-        updateSpeed = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        numActiveFans = new javax.swing.JLabel();
-        selectedFan = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        currentSpeed = new javax.swing.JLabel();
         stopAllFans = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        addFunctionality = new javax.swing.JButton();
-        funExecution = new javax.swing.JButton();
-        stopFun = new javax.swing.JButton();
         executing = new javax.swing.JLabel();
+        unselectAll = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        funExecution = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        stopFun = new javax.swing.JButton();
         funPreview = new javax.swing.JButton();
         pressureSensor = new javax.swing.JButton();
         funAction = new javax.swing.JLabel();
+        speedSlider = new javax.swing.JSlider();
+        showSpeed = new javax.swing.JLabel();
+        updateSpeed = new javax.swing.JButton();
+        selectedFan = new javax.swing.JLabel();
+        numActiveFans = new javax.swing.JLabel();
+        browseFunctionality = new javax.swing.JButton();
+        dragAndDropFunctionality = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -113,45 +129,6 @@ public class ControlFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 153));
 
-        speedSlider.setMajorTickSpacing(100);
-        speedSlider.setPaintLabels(true);
-        speedSlider.setPaintTicks(true);
-        speedSlider.setValue(0);
-        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                speedSliderStateChanged(evt);
-            }
-        });
-
-        showSpeed.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        showSpeed.setText("0");
-
-        updateSpeed.setBackground(new java.awt.Color(255, 204, 255));
-        updateSpeed.setText("UPDATE");
-        updateSpeed.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateSpeedActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setText("WIND TUNEL GUI");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Active fans:");
-
-        numActiveFans.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        numActiveFans.setText("x fans");
-
-        selectedFan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        selectedFan.setText("Selected fan");
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Current Speed:");
-
-        currentSpeed.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        currentSpeed.setText("0 %");
-
         stopAllFans.setBackground(new java.awt.Color(255, 255, 153));
         stopAllFans.setText("STOP ALL");
         stopAllFans.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -164,10 +141,11 @@ public class ControlFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("FANS SCHEMA");
 
-        addFunctionality.setText("Add Functionality File");
-        addFunctionality.addActionListener(new java.awt.event.ActionListener() {
+        unselectAll.setBackground(new java.awt.Color(102, 255, 255));
+        unselectAll.setText("Unselect All");
+        unselectAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFunctionalityActionPerformed(evt);
+                unselectAllActionPerformed(evt);
             }
         });
 
@@ -177,6 +155,8 @@ public class ControlFrame extends javax.swing.JFrame {
                 funExecutionActionPerformed(evt);
             }
         });
+
+        jLabel3.setText("Add Functionality File");
 
         stopFun.setText("Stop Execution");
         stopFun.addActionListener(new java.awt.event.ActionListener() {
@@ -199,136 +179,223 @@ public class ControlFrame extends javax.swing.JFrame {
                 pressureSensorMouseClicked(evt);
             }
         });
+        pressureSensor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pressureSensorActionPerformed(evt);
+            }
+        });
 
         funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         funAction.setText("functionality info");
         funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        speedSlider.setMajorTickSpacing(100);
+        speedSlider.setPaintLabels(true);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setValue(0);
+        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedSliderStateChanged(evt);
+            }
+        });
+
+        showSpeed.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        showSpeed.setText("0");
+
+        updateSpeed.setBackground(new java.awt.Color(255, 204, 255));
+        updateSpeed.setText("UPDATE");
+        updateSpeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateSpeedActionPerformed(evt);
+            }
+        });
+
+        selectedFan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        selectedFan.setText("Selected fan");
+
+        numActiveFans.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        numActiveFans.setText("x fans");
+
+        browseFunctionality.setText("Browse");
+        browseFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseFunctionalityActionPerformed(evt);
+            }
+        });
+
+        dragAndDropFunctionality.setText("Drag and Drop");
+        dragAndDropFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dragAndDropFunctionalityActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(updateSpeed)
+                        .addGap(29, 29, 29)
+                        .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(dragAndDropFunctionality)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(browseFunctionality)
+                                .addGap(0, 40, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(funAction, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(81, 81, 81)
+                        .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(stopFun)))
+                        .addGap(70, 70, 70)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pressureSensor)
+                            .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(selectedFan)
+                                .addGap(13, 13, 13)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(numActiveFans)
+                                    .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(stopFun))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pressureSensor))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(dragAndDropFunctionality)
+                                    .addComponent(browseFunctionality))
+                                .addGap(24, 24, 24)
+                                .addComponent(funAction))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(updateSpeed)
+                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(121, 121, 121)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(stopAllFans)))
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(146, 146, 146)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(currentSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(12, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addComponent(addFunctionality))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(104, 104, 104)
-                                            .addComponent(updateSpeed)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(44, 44, 44)
-                                            .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(13, 13, 13))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(35, 35, 35)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(stopFun)
-                                            .addGap(14, 14, 14))
-                                        .addComponent(funPreview, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(40, 40, 40)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(pressureSensor)
-                                .addGap(67, 67, 67))
-                            .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(41, 41, 41))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(stopAllFans)
+                .addGap(39, 39, 39)
+                .addComponent(unselectAll)
+                .addGap(398, 398, 398))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(numActiveFans))
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel1)
-                        .addGap(364, 364, 364)
-                        .addComponent(stopAllFans)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(executing)
-                                .addGap(99, 99, 99))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(selectedFan)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(currentSpeed))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(updateSpeed)
-                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addComponent(pressureSensor)
-                        .addGap(33, 33, 33)
-                        .addComponent(addFunctionality)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(funAction)
-                        .addGap(12, 12, 12)
-                        .addComponent(stopFun)
-                        .addGap(64, 64, 64))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(stopAllFans)
+                    .addComponent(unselectAll))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(executing)
+                .addGap(339, 339, 339))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
-        showSpeed.setText(""+speedSlider.getValue());
-    }//GEN-LAST:event_speedSliderStateChanged
+    private void stopAllFansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopAllFansMouseClicked
+        for (int i = 0; i < fanButtons.size(); i++){
+            speedMessage[i] = 0;
+            fanButtons.get(i).speed = 0;
+        }
+        server.updateSpeed(speedMessage);
+        speedDrawing.updateDrawing();
+        speedSlider.setValue(0);
+    }//GEN-LAST:event_stopAllFansMouseClicked
+
+    private static String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex > 0) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return "";
+    }
+    
+    private void unselectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllActionPerformed
+        for (Fan f : fanButtons) {
+            f.selected = false;
+            f.button.setBackground(Color.white);
+        }
+    }//GEN-LAST:event_unselectAllActionPerformed
+
+    private void browseFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFunctionalityActionPerformed
+        int returnValue = openFileChooser.showOpenDialog(this);
+
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            try{
+                funFile = openFileChooser.getSelectedFile();
+                funAction.setText("new "+funFile.getName());
+            }catch (Exception e){
+                System.out.println("Error adding functionality file");
+                funAction.setText("Error adding functionality file");
+            }
+        }else{
+            System.out.println("No file choosen");
+            funAction.setText("No file choosen");
+        }
+    }//GEN-LAST:event_browseFunctionalityActionPerformed
 
     private void updateSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSpeedActionPerformed
         if(!functionalityExecuting){
@@ -343,61 +410,54 @@ public class ControlFrame extends javax.swing.JFrame {
             if (anySelected){
                 server.updateSpeed(speedMessage);
                 speedDrawing.updateDrawing();
-                currentSpeed.setText(""+speedSlider.getValue());
             }
         }
     }//GEN-LAST:event_updateSpeedActionPerformed
 
-    private void stopAllFansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopAllFansMouseClicked
-        for (int i = 0; i < fanButtons.size(); i++){
-            speedMessage[i] = 0;
-            fanButtons.get(i).speed = 0;
-        }
-        server.updateSpeed(speedMessage);
-        speedDrawing.updateDrawing();
-        currentSpeed.setText("0");
-        speedSlider.setValue(0);
-    }//GEN-LAST:event_stopAllFansMouseClicked
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
+        showSpeed.setText(""+speedSlider.getValue());
+    }//GEN-LAST:event_speedSliderStateChanged
 
-    private void addFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFunctionalityActionPerformed
+    private void pressureSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pressureSensorMouseClicked
         try {
-            funFile = null;
-            Principal principal = new Principal(this);
-            principal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            index.getFunFile(principal);
-            firstTime = true;
-        } catch (Exception e) {
-            System.out.println("Error adding functionality file");
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_addFunctionalityActionPerformed
+            Thread pressureThread = new Thread(() -> {
+                PressureSensor pressure = new PressureSensor(this);
+                pressure.setVisible(true);
+                pressure.setTitle("PRESSURE");
+                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                pressure.setResizable(false);
+                pressure.setLocation(800, 200);
+                try {
+                    pressure.run();
+                } catch (Exception e) {System.out.println("Error with the sensor");}
+            });
+            pressureThread.start();
 
-    private static String getFileExtension(String fileName) {
-        int lastDotIndex = fileName.lastIndexOf('.');
-        if (lastDotIndex > 0) {
-            return fileName.substring(lastDotIndex + 1);
+        } catch (Exception ex) {
+            System.out.println("Error showing pressure sensor info");
         }
-        return "";
-    }
-    
-    private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
+    }//GEN-LAST:event_pressureSensorMouseClicked
+
+    private void funPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
         try {
-            functionality = new Functionality(this, speedDrawing,true);
+            SpeedDrawing speedDrawing_aux = new SpeedDrawing(this);
+            speedDrawing_aux.setVisible(true);
+            speedDrawing_aux.setTitle("PREVIEW");
+            speedDrawing_aux.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            speedDrawing_aux.setResizable(false);
+            speedDrawing_aux.setLocation(500, 100);
+
+            functionality = new Functionality(this, speedDrawing_aux,false);
             functionalityList.add(functionality);
             functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("svg")){
-                functionalityExecuting = false;
-                funAction.setText("Wrong file");
-            }else{
-                functionalityExecuting = true;
-                funAction.setText("Functionality is executing... please wait");
-            }
-            
+            functionalityExecuting = true;
+            funAction.setText("Preview is executing...");
+
         } catch (Exception ex) {
             System.out.println("Error reading functionality file");
             funAction.setText("Error reading functionality file");
         }
-    }//GEN-LAST:event_funExecutionActionPerformed
+    }//GEN-LAST:event_funPreviewMouseClicked
 
     private void stopFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopFunActionPerformed
         try{
@@ -409,58 +469,49 @@ public class ControlFrame extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.println("Error on the stop of the functionality execution");
         }
-        
+
     }//GEN-LAST:event_stopFunActionPerformed
 
-    private void funPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
+    private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
         try {
-            SpeedDrawing speedDrawing_aux = new SpeedDrawing(this);
-            speedDrawing_aux.setVisible(true);
-            speedDrawing_aux.setTitle("PREVIEW");
-            speedDrawing_aux.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            speedDrawing_aux.setResizable(false);
-            speedDrawing_aux.setLocation(500, 100);
-            
-            functionality = new Functionality(this, speedDrawing_aux,false);
+            functionality = new Functionality(this, speedDrawing,true);
             functionalityList.add(functionality);
             functionality.start();
-            functionalityExecuting = true;
-            funAction.setText("Preview is executing...");
-            
+            if(!getFileExtension(funFile.getName()).equals("csv")){
+                functionalityExecuting = false;
+                funAction.setText("Wrong file");
+            }else{
+                functionalityExecuting = true;
+                funAction.setText("Functionality is executing... please wait");
+            }
+
         } catch (Exception ex) {
             System.out.println("Error reading functionality file");
             funAction.setText("Error reading functionality file");
         }
-    }//GEN-LAST:event_funPreviewMouseClicked
+    }//GEN-LAST:event_funExecutionActionPerformed
 
-    
-    
-    private void pressureSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pressureSensorMouseClicked
+    private void dragAndDropFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dragAndDropFunctionalityActionPerformed
         try {
-           Thread pressureThread = new Thread(() -> {
-                PressureSensor pressure = new PressureSensor(this);
-                pressure.setVisible(true);
-                pressure.setTitle("PRESSURE");
-                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                pressure.setResizable(false);
-                pressure.setLocation(800, 200);
-               try {
-                   pressure.run();
-               } catch (Exception e) {System.out.println("Error with the sensor");}
-            });
-            pressureThread.start();
-            
-        } catch (Exception ex) {
-            System.out.println("Error showing pressure sensor info");
+            funFile = null;
+            Principal principal = new Principal(this);
+            principal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            index.getFunFile(principal);
+            firstTime = true;
+        } catch (Exception e) {
+            System.out.println("Error adding functionality file");
+            e.printStackTrace();
         }
-    }//GEN-LAST:event_pressureSensorMouseClicked
+    }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
 
-    
+    private void pressureSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureSensorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pressureSensorActionPerformed
+
     
     public void run() throws InterruptedException{
-        
         int cant = server.clients.size();
-        enterFans(fanButtons,cant);
+        enterFans(fanButtons);
         setFansColor(cant,fanButtons);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
@@ -483,20 +534,44 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }
     
-    public void enterFans(List<Fan> fanBottons, int cant){   
-        cant = 1;
-        for (int i = 0; i < 6*cant; i++) {
-            JButton f = new JButton(""+i);
-            if (i%2!=0){ // impar --> primera columna
-                f.setBounds(50*(i%6), 200+i*50, 50, 50);  // x, y, width, height
-            }else{
-                f.setBounds(50*(i%6)+50, 200+i*50, 50, 50);  // x, y, width, height
+    private void enterFans(List<Fan> fanBottons) {
+        int buttonWidth = 50;
+        int buttonHeight = 50;
+        int verticalSpacing = 100;
+        int horizontalSpacing = 100;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int start = (i * cols + j) * 6 + 1;
+                int end = start + 5;
+                int hDist = 50, vDist = 225;
+
+                for (int k = start; k <= end; k++) {
+                    JButton f = new JButton("" + k);
+                    int xOffset = hDist+j * horizontalSpacing;
+                    int yOffset = vDist+i * (buttonHeight + verticalSpacing);
+
+                    if (k % 2 != 0) {
+                        f.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    } else {
+                        f.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    }
+                    this.add(f);
+                    fanBottons.add(new Fan(f));
+                    final int n = k-1;
+                    f.addActionListener((ActionEvent evt) -> {
+                        fanActionPerformed(evt, n);
+                    });
+                }
             }
-            
-            this.add(f);
-            fanBottons.add(new Fan(f));
         }
-            
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void fanActionPerformed(ActionEvent evt, int fanNumber){
+        activeFan = fanNumber;
+        fanControl(activeFan);
     }
         
     public void setFansColor(int cant, List<Fan> fanBottons){
@@ -505,6 +580,7 @@ public class ControlFrame extends javax.swing.JFrame {
             fanBottons.get(i).button.removeNotify();
             fanBottons.remove(i);
         }
+        System.out.println("La cantidad de clientes es: "+fanBottons.size());
         speedMessage = new int[fanBottons.size()];
         numActiveFans.setText(""+cant*6);
         for (int i = 0; i < 6*cant; i++) {
@@ -522,23 +598,21 @@ public class ControlFrame extends javax.swing.JFrame {
             fanButtons.get(i).selected = true;
             fanButtons.get(i).button.setBackground(Color.green);
         }
-        currentSpeed.setText(""+fanButtons.get(i).speed);
         speedSlider.setValue(fanButtons.get(i).speed);
         showSpeed.setText(""+speedSlider.getValue());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addFunctionality;
-    private javax.swing.JLabel currentSpeed;
+    private javax.swing.JButton browseFunctionality;
+    private javax.swing.JButton dragAndDropFunctionality;
     private javax.swing.JLabel executing;
     private javax.swing.JLabel funAction;
     private javax.swing.JButton funExecution;
     private javax.swing.JButton funPreview;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
@@ -555,6 +629,7 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;
     private javax.swing.JButton stopFun;
+    private javax.swing.JButton unselectAll;
     private javax.swing.JButton updateSpeed;
     // End of variables declaration//GEN-END:variables
     }

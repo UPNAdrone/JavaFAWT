@@ -2,6 +2,7 @@ package representation;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.JButton;
 import userInterface.ControlFrame;
 
 /**
@@ -21,7 +22,6 @@ public class SpeedDrawing extends javax.swing.JFrame {
     }
     
     public void run() throws InterruptedException{
-        
         while(true){
         }
     }
@@ -59,7 +59,7 @@ public class SpeedDrawing extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(200, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(184, 184, 184))
         );
@@ -70,16 +70,50 @@ public class SpeedDrawing extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(73, 73, 73)
                 .addComponent(jLabel2)
-                .addContainerGap(445, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    int a = 0, b = 75, dim;
-    
+    int a = 50; // Posición inicial para el dibujo, ajustable según necesites
+    int b = 75; // Espaciado entre los ventiladores
+
     @Override
     public void paint(Graphics g) {
+        if(control.speedDrawing != null){
+            super.paint(g);
+
+            int dim;
+            int verticalSpacing= 50,horizontalSpacing = 50; 
+            for (int i = 0; i < control.rows; i++) {
+                for (int j = 0; j < control.cols; j++) {
+                    int start = (i * control.cols + j) * 6 + 1;
+                    int end = start + 5;
+                    int hDist = 100, vDist = 100;
+                    int buttonHeight = 100;
+                    int buttonWidth = 100;
+
+                    for (int k = start; k <= end; k++) {
+                        int xOffset = hDist + j * horizontalSpacing;
+                        int yOffset = vDist + i * (buttonHeight + verticalSpacing);
+                        dim = (int) (control.speedMessage[k - 1] * 0.75);
+
+                        if (k % 2 != 0) {  // Ventilador impar
+                            g.setColor(Color.RED);
+                            g.fillOval(xOffset - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
+                        } else {  // Ventilador par
+                            g.setColor(Color.RED);
+                            g.fillOval(xOffset + buttonWidth - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        /*
         super.paint(g);
         int x1 = 1, x2 = 1, x3 = 1, x4 = 1, x5 = 1, x6 = 1;
         try{
@@ -119,7 +153,9 @@ public class SpeedDrawing extends javax.swing.JFrame {
                 }
             }
 
-        }catch(Exception e){}        
+        }catch(Exception e){}   
+        */
+      
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

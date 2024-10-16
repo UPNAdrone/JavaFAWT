@@ -111,12 +111,13 @@ public class PressureSensor extends javax.swing.JFrame {
             ps.dispose();
         }
         try {
-            Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
+            //Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
+            Socket socket = new Socket("192.168.1.190", 101);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             showPressure.add("----Conectado correctamente----");      
         } catch (Exception e) {
             System.err.println("No se pudo conectar al host: " + control.pressureSensorIP);
-        } 
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

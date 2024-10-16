@@ -112,8 +112,8 @@ public class NewPSensor extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmActionPerformed
 
     
-    public String sensorIP = null;
-    public int sensorPort = -1;
+    public String sensorIP = "192.168.1.190";
+    public int sensorPort = 101;
     public boolean finished = false;
     
     public void run() throws InterruptedException {
