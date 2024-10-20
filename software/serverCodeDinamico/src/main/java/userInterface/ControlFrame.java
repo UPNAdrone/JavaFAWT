@@ -101,10 +101,9 @@ public class ControlFrame extends javax.swing.JFrame {
         speedSlider = new javax.swing.JSlider();
         showSpeed = new javax.swing.JLabel();
         updateSpeed = new javax.swing.JButton();
-        selectedFan = new javax.swing.JLabel();
-        numActiveFans = new javax.swing.JLabel();
         browseFunctionality = new javax.swing.JButton();
         dragAndDropFunctionality = new javax.swing.JButton();
+        selectAll = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -141,7 +140,7 @@ public class ControlFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("FANS SCHEMA");
 
-        unselectAll.setBackground(new java.awt.Color(102, 255, 255));
+        unselectAll.setBackground(new java.awt.Color(255, 204, 204));
         unselectAll.setText("Unselect All");
         unselectAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,13 +171,8 @@ public class ControlFrame extends javax.swing.JFrame {
             }
         });
 
-        pressureSensor.setBackground(new java.awt.Color(255, 153, 153));
+        pressureSensor.setBackground(new java.awt.Color(102, 255, 255));
         pressureSensor.setText("Show Pressure");
-        pressureSensor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pressureSensorMouseClicked(evt);
-            }
-        });
         pressureSensor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pressureSensorActionPerformed(evt);
@@ -210,12 +204,6 @@ public class ControlFrame extends javax.swing.JFrame {
             }
         });
 
-        selectedFan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        selectedFan.setText("Selected fan");
-
-        numActiveFans.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        numActiveFans.setText("x fans");
-
         browseFunctionality.setText("Browse");
         browseFunctionality.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,87 +225,83 @@ public class ControlFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(updateSpeed)
-                        .addGap(29, 29, 29)
-                        .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(dragAndDropFunctionality)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(browseFunctionality)
-                                .addGap(0, 40, Short.MAX_VALUE))
+                                .addGap(16, 16, 16)
+                                .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(funAction, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(61, 61, 61))))
+                                .addGap(27, 27, 27)
+                                .addComponent(updateSpeed)
+                                .addGap(29, 29, 29)
+                                .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(funAction, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(dragAndDropFunctionality)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(browseFunctionality)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)))
+                        .addGap(167, 167, 167)
+                        .addComponent(pressureSensor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
-                        .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(stopFun)))
-                        .addGap(70, 70, 70)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pressureSensor)
-                            .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addComponent(stopFun)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(selectedFan)
-                                .addGap(13, 13, 13)))
+                        .addGap(28, 28, 28)
+                        .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(stopFun))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(numActiveFans)
-                                    .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addComponent(stopFun))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(pressureSensor))))
+                                    .addComponent(updateSpeed)
+                                    .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(dragAndDropFunctionality)
                                     .addComponent(browseFunctionality))
-                                .addGap(24, 24, 24)
-                                .addComponent(funAction))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(updateSpeed)
-                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(funAction)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pressureSensor)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        selectAll.setBackground(new java.awt.Color(153, 255, 153));
+        selectAll.setText("Select All");
+        selectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -325,16 +309,18 @@ public class ControlFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(stopAllFans)
-                .addGap(39, 39, 39)
+                .addGap(31, 31, 31)
                 .addComponent(unselectAll)
-                .addGap(398, 398, 398))
+                .addGap(26, 26, 26)
+                .addComponent(selectAll)
+                .addGap(284, 284, 284))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,12 +330,13 @@ public class ControlFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(stopAllFans)
-                    .addComponent(unselectAll))
+                    .addComponent(unselectAll)
+                    .addComponent(selectAll))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(executing)
-                .addGap(339, 339, 339))
+                .addGap(231, 231, 231))
         );
 
         pack();
@@ -418,26 +405,6 @@ public class ControlFrame extends javax.swing.JFrame {
         showSpeed.setText(""+speedSlider.getValue());
     }//GEN-LAST:event_speedSliderStateChanged
 
-    private void pressureSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pressureSensorMouseClicked
-        try {
-            Thread pressureThread = new Thread(() -> {
-                PressureSensor pressure = new PressureSensor(this);
-                pressure.setVisible(true);
-                pressure.setTitle("PRESSURE");
-                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                pressure.setResizable(false);
-                pressure.setLocation(800, 200);
-                try {
-                    pressure.run();
-                } catch (Exception e) {System.out.println("Error with the sensor");}
-            });
-            pressureThread.start();
-
-        } catch (Exception ex) {
-            System.out.println("Error showing pressure sensor info");
-        }
-    }//GEN-LAST:event_pressureSensorMouseClicked
-
     private void funPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
         try {
             SpeedDrawing speedDrawing_aux = new SpeedDrawing(this);
@@ -505,8 +472,31 @@ public class ControlFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
 
     private void pressureSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureSensorActionPerformed
-        // TODO add your handling code here:
+        try {
+            Thread pressureThread = new Thread(() -> {
+                PressureSensor pressure = new PressureSensor(this);
+                pressure.setVisible(true);
+                pressure.setTitle("PRESSURE");
+                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                pressure.setResizable(false);
+                pressure.setLocation(800, 200);
+                try {
+                    pressure.run();
+                } catch (Exception e) {System.out.println("Error with the sensor");}
+            });
+            pressureThread.start();
+
+        } catch (Exception ex) {
+            System.out.println("Error showing pressure sensor info");
+        }
     }//GEN-LAST:event_pressureSensorActionPerformed
+
+    private void selectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllActionPerformed
+        for (Fan f : fanButtons) {
+            f.selected = true;
+            f.button.setBackground(Color.green);
+        }
+    }//GEN-LAST:event_selectAllActionPerformed
 
     
     public void run() throws InterruptedException{
@@ -539,12 +529,12 @@ public class ControlFrame extends javax.swing.JFrame {
         int buttonHeight = 50;
         int verticalSpacing = 100;
         int horizontalSpacing = 100;
+        int hDist = 50, vDist = 225;
         
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 int start = (i * cols + j) * 6 + 1;
                 int end = start + 5;
-                int hDist = 50, vDist = 225;
 
                 for (int k = start; k <= end; k++) {
                     JButton f = new JButton("" + k);
@@ -582,7 +572,6 @@ public class ControlFrame extends javax.swing.JFrame {
         }
         System.out.println("La cantidad de clientes es: "+fanBottons.size());
         speedMessage = new int[fanBottons.size()];
-        numActiveFans.setText(""+cant*6);
         for (int i = 0; i < 6*cant; i++) {
             fanBottons.get(i).button.setBackground(Color.white);
             speedMessage[i] = 0;
@@ -590,7 +579,6 @@ public class ControlFrame extends javax.swing.JFrame {
     }
     
     public void fanControl(int i){
-        selectedFan.setText("Fan "+(i+1)+" info");
         if (fanButtons.get(i).selected){
             fanButtons.get(i).selected = false;
             fanButtons.get(i).button.setBackground(Color.white);
@@ -622,9 +610,8 @@ public class ControlFrame extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
     private java.awt.MenuBar menuBar3;
-    private javax.swing.JLabel numActiveFans;
     private javax.swing.JButton pressureSensor;
-    private javax.swing.JLabel selectedFan;
+    private javax.swing.JButton selectAll;
     private javax.swing.JLabel showSpeed;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;

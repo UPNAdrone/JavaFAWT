@@ -75,88 +75,42 @@ public class SpeedDrawing extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    int a = 50; // Posición inicial para el dibujo, ajustable según necesites
-    int b = 75; // Espaciado entre los ventiladores
 
     @Override
     public void paint(Graphics g) {
-        if(control.speedDrawing != null){
+        if (control.speedMessage != null) {
             super.paint(g);
+            g.setColor(Color.RED);
 
             int dim;
-            int verticalSpacing= 50,horizontalSpacing = 50; 
+            int verticalSpacing = 120, horizontalSpacing = 120;
+            int hDist = 75, vDist = 75;
+            int buttonHeight = 60, buttonWidth = 60;
+
             for (int i = 0; i < control.rows; i++) {
                 for (int j = 0; j < control.cols; j++) {
                     int start = (i * control.cols + j) * 6 + 1;
                     int end = start + 5;
-                    int hDist = 100, vDist = 100;
-                    int buttonHeight = 100;
-                    int buttonWidth = 100;
 
                     for (int k = start; k <= end; k++) {
-                        int xOffset = hDist + j * horizontalSpacing;
-                        int yOffset = vDist + i * (buttonHeight + verticalSpacing);
-                        dim = (int) (control.speedMessage[k - 1] * 0.75);
-
-                        if (k % 2 != 0) {  // Ventilador impar
-                            g.setColor(Color.RED);
-                            g.fillOval(xOffset - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
-                        } else {  // Ventilador par
-                            g.setColor(Color.RED);
-                            g.fillOval(xOffset + buttonWidth - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
+                        if(k <= control.server.clients.size()*6){
+                            int xOffset = hDist + j * (horizontalSpacing);
+                            int yOffset = vDist + i * (verticalSpacing + buttonHeight);
+                            dim = (int) (control.speedMessage[k - 1] * 0.6);
+                            
+                            // Lógica de ventiladores impares y pares
+                            if (k % 2 != 0) {  // Ventilador impar
+                                g.fillOval(xOffset-dim/2, yOffset + ((k - start) / 2) * buttonHeight-dim/2, dim, dim);
+                            } else {  // Ventilador par
+                                g.fillOval(xOffset + buttonWidth-dim/2, yOffset + ((k - start) / 2) * buttonHeight-dim/2, dim, dim);
+                            }
                         }
                     }
                 }
             }
-
         }
-
-
-        /*
-        super.paint(g);
-        int x1 = 1, x2 = 1, x3 = 1, x4 = 1, x5 = 1, x6 = 1;
-        try{
-            for (int i = 1; i <= control.speedMessage.length; i++) {
-                dim = (int) ((control.speedMessage[i-1])*0.75);
-                switch (i) {
-                    case 1, 2, 7, 8 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x1*b)-dim/2, (a+1*b)-dim/2, dim, dim);
-                        x1++;
-                    }
-                    case 3, 4, 9, 10 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x2*b)-dim/2, (a+2*b)-dim/2, dim, dim);
-                        x2++;
-                    }
-                    case 5, 6, 11, 12 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x3*b)-dim/2, (a+3*b)-dim/2, dim, dim);
-                        x3++;
-                    }
-                    case 13, 14, 19, 20 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x4*b)-dim/2, (a+4*b)-dim/2, dim, dim);
-                        x4++;
-                    }
-                    case 15, 16, 21, 22 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x5*b)-dim/2, (a+5*b)-dim/2, dim, dim);
-                        x5++;
-                    }
-                    case 17, 18, 23, 24 -> {
-                        g.setColor(Color.RED);
-                        g.fillOval((a+x6*b)-dim/2, (a+6*b)-dim/2, dim, dim);
-                        x6++;
-                    }
-                }
-            }
-
-        }catch(Exception e){}   
-        */
-      
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
