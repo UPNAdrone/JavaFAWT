@@ -40,18 +40,8 @@ public class NewPSensor extends javax.swing.JFrame {
         jLabel2.setText("Input Sensor Port");
 
         sIP.setText("192.168.1.190");
-        sIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sIPActionPerformed(evt);
-            }
-        });
 
         sPort.setText("101");
-        sPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sPortActionPerformed(evt);
-            }
-        });
 
         confirm.setText("Confirm");
         confirm.addActionListener(new java.awt.event.ActionListener() {
@@ -97,17 +87,14 @@ public class NewPSensor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sIPActionPerformed
-        sensorIP = sIP.getText();
-    }//GEN-LAST:event_sIPActionPerformed
-
-    private void sPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sPortActionPerformed
-        sensorPort = Integer.parseInt(sPort.getText());
-    }//GEN-LAST:event_sPortActionPerformed
-
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
-        control.pressureSensorIP = sensorIP;
-        control.pressureSensorPort = sensorPort;
+        try{
+            control.pressureSensorIP = sIP.getText();
+            control.pressureSensorPort = Integer.parseInt(sPort.getText());
+        }catch(Exception e){
+            control.pressureSensorIP = sensorIP;
+            control.pressureSensorPort = sensorPort;
+        }
         finished = true;
     }//GEN-LAST:event_confirmActionPerformed
 

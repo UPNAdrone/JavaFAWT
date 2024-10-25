@@ -36,7 +36,7 @@ public class ControlFrame extends javax.swing.JFrame {
     public List<Functionality> functionalityList = new LinkedList<>();
     public int[] speedMessage;
     public SpeedDrawing speedDrawing;
-    public boolean functionalityExecuting = false;
+    public boolean functionalityExecuting = false, pressureSensorConected = false;
     
     public File funFile = null;
     public Index index = new Index();
@@ -59,7 +59,7 @@ public class ControlFrame extends javax.swing.JFrame {
         this.server = server;
         openFileChooser = new JFileChooser();
         openFileChooser.setCurrentDirectory(new File("../../functionalities"));
-        openFileChooser.setFileFilter(new FileNameExtensionFilter("CSV","csv"));
+        openFileChooser.setFileFilter(new FileNameExtensionFilter("SVG","svg"));
         this.rows = rows;
         this.cols = cols;
     }
@@ -413,6 +413,7 @@ public class ControlFrame extends javax.swing.JFrame {
             speedDrawing_aux.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             speedDrawing_aux.setResizable(false);
             speedDrawing_aux.setLocation(500, 100);
+            speedDrawing_aux.setSize(75+120*cols,75+185*rows);
 
             functionality = new Functionality(this, speedDrawing_aux,false);
             functionalityList.add(functionality);
@@ -444,7 +445,7 @@ public class ControlFrame extends javax.swing.JFrame {
             functionality = new Functionality(this, speedDrawing,true);
             functionalityList.add(functionality);
             functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("csv")){
+            if(!getFileExtension(funFile.getName()).equals("svg")){
                 functionalityExecuting = false;
                 funAction.setText("Wrong file");
             }else{

@@ -91,10 +91,7 @@ public class PressureSensor extends javax.swing.JFrame {
 
         while (true) {
             int bytesRead = in.read(packet, 0, packet.length);
-            if (bytesRead == -1) {
-                break;
-            }
-
+            if (bytesRead == -1) { break; }
             try {
                 PacketData parsedData = parsePacket(packet);
                 System.out.printf("[%s]\n", parsedData.timestamp.toString());
@@ -111,7 +108,7 @@ public class PressureSensor extends javax.swing.JFrame {
     }
 
     public void connectPressureServer() throws InterruptedException {
-        if (control.pressureSensorIP == null || control.pressureSensorPort == -1) {
+        if (control.pressureSensorIP == null || control.pressureSensorPort == -1 || !control.pressureSensorConected) {
             NewPSensor ps = new NewPSensor(control);
             ps.run();
             ps.dispose();
@@ -122,9 +119,11 @@ public class PressureSensor extends javax.swing.JFrame {
             in = socket.getInputStream();
             showPressure.add("----Conectado correctamente----");
             System.out.println("Se conecto al socket "+socket);
+            System.err.println("CONECTADO al host: "+control.pressureSensorIP+":"+control.pressureSensorPort+"----");
+            control.pressureSensorConected = true;
         } catch (IOException e) {
-            System.out.println("No se pudo conectar al host");
-            System.err.println("----No se pudo conectar al host: " + control.pressureSensorIP+"----");
+            showPressure.add("----No se pudo conectar al host: "+control.pressureSensorIP+":"+control.pressureSensorPort+"----");
+            System.err.println("----No se pudo conectar al host: "+control.pressureSensorIP+":"+control.pressureSensorPort+"----");
         }
     }
 

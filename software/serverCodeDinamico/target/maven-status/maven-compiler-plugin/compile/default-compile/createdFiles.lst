@@ -25,9 +25,7 @@ connection\AcceptClient.class
 functionality\Index.class
 connection\InterfaceServer.class
 functionality\Principal.class
-representation\NewPSensor$2.class
 userInterface\ControlFrame$2.class
 representation\NewPSensor.class
 userInterface\ControlFrame$5.class
-representation\NewPSensor$3.class
 representation\Fan.class

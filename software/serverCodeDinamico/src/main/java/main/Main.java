@@ -53,15 +53,15 @@ public class Main {
         control.setResizable(false);
         control.setLocation(500, 100);
         int w = 50+(50*2*connection.cols)+75;
-        if (w < 640){
-            w = 640;
+        if (w < 660){
+            w = 660;
         }
         int h = 225+(50*3*connection.rows)+75;
         if (h < 220){
             h = 580;
         }
         control.setSize(w,h);
-        speedDrawing.setSize(75+130*connection.cols,75+180*connection.rows);
+        speedDrawing.setSize(75+120*connection.cols,75+185*connection.rows);
         
         speedDrawing.setVisible(true);
         speedDrawing.setTitle("SPEED SCHEMA");
