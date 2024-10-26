@@ -481,6 +481,7 @@ public class ControlFrame extends javax.swing.JFrame {
                 pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 pressure.setResizable(false);
                 pressure.setLocation(800, 200);
+                pressure.setSize(640, 370);
                 try {
                     pressure.run();
                 } catch (Exception e) {System.out.println("Error with the sensor");}

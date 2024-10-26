@@ -39,7 +39,7 @@ public class NewPSensor extends javax.swing.JFrame {
 
         jLabel2.setText("Input Sensor Port");
 
-        sIP.setText("192.168.1.190");
+        sIP.setText("192.168.2.190");
 
         sPort.setText("101");
 
@@ -99,7 +99,7 @@ public class NewPSensor extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmActionPerformed
 
     
-    public String sensorIP = "192.168.1.190";
+    public String sensorIP = "192.168.2.190";
     public int sensorPort = 101;
     public boolean finished = false;
     
