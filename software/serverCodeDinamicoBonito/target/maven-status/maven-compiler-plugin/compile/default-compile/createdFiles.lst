@@ -24,6 +24,7 @@ userInterface\ControlFrame$7.class
 connection\AcceptClient.class
 functionality\Index.class
 connection\InterfaceServer.class
+userInterface\ControlFrame$12.class
 functionality\Principal.class
 userInterface\ControlFrame$2.class
 representation\NewPSensor.class
