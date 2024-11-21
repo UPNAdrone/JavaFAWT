@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import connection.InterfaceServer;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,7 @@ public class ControlFrame extends javax.swing.JFrame {
      * @param cols
      */
     public ControlFrame(InterfaceServer server, int rows, int cols) {
+        
         initComponents();
         this.server = server;
         openFileChooser = new JFileChooser();
@@ -77,7 +79,8 @@ public class ControlFrame extends javax.swing.JFrame {
                 }
             }
         });
-        //setSize();
+        
+        setSizesForScroll();       
     }
 
     /**
@@ -100,6 +103,16 @@ public class ControlFrame extends javax.swing.JFrame {
         menu6 = new java.awt.Menu();
         jLabel2 = new javax.swing.JLabel();
         executing = new javax.swing.JLabel();
+        fanScrollPane = new javax.swing.JScrollPane();
+        fanPanel = new javax.swing.JPanel();
+        jToolBar2 = new javax.swing.JToolBar();
+        selectAll = new javax.swing.JButton();
+        unselectAll = new javax.swing.JButton();
+        speedSlider = new javax.swing.JSlider();
+        showSpeed = new javax.swing.JLabel();
+        updateSpeed = new javax.swing.JButton();
+        stopAllFans = new javax.swing.JButton();
+        speedScrollPane = new javax.swing.JScrollPane();
         speedPanel = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -110,17 +123,10 @@ public class ControlFrame extends javax.swing.JFrame {
         stopFun = new javax.swing.JButton();
         funAction = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        preassureScrollPane = new javax.swing.JScrollPane();
         preassurePanel = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         pressureSensor = new javax.swing.JButton();
-        fanPanel = new javax.swing.JPanel();
-        jToolBar2 = new javax.swing.JToolBar();
-        selectAll = new javax.swing.JButton();
-        unselectAll = new javax.swing.JButton();
-        speedSlider = new javax.swing.JSlider();
-        showSpeed = new javax.swing.JLabel();
-        updateSpeed = new javax.swing.JButton();
-        stopAllFans = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -144,111 +150,6 @@ public class ControlFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 153));
-
-        jPanel4.setBackground(new java.awt.Color(255, 204, 255));
-
-        jToolBar1.setRollover(true);
-
-        dragAndDropFunctionality.setText("Drag and Drop");
-        dragAndDropFunctionality.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dragAndDropFunctionalityActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(dragAndDropFunctionality);
-
-        browseFunctionality.setText("Browse");
-        browseFunctionality.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browseFunctionalityActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(browseFunctionality);
-
-        funPreview.setText("Execute Preview");
-        funPreview.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                funPreviewMouseClicked(evt);
-            }
-        });
-        jToolBar1.add(funPreview);
-
-        funExecution.setText("Execute Functionality");
-        funExecution.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                funExecutionActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(funExecution);
-
-        stopFun.setText("Stop Execution");
-        stopFun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopFunActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(stopFun);
-
-        funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        funAction.setText("functionality info");
-        funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToolBar1.add(funAction);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 245, Short.MAX_VALUE))
-        );
-
-        speedPanel.addTab("Fans speed schema", jPanel4);
-
-        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 295, Short.MAX_VALUE)
-        );
-
-        speedPanel.addTab("Preview", jPanel5);
-
-        preassurePanel.setBackground(new java.awt.Color(204, 255, 204));
-
-        jToolBar3.setRollover(true);
-
-        pressureSensor.setBackground(new java.awt.Color(102, 255, 255));
-        pressureSensor.setText("Show Pressure");
-        pressureSensor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pressureSensorActionPerformed(evt);
-            }
-        });
-        jToolBar3.add(pressureSensor);
-
-        javax.swing.GroupLayout preassurePanelLayout = new javax.swing.GroupLayout(preassurePanel);
-        preassurePanel.setLayout(preassurePanelLayout);
-        preassurePanelLayout.setHorizontalGroup(
-            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-        );
-        preassurePanelLayout.setVerticalGroup(
-            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(preassurePanelLayout.createSequentialGroup()
-                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 655, Short.MAX_VALUE))
-        );
 
         fanPanel.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -311,26 +212,136 @@ public class ControlFrame extends javax.swing.JFrame {
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 23, Short.MAX_VALUE))
         );
         fanPanelLayout.setVerticalGroup(
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 304, Short.MAX_VALUE))
+                .addGap(0, 335, Short.MAX_VALUE))
         );
+
+        fanScrollPane.setViewportView(fanPanel);
+
+        jPanel4.setBackground(new java.awt.Color(255, 204, 255));
+
+        jToolBar1.setRollover(true);
+
+        dragAndDropFunctionality.setText("Drag and Drop");
+        dragAndDropFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dragAndDropFunctionalityActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(dragAndDropFunctionality);
+
+        browseFunctionality.setText("Browse");
+        browseFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseFunctionalityActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(browseFunctionality);
+
+        funPreview.setText("Execute Preview");
+        funPreview.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                funPreviewMouseClicked(evt);
+            }
+        });
+        jToolBar1.add(funPreview);
+
+        funExecution.setText("Execute Functionality");
+        funExecution.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                funExecutionActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(funExecution);
+
+        stopFun.setText("Stop Execution");
+        stopFun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopFunActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(stopFun);
+
+        funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        funAction.setText("functionality info");
+        funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToolBar1.add(funAction);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 276, Short.MAX_VALUE))
+        );
+
+        speedPanel.addTab("Fans speed schema", jPanel4);
+
+        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 552, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 323, Short.MAX_VALUE)
+        );
+
+        speedPanel.addTab("Preview", jPanel5);
+
+        speedScrollPane.setViewportView(speedPanel);
+
+        preassurePanel.setBackground(new java.awt.Color(204, 255, 204));
+
+        jToolBar3.setRollover(true);
+
+        pressureSensor.setBackground(new java.awt.Color(102, 255, 255));
+        pressureSensor.setText("Show Pressure");
+        pressureSensor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pressureSensorActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(pressureSensor);
+
+        javax.swing.GroupLayout preassurePanelLayout = new javax.swing.GroupLayout(preassurePanel);
+        preassurePanel.setLayout(preassurePanelLayout);
+        preassurePanelLayout.setHorizontalGroup(
+            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+        );
+        preassurePanelLayout.setVerticalGroup(
+            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(preassurePanelLayout.createSequentialGroup()
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 708, Short.MAX_VALUE))
+        );
+
+        preassureScrollPane.setViewportView(preassurePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fanPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fanScrollPane)
+                    .addComponent(speedScrollPane))
+                .addGap(18, 18, 18)
+                .addComponent(preassureScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(289, 289, 289))
@@ -338,18 +349,17 @@ public class ControlFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(702, Short.MAX_VALUE)
+                .addContainerGap(731, Short.MAX_VALUE)
                 .addComponent(executing)
                 .addGap(23, 23, 23))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(fanPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(speedScrollPane)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(preassureScrollPane)
+                .addContainerGap())
         );
 
         pack();
@@ -363,25 +373,23 @@ public class ControlFrame extends javax.swing.JFrame {
         return "";
     }
     
-    public void setSize(){
-        int w = 50+(50*2*cols)+75;
+    public void setSizesForScroll(){
+        fanScrollPane.setPreferredSize(new Dimension(400,400));
+        int w = (50*2*cols)+50;
         if (w < 660){
             w = 660;
         }
-        int h = 50+(50*3*rows)+75;
+        int h = (50*3*rows)+50;
         if (h < 220){
             h = 580;
         }
-        //fanPanel.setSize(w,h);
-        //fanScrollPanel.setSize(w,h);
-        
-        //fanScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //fanScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        
-        //speedPanel.setSize(50+120*cols,50+185*rows);
-        
+        fanPanel.setPreferredSize(new Dimension(w,h));
 
-
+        speedScrollPane.setPreferredSize(new Dimension(400,400));
+        speedPanel.setPreferredSize(new Dimension(75+120*cols,75+185*rows));
+        
+        preassureScrollPane.setPreferredSize(new Dimension(500,100));
+        preassurePanel.setPreferredSize(new Dimension(500,100));
     }
     
     private void browseFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFunctionalityActionPerformed
@@ -668,6 +676,7 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JButton dragAndDropFunctionality;
     private javax.swing.JLabel executing;
     private javax.swing.JPanel fanPanel;
+    private javax.swing.JScrollPane fanScrollPane;
     private javax.swing.JLabel funAction;
     private javax.swing.JButton funExecution;
     private javax.swing.JButton funPreview;
@@ -687,10 +696,12 @@ public class ControlFrame extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar2;
     private java.awt.MenuBar menuBar3;
     private javax.swing.JPanel preassurePanel;
+    private javax.swing.JScrollPane preassureScrollPane;
     private javax.swing.JButton pressureSensor;
     private javax.swing.JButton selectAll;
     private javax.swing.JLabel showSpeed;
     private javax.swing.JTabbedPane speedPanel;
+    private javax.swing.JScrollPane speedScrollPane;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;
     private javax.swing.JButton stopFun;

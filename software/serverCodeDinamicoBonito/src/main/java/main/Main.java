@@ -2,7 +2,6 @@ package main;
 
 import javax.swing.JFrame;
 import connection.InterfaceServer;
-import representation.SpeedDrawing;
 import userInterface.ConectionFrame;
 import userInterface.ControlFrame;
 import userInterface.PortFrame;
