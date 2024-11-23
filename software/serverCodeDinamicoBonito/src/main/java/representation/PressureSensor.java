@@ -103,7 +103,7 @@ public class PressureSensor extends javax.swing.JFrame {
      * @throws IOException
      */
     public void run() throws InterruptedException, IOException {
-        connectPressureServer();
+        //connectPressureServer();
         byte[] packet = new byte[75]; // Buffer para almacenar el paquete recibido
         
         createIncrementalFile(directoryPath);

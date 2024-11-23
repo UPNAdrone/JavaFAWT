@@ -19,10 +19,14 @@ import java.awt.event.MouseEvent;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -80,7 +84,7 @@ public class ControlFrame extends javax.swing.JFrame {
             }
         });
         
-        setSizesForScroll();       
+        setSizesForScroll();     
     }
 
     /**
@@ -123,10 +127,11 @@ public class ControlFrame extends javax.swing.JFrame {
         stopFun = new javax.swing.JButton();
         funAction = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        preassureScrollPane = new javax.swing.JScrollPane();
         preassurePanel = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         pressureSensor = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        preassureList = new javax.swing.JList<>();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -212,13 +217,13 @@ public class ControlFrame extends javax.swing.JFrame {
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addGap(0, 169, Short.MAX_VALUE))
         );
         fanPanelLayout.setVerticalGroup(
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 335, Short.MAX_VALUE))
+                .addGap(0, 353, Short.MAX_VALUE))
         );
 
         fanScrollPane.setViewportView(fanPanel);
@@ -282,7 +287,7 @@ public class ControlFrame extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 276, Short.MAX_VALUE))
+                .addGap(0, 449, Short.MAX_VALUE))
         );
 
         speedPanel.addTab("Fans speed schema", jPanel4);
@@ -293,11 +298,11 @@ public class ControlFrame extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+            .addGap(0, 688, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 323, Short.MAX_VALUE)
+            .addGap(0, 496, Short.MAX_VALUE)
         );
 
         speedPanel.addTab("Preview", jPanel5);
@@ -317,20 +322,32 @@ public class ControlFrame extends javax.swing.JFrame {
         });
         jToolBar3.add(pressureSensor);
 
+        preassureList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        preassureList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(preassureList);
+
         javax.swing.GroupLayout preassurePanelLayout = new javax.swing.GroupLayout(preassurePanel);
         preassurePanel.setLayout(preassurePanelLayout);
         preassurePanelLayout.setHorizontalGroup(
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+            .addGroup(preassurePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         preassurePanelLayout.setVerticalGroup(
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(preassurePanelLayout.createSequentialGroup()
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 708, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 247, Short.MAX_VALUE))
         );
-
-        preassureScrollPane.setViewportView(preassurePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -338,28 +355,30 @@ public class ControlFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fanScrollPane)
-                    .addComponent(speedScrollPane))
-                .addGap(18, 18, 18)
-                .addComponent(preassureScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(speedScrollPane)
+                    .addComponent(fanScrollPane))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(289, 289, 289))
+                .addGap(347, 347, 347))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(731, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(executing)
-                .addGap(23, 23, 23))
+                .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(speedScrollPane)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(preassureScrollPane)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -374,23 +393,62 @@ public class ControlFrame extends javax.swing.JFrame {
     }
     
     public void setSizesForScroll(){
-        fanScrollPane.setPreferredSize(new Dimension(400,400));
+        fanScrollPane.setPreferredSize(new Dimension(700,400));
         int w = (50*2*cols)+50;
-        if (w < 660){
+        if (w < 700){
             w = 660;
         }
-        int h = (50*3*rows)+50;
-        if (h < 220){
+        int h = (50*3*rows)+150;
+        if (h < 350){
             h = 580;
         }
         fanPanel.setPreferredSize(new Dimension(w,h));
 
-        speedScrollPane.setPreferredSize(new Dimension(400,400));
-        speedPanel.setPreferredSize(new Dimension(75+120*cols,75+185*rows));
+        w = 75+120*cols;
+        if (w < 700){
+            w = 660;
+        }
+        h = 75+185*rows;
+        if (h < 350){
+            h = 580;
+        }
+        speedScrollPane.setPreferredSize(new Dimension(700,400));
+        speedPanel.setPreferredSize(new Dimension(w,h));
         
-        preassureScrollPane.setPreferredSize(new Dimension(500,100));
-        preassurePanel.setPreferredSize(new Dimension(500,100));
+        preassurePanel.setPreferredSize(new Dimension(666,850));
     }
+    
+    DefaultListModel<String> listModel = new DefaultListModel<>();
+    public void setPreassureLabels() {
+        preassurePanel.setLayout(null); // Usar layout absoluto para posicionar los JLabel
+
+        int x = 150, y = 30, w = 100, h = 20;
+        JLabel time = new JLabel("Timestamp:");
+        time.setBounds(730, 20, w, h);
+        preassurePanel.add(time);
+        listModel.addElement(time.getText());
+
+        ArrayList<JLabel> sensors = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 16; j++) {
+                JLabel l = new JLabel("Sensor " + count + ":");
+                l.setBounds(730 + i * x, 50 + j * y, w, h);
+                sensors.add(l);
+                preassurePanel.add(l);
+                // Agregar el texto del JLabel al modelo de la lista
+                listModel.addElement(l.getText());
+                count++;
+            }
+        }
+        listModel.setElementAt("Sensor Modificado", 3); // Índice es la posición del elemento
+
+        preassureList.setModel(listModel);
+
+        preassurePanel.revalidate();
+        preassurePanel.repaint();
+    }
+
     
     private void browseFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFunctionalityActionPerformed
         int returnValue = openFileChooser.showOpenDialog(this);
@@ -469,6 +527,8 @@ public class ControlFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
 
     private void pressureSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureSensorActionPerformed
+        //jList1.getV
+        
         try {
             Thread pressureThread = new Thread(() -> {
                 PressureSensor pressure = new PressureSensor(this);
@@ -542,6 +602,7 @@ public class ControlFrame extends javax.swing.JFrame {
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
         stopFun.setEnabled(false);
+        setPreassureLabels();
         while(true){
             Thread.sleep(50);
             if(funAction.getText().equals("No functionality executing")){
@@ -683,6 +744,7 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
@@ -695,8 +757,8 @@ public class ControlFrame extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
     private java.awt.MenuBar menuBar3;
+    private javax.swing.JList<String> preassureList;
     private javax.swing.JPanel preassurePanel;
-    private javax.swing.JScrollPane preassureScrollPane;
     private javax.swing.JButton pressureSensor;
     private javax.swing.JButton selectAll;
     private javax.swing.JLabel showSpeed;

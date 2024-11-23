@@ -48,6 +48,7 @@ public class Main {
         control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         control.setResizable(false);
         control.setLocation(0, 0);
+        control.setSize(1000, 770);
         
         Thread controlThread = new Thread(() -> {
             control.setVisible(true); 
