@@ -10,6 +10,7 @@ userInterface\ControlFrame$6.class
 userInterface\ControlFrame.class
 main\Main.class
 representation\PressureSensor.class
+userInterface\ControlFrame$14.class
 userInterface\PortFrame$1.class
 userInterface\ControlFrame$9.class
 userInterface\ControlFrame$4.class
@@ -28,4 +29,5 @@ functionality\Principal.class
 userInterface\ControlFrame$2.class
 representation\NewPSensor.class
 userInterface\ControlFrame$5.class
+userInterface\ControlFrame$13.class
 representation\Fan.class

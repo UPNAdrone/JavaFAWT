@@ -24,19 +24,26 @@ public class Functionality extends Thread{
             String line;
             while ((line = reader.readLine()) != null) {
                 String info[] = line.split(",");
-                for (int i = 1; (i < control.speedMessage.length+1) && (i < info.length); i++) {
-                    control.speedMessage[i-1] = Integer.parseInt(info[i]);
-                }
                 if(realExec){
+                    for (int i = 1; (i < control.speedMessage.length+1) && (i < info.length); i++) {
+                        control.speedMessage[i-1] = Integer.parseInt(info[i]);
+                    }
                     control.server.updateSpeed(control.speedMessage);
+                    Thread.sleep(Integer.parseInt(info[0]));
+                } else{
+                    for (int i = 1; (i < control.speedMessagePrev.length+1) && (i < info.length); i++) {
+                        control.speedMessagePrev[i-1] = Integer.parseInt(info[i]);
+                    }                    
+                    Thread.sleep(Integer.parseInt(info[0]));
                 }
                 control.updateDrawing();
-                Thread.sleep(Integer.parseInt(info[0]));
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Functionality interrupted");
         }
+        
+        
         if(!realExec){
             //speedDrawing.dispose();
         }

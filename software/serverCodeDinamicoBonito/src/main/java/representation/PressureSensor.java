@@ -103,38 +103,22 @@ public class PressureSensor extends javax.swing.JFrame {
      * @throws IOException
      */
     public void run() throws InterruptedException, IOException {
-        //connectPressureServer();
+        connectPressureServer();
         byte[] packet = new byte[75]; // Buffer para almacenar el paquete recibido
         
         createIncrementalFile(directoryPath);
-        int x = 150,y=30,w=100,h=20;
-        JLabel time = new JLabel("Timestap:");
-        time.setBounds(20, 55, w, h);
-        this.add(time);
-        ArrayList<JLabel> sensors = new ArrayList<>();
-        int count = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 8; j++) {
-                JLabel l = new JLabel("Sensor "+count+":");
-                l.setBounds(20+i*x, 85+j*y, w, h);
-                sensors.add(l);
-                this.add(l);
-                count++;
-            }
-        }
-
         while (true) {
             int bytesRead = in.read(packet, 0, packet.length);
             if (bytesRead == -1) { break; }
             try {
                 PacketData parsedData = parsePacket(packet);
                 String t = parsedData.timestamp.toString();
-                time.setText("Timestap: "+t);
+                control.sensorsListModel.setElementAt("Timestap: "+t, 0);
                 System.out.printf(t+"\n");
                 writeLine(t+"\n");
                 String s = "";
-                for (int i = 0; i < parsedData.pressures.length; i++) {
-                    sensors.get(i).setText("Sensor "+count+": "+parsedData.pressures[i]);
+                for (int i = 1; i < parsedData.pressures.length; i++) {
+                    control.sensorsListModel.setElementAt("Sensor "+i+": "+parsedData.pressures[i], i);
                     s = s.concat(", "+parsedData.pressures[i]);
                     System.out.printf("%.2f, ", parsedData.pressures[i]);
                 }

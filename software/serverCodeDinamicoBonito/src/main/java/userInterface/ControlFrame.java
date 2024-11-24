@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 import java.io.File;
@@ -42,7 +43,8 @@ public class ControlFrame extends javax.swing.JFrame {
     
     public List<Fan> fanButtons = new LinkedList<>();
     public List<Functionality> functionalityList = new LinkedList<>();
-    public int[] speedMessage;
+    public List<JButton> speedBoxes = new LinkedList<>();
+    public int[] speedMessage, speedMessagePrev;
     public boolean functionalityExecuting = false, pressureSensorConected = false;
     
     public File funFile = null;
@@ -82,8 +84,7 @@ public class ControlFrame extends javax.swing.JFrame {
                     updateDrawing();
                 }
             }
-        });
-        
+        });        
         setSizesForScroll();     
     }
 
@@ -122,11 +123,13 @@ public class ControlFrame extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         dragAndDropFunctionality = new javax.swing.JButton();
         browseFunctionality = new javax.swing.JButton();
-        funPreview = new javax.swing.JButton();
         funExecution = new javax.swing.JButton();
-        stopFun = new javax.swing.JButton();
+        stopRealFunctionality = new javax.swing.JButton();
         funAction = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jToolBar4 = new javax.swing.JToolBar();
+        funPreview = new javax.swing.JButton();
+        stopPreviewFunctionality = new javax.swing.JButton();
         preassurePanel = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         pressureSensor = new javax.swing.JButton();
@@ -217,13 +220,13 @@ public class ControlFrame extends javax.swing.JFrame {
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 169, Short.MAX_VALUE))
+                .addGap(0, 189, Short.MAX_VALUE))
         );
         fanPanelLayout.setVerticalGroup(
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 353, Short.MAX_VALUE))
+                .addContainerGap(352, Short.MAX_VALUE))
         );
 
         fanScrollPane.setViewportView(fanPanel);
@@ -248,14 +251,6 @@ public class ControlFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(browseFunctionality);
 
-        funPreview.setText("Execute Preview");
-        funPreview.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                funPreviewMouseClicked(evt);
-            }
-        });
-        jToolBar1.add(funPreview);
-
         funExecution.setText("Execute Functionality");
         funExecution.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,13 +259,13 @@ public class ControlFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(funExecution);
 
-        stopFun.setText("Stop Execution");
-        stopFun.addActionListener(new java.awt.event.ActionListener() {
+        stopRealFunctionality.setText("Stop Execution");
+        stopRealFunctionality.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopFunActionPerformed(evt);
+                stopRealFunctionalityActionPerformed(evt);
             }
         });
-        jToolBar1.add(stopFun);
+        jToolBar1.add(stopRealFunctionality);
 
         funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         funAction.setText("functionality info");
@@ -294,15 +289,38 @@ public class ControlFrame extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
 
+        jToolBar4.setRollover(true);
+
+        funPreview.setText("Execute Preview");
+        funPreview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                funPreviewMouseClicked(evt);
+            }
+        });
+        jToolBar4.add(funPreview);
+
+        stopPreviewFunctionality.setText("Stop Preview");
+        stopPreviewFunctionality.setFocusable(false);
+        stopPreviewFunctionality.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stopPreviewFunctionality.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stopPreviewFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopPreviewFunctionalityActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(stopPreviewFunctionality);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 688, Short.MAX_VALUE)
+            .addComponent(jToolBar4, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jToolBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 450, Short.MAX_VALUE))
         );
 
         speedPanel.addTab("Preview", jPanel5);
@@ -334,11 +352,11 @@ public class ControlFrame extends javax.swing.JFrame {
         preassurePanel.setLayout(preassurePanelLayout);
         preassurePanelLayout.setHorizontalGroup(
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(preassurePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         preassurePanelLayout.setVerticalGroup(
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,7 +364,7 @@ public class ControlFrame extends javax.swing.JFrame {
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 247, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -359,7 +377,7 @@ public class ControlFrame extends javax.swing.JFrame {
                     .addComponent(fanScrollPane))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(347, 347, 347))
         );
@@ -370,15 +388,14 @@ public class ControlFrame extends javax.swing.JFrame {
                 .addComponent(executing)
                 .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(preassurePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -415,36 +432,18 @@ public class ControlFrame extends javax.swing.JFrame {
         speedScrollPane.setPreferredSize(new Dimension(700,400));
         speedPanel.setPreferredSize(new Dimension(w,h));
         
-        preassurePanel.setPreferredSize(new Dimension(666,850));
+        preassurePanel.setPreferredSize(new Dimension(250,715));
     }
     
-    DefaultListModel<String> listModel = new DefaultListModel<>();
+    public DefaultListModel<String> sensorsListModel = new DefaultListModel<>();
     public void setPreassureLabels() {
-        preassurePanel.setLayout(null); // Usar layout absoluto para posicionar los JLabel
-
-        int x = 150, y = 30, w = 100, h = 20;
-        JLabel time = new JLabel("Timestamp:");
-        time.setBounds(730, 20, w, h);
-        preassurePanel.add(time);
-        listModel.addElement(time.getText());
-
-        ArrayList<JLabel> sensors = new ArrayList<>();
-        int count = 0;
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 16; j++) {
-                JLabel l = new JLabel("Sensor " + count + ":");
-                l.setBounds(730 + i * x, 50 + j * y, w, h);
-                sensors.add(l);
-                preassurePanel.add(l);
-                // Agregar el texto del JLabel al modelo de la lista
-                listModel.addElement(l.getText());
-                count++;
-            }
+        sensorsListModel.addElement("Timestamp:");
+        int count = 1;
+        for (int j = 1; j <= 32; j++) {
+            sensorsListModel.addElement("Sensor " + count + ":");
+            count++;
         }
-        listModel.setElementAt("Sensor Modificado", 3); // Índice es la posición del elemento
-
-        preassureList.setModel(listModel);
-
+        preassureList.setModel(sensorsListModel);
         preassurePanel.revalidate();
         preassurePanel.repaint();
     }
@@ -467,32 +466,19 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_browseFunctionalityActionPerformed
 
-    private void funPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
-        try {
-            functionality = new Functionality(this,false);
-            functionalityList.add(functionality);
-            functionality.start();
-            functionalityExecuting = true;
-            funAction.setText("Preview is executing...");
-
-        } catch (Exception ex) {
-            System.out.println("Error reading functionality file");
-            funAction.setText("Error reading functionality file");
-        }
-    }//GEN-LAST:event_funPreviewMouseClicked
-
-    private void stopFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopFunActionPerformed
+    private void stopRealFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopRealFunctionalityActionPerformed
         try{
             for (Functionality f : functionalityList) {
-                f.interrupt();
+                if (f.realExec){
+                    f.interrupt();
+                }
             }
             functionalityExecuting = false;
             funAction.setText("No functionality executing");
         }catch(Exception e){
             System.out.println("Error on the stop of the functionality execution");
         }
-
-    }//GEN-LAST:event_stopFunActionPerformed
+    }//GEN-LAST:event_stopRealFunctionalityActionPerformed
 
     private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
         try {
@@ -527,12 +513,10 @@ public class ControlFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
 
     private void pressureSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureSensorActionPerformed
-        //jList1.getV
-        
         try {
             Thread pressureThread = new Thread(() -> {
                 PressureSensor pressure = new PressureSensor(this);
-                pressure.setVisible(true);
+                pressure.setVisible(false); // para que no se muestre
                 pressure.setTitle("PRESSURE");
                 pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 pressure.setResizable(false);
@@ -585,23 +569,64 @@ public class ControlFrame extends javax.swing.JFrame {
             f.selected = false;
             f.button.setBackground(Color.white);
         }
+        for (JButton j : speedBoxes) {
+            j.setBackground(Color.white);
+        }
     }//GEN-LAST:event_unselectAllActionPerformed
 
     private void selectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllActionPerformed
+        for (JButton j : speedBoxes) {
+            j.setBackground(Color.blue);
+        }
         for (Fan f : fanButtons) {
             f.selected = true;
             f.button.setBackground(Color.green);
         }
     }//GEN-LAST:event_selectAllActionPerformed
 
+    private void funPreviewMouseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
+        try {
+            functionality = new Functionality(this,false);
+            functionalityList.add(functionality);
+            functionality.start();
+            if(!getFileExtension(funFile.getName()).equals("svg")){
+                functionalityExecuting = false;
+                funAction.setText("Wrong file");
+            }else{
+                functionalityExecuting = true;
+                funAction.setText("Functionality is executing... please wait");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error reading functionality file");
+            funAction.setText("Error reading functionality file");
+        }
+    }//GEN-LAST:event_funPreviewMouseClicked
+
+    private void stopPreviewFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPreviewFunctionalityActionPerformed
+        try{
+            for (Functionality f : functionalityList) {
+                if(!f.realExec){
+                    f.interrupt();
+                }
+            }
+            functionalityExecuting = false;
+            funAction.setText("No functionality executing");
+        }catch(Exception e){
+            System.out.println("Error on the stop of the functionality execution");
+        }
+    }//GEN-LAST:event_stopPreviewFunctionalityActionPerformed
+
     
     public void run() throws InterruptedException{
         int cant = server.clients.size();
         enterFans(fanButtons);
         setFansColor(cant,fanButtons);
+        enterSpeedBoxes(speedBoxes);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
-        stopFun.setEnabled(false);
+        stopRealFunctionality.setEnabled(false);
+        stopPreviewFunctionality.setEnabled(false);
         setPreassureLabels();
         while(true){
             Thread.sleep(50);
@@ -613,7 +638,8 @@ public class ControlFrame extends javax.swing.JFrame {
                 funAction.setText("File "+funFile.getName()+" added");
                 funExecution.setEnabled(true);
                 funPreview.setEnabled(true);
-                stopFun.setEnabled(true);
+                stopRealFunctionality.setEnabled(true);
+                stopPreviewFunctionality.setEnabled(true);
                 firstTime = false;
             }else if (funFile == null){
                 funAction.setText("No file added");
@@ -670,10 +696,47 @@ public class ControlFrame extends javax.swing.JFrame {
         }
         System.out.println("La cantidad de clientes es: "+fanBottons.size());
         speedMessage = new int[fanBottons.size()];
+        speedMessagePrev = new int[fanBottons.size()];
         for (int i = 0; i < 6*cant; i++) {
             fanBottons.get(i).button.setBackground(Color.white);
             speedMessage[i] = 0;
+            speedMessagePrev[i] = 0;
         }
+    }
+    
+    private void enterSpeedBoxes(List<JButton> speedBoxes) {
+        int buttonWidth = 50;
+        int buttonHeight = 50;
+        int verticalSpacing = 100;
+        int horizontalSpacing = 100;
+        int hDist = 60, vDist = 470;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int start = (i * cols + j) * 6 + 1;
+                int end = start + 5;
+
+                for (int k = start; k <= end; k++) {
+                    JButton f = new JButton("" + k);
+                    for (MouseListener listener : f.getMouseListeners()) {
+                        f.removeMouseListener(listener);
+                    }
+                    
+                    int xOffset = hDist+j * horizontalSpacing;
+                    int yOffset = vDist+i * (buttonHeight + verticalSpacing);
+
+                    if (k % 2 != 0) {
+                        f.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    } else {
+                        f.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    }
+                    this.add(f);
+                    speedBoxes.add(f);
+                }
+            }
+        }
+        this.revalidate();
+        this.repaint();
     }
     
     public void fanControl(int i){
@@ -690,42 +753,57 @@ public class ControlFrame extends javax.swing.JFrame {
     
     @Override
     public void paint(Graphics g) {
-        if (speedMessage != null) {
-            if(speedPanel.getSelectedIndex() == tab1Index){
-                super.paint(g);
-                int dim = 50;
-                int verticalSpacing = 120, horizontalSpacing = 120;
-                int hDist = 75, vDist = 550;
-                int buttonHeight = 60, buttonWidth = 60;
+       /*int intensity;
+       if(speedMessage != null && speedPanel.getSelectedIndex() == tab1Index){
+            for (int i = 0; i < speedMessage.length; i++) {
+                intensity = Math.min(255, (int) (speedMessage[i] * 2.55));
+                speedBoxes.get(i).setBackground(new Color(255, 0, 0, intensity));
+            }
+        }else if(speedMessagePrev != null && speedPanel.getSelectedIndex() == tab2Index){
+            for (int i = 0; i < speedMessagePrev.length; i++) {
+                intensity = Math.min(255, (int) (speedMessagePrev[i] * 2.55));
+                speedBoxes.get(i).setBackground(new Color(255, 0, 0, intensity));
+            }
+            
+        }         
+       
+       
+        /*if(speedMessage != null){
+            super.paint(g);
+            int dim = 50;
+            int verticalSpacing = 120, horizontalSpacing = 120;
+            int hDist = 60, vDist = 550;
+            int buttonHeight = 60, buttonWidth = 60;
+            int intensity;
 
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < cols; j++) {
-                        int start = (i * cols + j) * 6 + 1;
-                        int end = start + 5;
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    int start = (i * cols + j) * 6 + 1;
+                    int end = start + 5;
 
-                        for (int k = start; k <= end; k++) {
-                            if (k <= server.clients.size() * 6) {
-                                int xOffset = hDist + j * horizontalSpacing;
-                                int yOffset = vDist + i * (verticalSpacing + buttonHeight);
+                    for (int k = start; k <= end; k++) {
+                        if (k <= server.clients.size() * 6) {
+                            int xOffset = hDist + j * horizontalSpacing;
+                            int yOffset = vDist + i * (verticalSpacing + buttonHeight);
 
-                                // Escala de intensidad del rojo basada en speedMessage
-                                int intensity = Math.min(255, (int) (speedMessage[k - 1] * 2.55));
-                                g.setColor(new Color(255, 0, 0, intensity));
+                            if (speedPanel.getSelectedIndex() == tab1Index){
+                                intensity = Math.min(255, (int) (speedMessage[k - 1] * 2.55));
+                            }else{
+                                intensity = Math.min(255, (int) (speedMessagePrev[k - 1] * 2.55));
+                            }
+                            g.setColor(new Color(255, 0, 0, intensity));
 
-                                // Lógica de ventiladores impares y pares
-                                if (k % 2 != 0) {  // Ventilador impar
-                                    g.fillRect(xOffset - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
-                                } else {  // Ventilador par
-                                    g.fillRect(xOffset + buttonWidth - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
-                                }
+                            // Lógica de ventiladores impares y pares
+                            if (k % 2 != 0) {  // Ventilador impar
+                                g.fillRect(xOffset - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
+                            } else {  // Ventilador par
+                                g.fillRect(xOffset + buttonWidth - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
                             }
                         }
                     }
                 }
-            }else{
-                
             }
-        }
+        } */
     }
     
     public void updateDrawing (){
@@ -748,6 +826,7 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JToolBar jToolBar4;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
@@ -766,7 +845,8 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane speedScrollPane;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;
-    private javax.swing.JButton stopFun;
+    private javax.swing.JButton stopPreviewFunctionality;
+    private javax.swing.JButton stopRealFunctionality;
     private javax.swing.JButton unselectAll;
     private javax.swing.JButton updateSpeed;
     // End of variables declaration//GEN-END:variables
