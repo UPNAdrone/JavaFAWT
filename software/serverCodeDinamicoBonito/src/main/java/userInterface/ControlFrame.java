@@ -12,6 +12,7 @@ import connection.InterfaceServer;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -43,7 +44,8 @@ public class ControlFrame extends javax.swing.JFrame {
     
     public List<Fan> fanButtons = new LinkedList<>();
     public List<Functionality> functionalityList = new LinkedList<>();
-    public List<JButton> speedBoxes = new LinkedList<>();
+    public List<JButton> realSpeedBoxes = new LinkedList<>();
+    public List<JButton> prevSpeedBoxes = new LinkedList<>();
     public int[] speedMessage, speedMessagePrev;
     public boolean functionalityExecuting = false, pressureSensorConected = false;
     
@@ -73,8 +75,8 @@ public class ControlFrame extends javax.swing.JFrame {
         openFileChooser.setFileFilter(new FileNameExtensionFilter("SVG","svg"));
         this.rows = rows;
         this.cols = cols;
-        tab1Index = speedPanel.indexOfComponent(jPanel4);
-        tab2Index = speedPanel.indexOfComponent(jPanel5);        
+        tab1Index = speedPanel.indexOfComponent(realSpeedPanel);
+        tab2Index = speedPanel.indexOfComponent(prevSpeedPanel);        
         speedPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -119,14 +121,14 @@ public class ControlFrame extends javax.swing.JFrame {
         stopAllFans = new javax.swing.JButton();
         speedScrollPane = new javax.swing.JScrollPane();
         speedPanel = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
+        realSpeedPanel = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         dragAndDropFunctionality = new javax.swing.JButton();
         browseFunctionality = new javax.swing.JButton();
         funExecution = new javax.swing.JButton();
         stopRealFunctionality = new javax.swing.JButton();
         funAction = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
+        prevSpeedPanel = new javax.swing.JPanel();
         jToolBar4 = new javax.swing.JToolBar();
         funPreview = new javax.swing.JButton();
         stopPreviewFunctionality = new javax.swing.JButton();
@@ -212,6 +214,11 @@ public class ControlFrame extends javax.swing.JFrame {
                 stopAllFansMouseClicked(evt);
             }
         });
+        stopAllFans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopAllFansActionPerformed(evt);
+            }
+        });
         jToolBar2.add(stopAllFans);
 
         javax.swing.GroupLayout fanPanelLayout = new javax.swing.GroupLayout(fanPanel);
@@ -226,12 +233,12 @@ public class ControlFrame extends javax.swing.JFrame {
             fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fanPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(352, Short.MAX_VALUE))
+                .addContainerGap(310, Short.MAX_VALUE))
         );
 
         fanScrollPane.setViewportView(fanPanel);
 
-        jPanel4.setBackground(new java.awt.Color(255, 204, 255));
+        realSpeedPanel.setBackground(new java.awt.Color(255, 204, 255));
 
         jToolBar1.setRollover(true);
 
@@ -272,22 +279,22 @@ public class ControlFrame extends javax.swing.JFrame {
         funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToolBar1.add(funAction);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout realSpeedPanelLayout = new javax.swing.GroupLayout(realSpeedPanel);
+        realSpeedPanel.setLayout(realSpeedPanelLayout);
+        realSpeedPanelLayout.setHorizontalGroup(
+            realSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        realSpeedPanelLayout.setVerticalGroup(
+            realSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(realSpeedPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 449, Short.MAX_VALUE))
         );
 
-        speedPanel.addTab("Fans speed schema", jPanel4);
+        speedPanel.addTab("Fans speed schema", realSpeedPanel);
 
-        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
+        prevSpeedPanel.setBackground(new java.awt.Color(204, 204, 204));
 
         jToolBar4.setRollover(true);
 
@@ -310,20 +317,20 @@ public class ControlFrame extends javax.swing.JFrame {
         });
         jToolBar4.add(stopPreviewFunctionality);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout prevSpeedPanelLayout = new javax.swing.GroupLayout(prevSpeedPanel);
+        prevSpeedPanel.setLayout(prevSpeedPanelLayout);
+        prevSpeedPanelLayout.setHorizontalGroup(
+            prevSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar4, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        prevSpeedPanelLayout.setVerticalGroup(
+            prevSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(prevSpeedPanelLayout.createSequentialGroup()
                 .addComponent(jToolBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 450, Short.MAX_VALUE))
         );
 
-        speedPanel.addTab("Preview", jPanel5);
+        speedPanel.addTab("Preview", prevSpeedPanel);
 
         speedScrollPane.setViewportView(speedPanel);
 
@@ -388,14 +395,14 @@ public class ControlFrame extends javax.swing.JFrame {
                 .addComponent(executing)
                 .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(preassurePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(preassurePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -569,15 +576,11 @@ public class ControlFrame extends javax.swing.JFrame {
             f.selected = false;
             f.button.setBackground(Color.white);
         }
-        for (JButton j : speedBoxes) {
-            j.setBackground(Color.white);
-        }
+        
     }//GEN-LAST:event_unselectAllActionPerformed
 
     private void selectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllActionPerformed
-        for (JButton j : speedBoxes) {
-            j.setBackground(Color.blue);
-        }
+        
         for (Fan f : fanButtons) {
             f.selected = true;
             f.button.setBackground(Color.green);
@@ -617,12 +620,16 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_stopPreviewFunctionalityActionPerformed
 
+    private void stopAllFansActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopAllFansActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stopAllFansActionPerformed
+
     
     public void run() throws InterruptedException{
         int cant = server.clients.size();
         enterFans(fanButtons);
         setFansColor(cant,fanButtons);
-        enterSpeedBoxes(speedBoxes);
+        enterSpeedBoxes(realSpeedBoxes);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
         stopRealFunctionality.setEnabled(false);
@@ -709,7 +716,10 @@ public class ControlFrame extends javax.swing.JFrame {
         int buttonHeight = 50;
         int verticalSpacing = 100;
         int horizontalSpacing = 100;
-        int hDist = 60, vDist = 470;
+        int hDist = 60, vDist = 50;
+        
+        realSpeedPanel.setLayout(null);
+        prevSpeedPanel.setLayout(null);
         
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -717,7 +727,7 @@ public class ControlFrame extends javax.swing.JFrame {
                 int end = start + 5;
 
                 for (int k = start; k <= end; k++) {
-                    JButton f = new JButton("" + k);
+                    JButton f = new JButton();
                     for (MouseListener listener : f.getMouseListeners()) {
                         f.removeMouseListener(listener);
                     }
@@ -731,6 +741,8 @@ public class ControlFrame extends javax.swing.JFrame {
                         f.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
                     }
                     this.add(f);
+                    realSpeedPanel.add(f);
+                    prevSpeedPanel.add(f);
                     speedBoxes.add(f);
                 }
             }
@@ -751,30 +763,52 @@ public class ControlFrame extends javax.swing.JFrame {
         showSpeed.setText(""+speedSlider.getValue());
     }
     
+    private Color getColorForSpeed(int speed) { //MEJORAR ESTE SISTEMA DE COLORES
+        // Escala la velocidad a un rango entre 0 y 100 (por seguridad)
+        speed = Math.max(0, Math.min(speed, 100));
+
+        if (speed <= 33) {
+            // Baja velocidad: Azul -> Verde
+            int blue = 255; // Azul constante
+            int green = (int) (speed * 7.7); // Incrementa el verde progresivamente (0 a 255)
+            return new Color(0, green, blue); // Transición azul -> azul-verde -> verde
+        } else if (speed <= 66) {
+            // Velocidad media: Verde -> Amarillo
+            int green = 255; // Verde constante
+            int red = (int) ((speed - 33) * 7.7); // Incrementa el rojo progresivamente (0 a 255)
+            return new Color(red, green, 0); // Transición verde -> verde-amarillo -> amarillo
+        } else {
+            // Alta velocidad: Amarillo -> Rojo
+            int red = 255; // Rojo constante
+            int green = (int) (255 - ((speed - 67) * 7.5)); // Disminuye el verde progresivamente (255 a 0)
+            return new Color(red, green, 0); // Transición amarillo -> anaranjado -> rojo
+        }
+    }
+    
     @Override
     public void paint(Graphics g) {
-       /*int intensity;
-       if(speedMessage != null && speedPanel.getSelectedIndex() == tab1Index){
+       if (speedMessage != null && speedPanel.getSelectedIndex() == tab1Index) {
             for (int i = 0; i < speedMessage.length; i++) {
-                intensity = Math.min(255, (int) (speedMessage[i] * 2.55));
-                speedBoxes.get(i).setBackground(new Color(255, 0, 0, intensity));
+                int speed = (int) speedMessage[i]; // Velocidad entre 0 y 100
+                realSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
             }
-        }else if(speedMessagePrev != null && speedPanel.getSelectedIndex() == tab2Index){
+        } else if (speedMessagePrev != null && speedPanel.getSelectedIndex() == tab2Index) {
             for (int i = 0; i < speedMessagePrev.length; i++) {
-                intensity = Math.min(255, (int) (speedMessagePrev[i] * 2.55));
-                speedBoxes.get(i).setBackground(new Color(255, 0, 0, intensity));
+                int speed = (int) speedMessagePrev[i]; // Velocidad entre 0 y 100
+                realSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
             }
-            
-        }         
+        }      
        
        
-        /*if(speedMessage != null){
-            super.paint(g);
+        /*if (speedMessage != null) {
             int dim = 50;
             int verticalSpacing = 120, horizontalSpacing = 120;
             int hDist = 60, vDist = 550;
             int buttonHeight = 60, buttonWidth = 60;
             int intensity;
+
+            // Obtener las coordenadas visibles actuales.
+            Rectangle visibleRect = speedPanel.getVisibleRect();
 
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
@@ -786,9 +820,9 @@ public class ControlFrame extends javax.swing.JFrame {
                             int xOffset = hDist + j * horizontalSpacing;
                             int yOffset = vDist + i * (verticalSpacing + buttonHeight);
 
-                            if (speedPanel.getSelectedIndex() == tab1Index){
+                            if (speedPanel.getSelectedIndex() == tab1Index) {
                                 intensity = Math.min(255, (int) (speedMessage[k - 1] * 2.55));
-                            }else{
+                            } else {
                                 intensity = Math.min(255, (int) (speedMessagePrev[k - 1] * 2.55));
                             }
                             g.setColor(new Color(255, 0, 0, intensity));
@@ -803,7 +837,10 @@ public class ControlFrame extends javax.swing.JFrame {
                     }
                 }
             }
-        } */
+
+            // Ajusta el dibujo en función del área visible.
+            g.clipRect(visibleRect.x, visibleRect.y, visibleRect.width, visibleRect.height);
+        }*/
     }
     
     public void updateDrawing (){
@@ -820,8 +857,6 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JButton funExecution;
     private javax.swing.JButton funPreview;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
@@ -839,6 +874,8 @@ public class ControlFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> preassureList;
     private javax.swing.JPanel preassurePanel;
     private javax.swing.JButton pressureSensor;
+    private javax.swing.JPanel prevSpeedPanel;
+    private javax.swing.JPanel realSpeedPanel;
     private javax.swing.JButton selectAll;
     private javax.swing.JLabel showSpeed;
     private javax.swing.JTabbedPane speedPanel;

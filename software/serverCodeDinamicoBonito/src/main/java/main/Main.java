@@ -60,6 +60,8 @@ public class Main {
             control.dispose();  
         });
         
+        //Thread.sleep(2000);
+        
         controlThread.start();
         controlThread.join();
     }
