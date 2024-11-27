@@ -629,7 +629,7 @@ public class ControlFrame extends javax.swing.JFrame {
         int cant = server.clients.size();
         enterFans(fanButtons);
         setFansColor(cant,fanButtons);
-        enterSpeedBoxes(realSpeedBoxes);
+        enterSpeedBoxes(realSpeedBoxes, prevSpeedBoxes);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
         stopRealFunctionality.setEnabled(false);
@@ -711,7 +711,7 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }
     
-    private void enterSpeedBoxes(List<JButton> speedBoxes) {
+    private void enterSpeedBoxes(List<JButton> realSpeedBoxes, List<JButton> prevSpeedBoxes) {
         int buttonWidth = 50;
         int buttonHeight = 50;
         int verticalSpacing = 100;
@@ -727,23 +727,31 @@ public class ControlFrame extends javax.swing.JFrame {
                 int end = start + 5;
 
                 for (int k = start; k <= end; k++) {
-                    JButton f = new JButton();
-                    for (MouseListener listener : f.getMouseListeners()) {
-                        f.removeMouseListener(listener);
+                    JButton f_real = new JButton();
+                    for (MouseListener listener : f_real.getMouseListeners()) {
+                        f_real.removeMouseListener(listener);
+                    }
+                    JButton f_prev = new JButton();
+                    for (MouseListener listener : f_prev.getMouseListeners()) {
+                        f_prev.removeMouseListener(listener);
                     }
                     
                     int xOffset = hDist+j * horizontalSpacing;
                     int yOffset = vDist+i * (buttonHeight + verticalSpacing);
 
                     if (k % 2 != 0) {
-                        f.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        f_real.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        f_prev.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
                     } else {
-                        f.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        f_real.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        f_prev.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
                     }
-                    this.add(f);
-                    realSpeedPanel.add(f);
-                    prevSpeedPanel.add(f);
-                    speedBoxes.add(f);
+                    this.add(f_real);
+                    this.add(f_prev);
+                    realSpeedPanel.add(f_real);
+                    prevSpeedPanel.add(f_prev);
+                    realSpeedBoxes.add(f_real);
+                    prevSpeedBoxes.add(f_prev);
                 }
             }
         }
@@ -763,27 +771,16 @@ public class ControlFrame extends javax.swing.JFrame {
         showSpeed.setText(""+speedSlider.getValue());
     }
     
-    private Color getColorForSpeed(int speed) { //MEJORAR ESTE SISTEMA DE COLORES
-        // Escala la velocidad a un rango entre 0 y 100 (por seguridad)
-        speed = Math.max(0, Math.min(speed, 100));
+    private Color getColorForSpeed(int speed) {
 
-        if (speed <= 33) {
-            // Baja velocidad: Azul -> Verde
-            int blue = 255; // Azul constante
-            int green = (int) (speed * 7.7); // Incrementa el verde progresivamente (0 a 255)
-            return new Color(0, green, blue); // Transición azul -> azul-verde -> verde
-        } else if (speed <= 66) {
-            // Velocidad media: Verde -> Amarillo
-            int green = 255; // Verde constante
-            int red = (int) ((speed - 33) * 7.7); // Incrementa el rojo progresivamente (0 a 255)
-            return new Color(red, green, 0); // Transición verde -> verde-amarillo -> amarillo
-        } else {
-            // Alta velocidad: Amarillo -> Rojo
-            int red = 255; // Rojo constante
-            int green = (int) (255 - ((speed - 67) * 7.5)); // Disminuye el verde progresivamente (255 a 0)
-            return new Color(red, green, 0); // Transición amarillo -> anaranjado -> rojo
-        }
+        // Calcula los valores para los colores
+        int red = (int) (speed * 2.55); // Incrementa de 0 a 255
+        int greenBlue = 255 - red; // Disminuye de 255 a 0 proporcionalmente al rojo
+
+        // Devuelve el color que transiciona de blanco a rojo puro
+        return new Color(255, greenBlue, greenBlue);
     }
+    
     
     @Override
     public void paint(Graphics g) {
@@ -795,52 +792,9 @@ public class ControlFrame extends javax.swing.JFrame {
         } else if (speedMessagePrev != null && speedPanel.getSelectedIndex() == tab2Index) {
             for (int i = 0; i < speedMessagePrev.length; i++) {
                 int speed = (int) speedMessagePrev[i]; // Velocidad entre 0 y 100
-                realSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
+                prevSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
             }
         }      
-       
-       
-        /*if (speedMessage != null) {
-            int dim = 50;
-            int verticalSpacing = 120, horizontalSpacing = 120;
-            int hDist = 60, vDist = 550;
-            int buttonHeight = 60, buttonWidth = 60;
-            int intensity;
-
-            // Obtener las coordenadas visibles actuales.
-            Rectangle visibleRect = speedPanel.getVisibleRect();
-
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    int start = (i * cols + j) * 6 + 1;
-                    int end = start + 5;
-
-                    for (int k = start; k <= end; k++) {
-                        if (k <= server.clients.size() * 6) {
-                            int xOffset = hDist + j * horizontalSpacing;
-                            int yOffset = vDist + i * (verticalSpacing + buttonHeight);
-
-                            if (speedPanel.getSelectedIndex() == tab1Index) {
-                                intensity = Math.min(255, (int) (speedMessage[k - 1] * 2.55));
-                            } else {
-                                intensity = Math.min(255, (int) (speedMessagePrev[k - 1] * 2.55));
-                            }
-                            g.setColor(new Color(255, 0, 0, intensity));
-
-                            // Lógica de ventiladores impares y pares
-                            if (k % 2 != 0) {  // Ventilador impar
-                                g.fillRect(xOffset - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
-                            } else {  // Ventilador par
-                                g.fillRect(xOffset + buttonWidth - dim / 2, yOffset + ((k - start) / 2) * buttonHeight - dim / 2, dim, dim);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Ajusta el dibujo en función del área visible.
-            g.clipRect(visibleRect.x, visibleRect.y, visibleRect.width, visibleRect.height);
-        }*/
     }
     
     public void updateDrawing (){
