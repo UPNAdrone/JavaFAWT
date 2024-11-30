@@ -2,7 +2,6 @@ package main;
 
 import javax.swing.JFrame;
 import connection.InterfaceServer;
-import representation.SpeedDrawing;
 import userInterface.ConectionFrame;
 import userInterface.ControlFrame;
 import userInterface.PortFrame;
@@ -44,20 +43,12 @@ public class Main {
         
         connection.dispose(); 
         
-        ControlFrame control = new ControlFrame(server);
-        SpeedDrawing speedDrawing = new SpeedDrawing(control);
-        
-        control.setSpeedInstance(speedDrawing);
+        ControlFrame control = new ControlFrame(server, connection.rows, connection.cols);
         control.setTitle("FAN CONTROL");
         control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         control.setResizable(false);
-        control.setLocation(800, 100);
-        
-        speedDrawing.setVisible(true);
-        speedDrawing.setTitle("SPEED SCHEMA");
-        speedDrawing.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        speedDrawing.setResizable(false);
-        speedDrawing.setLocation(200, 100);
+        control.setLocation(0, 0);
+        control.setSize(1000, 770);
         
         Thread controlThread = new Thread(() -> {
             control.setVisible(true); 
@@ -69,20 +60,9 @@ public class Main {
             control.dispose();  
         });
         
-        Thread speedThread = new Thread(() -> {
-            speedDrawing.setVisible(true); 
-            try {
-                speedDrawing.run();
-                speedDrawing.dispose();
-            } catch (Exception ex) {
-                System.out.println("Error on the SpeedDrawing class");
-            }
-        });
+        //Thread.sleep(2000);
         
         controlThread.start();
-        speedThread.start();
-        
         controlThread.join();
-        speedThread.join();
     }
 }

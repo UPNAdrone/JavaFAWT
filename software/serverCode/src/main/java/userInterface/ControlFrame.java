@@ -9,13 +9,29 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import connection.InterfaceServer;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import representation.SpeedDrawing;
 
 
 /**
@@ -28,9 +44,10 @@ public class ControlFrame extends javax.swing.JFrame {
     
     public List<Fan> fanButtons = new LinkedList<>();
     public List<Functionality> functionalityList = new LinkedList<>();
-    public int[] speedMessage;
-    public SpeedDrawing speedDrawing;
-    public boolean functionalityExecuting = false;
+    public List<JButton> realSpeedBoxes = new LinkedList<>();
+    public List<JButton> prevSpeedBoxes = new LinkedList<>();
+    public int[] speedMessage, speedMessagePrev;
+    public boolean functionalityExecuting = false, pressureSensorConected = false;
     
     public File funFile = null;
     public Index index = new Index();
@@ -38,23 +55,39 @@ public class ControlFrame extends javax.swing.JFrame {
     public boolean firstTime = true;
     public String pressureSensorIP = null;
     public int pressureSensorPort = -1;
+    public final int rows, cols;
+    public int tab1Index, tab2Index;
     
     public final JFileChooser openFileChooser;
     
     /**
      * Creates new form MainFrame
      * @param server
+     * @param rows
+     * @param cols
      */
-    public ControlFrame(InterfaceServer server) {
+    public ControlFrame(InterfaceServer server, int rows, int cols) {
+        
         initComponents();
         this.server = server;
         openFileChooser = new JFileChooser();
         openFileChooser.setCurrentDirectory(new File("../../functionalities"));
-        openFileChooser.setFileFilter(new FileNameExtensionFilter("CSV","csv"));
-    }
-    
-    public void setSpeedInstance(SpeedDrawing speedDrawing) {
-        this.speedDrawing = speedDrawing;
+        openFileChooser.setFileFilter(new FileNameExtensionFilter("SVG","svg"));
+        this.rows = rows;
+        this.cols = cols;
+        tab1Index = speedPanel.indexOfComponent(realSpeedPanel);
+        tab2Index = speedPanel.indexOfComponent(prevSpeedPanel);        
+        speedPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int clickedIndex = speedPanel.getUI().tabForCoordinate(speedPanel, e.getX(), e.getY());
+                if (clickedIndex != -1) {
+                    speedPanel.setSelectedIndex(clickedIndex);
+                    updateDrawing();
+                }
+            }
+        });        
+        setSizesForScroll();     
     }
 
     /**
@@ -76,51 +109,45 @@ public class ControlFrame extends javax.swing.JFrame {
         menu5 = new java.awt.Menu();
         menu6 = new java.awt.Menu();
         jLabel2 = new javax.swing.JLabel();
-        speedSlider = new javax.swing.JSlider();
-        showSpeed = new javax.swing.JLabel();
-        updateSpeed = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        numActiveFans = new javax.swing.JLabel();
-        selectedFan = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        currentSpeed = new javax.swing.JLabel();
-        stopAllFans = new javax.swing.JButton();
-        fan1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        fan2 = new javax.swing.JButton();
-        fan3 = new javax.swing.JButton();
-        fan4 = new javax.swing.JButton();
-        fan5 = new javax.swing.JButton();
-        fan6 = new javax.swing.JButton();
-        fan7 = new javax.swing.JButton();
-        fan8 = new javax.swing.JButton();
-        fan9 = new javax.swing.JButton();
-        fan10 = new javax.swing.JButton();
-        fan11 = new javax.swing.JButton();
-        fan12 = new javax.swing.JButton();
-        fan13 = new javax.swing.JButton();
-        fan14 = new javax.swing.JButton();
-        fan15 = new javax.swing.JButton();
-        fan16 = new javax.swing.JButton();
-        fan17 = new javax.swing.JButton();
-        fan18 = new javax.swing.JButton();
-        fan19 = new javax.swing.JButton();
-        fan20 = new javax.swing.JButton();
-        fan21 = new javax.swing.JButton();
-        fan22 = new javax.swing.JButton();
-        fan23 = new javax.swing.JButton();
-        fan24 = new javax.swing.JButton();
-        dragAndDropFunctionality = new javax.swing.JButton();
-        funExecution = new javax.swing.JButton();
-        stopFun = new javax.swing.JButton();
         executing = new javax.swing.JLabel();
-        funPreview = new javax.swing.JButton();
-        pressureSensor = new javax.swing.JButton();
-        funAction = new javax.swing.JLabel();
-        browseFunctionality = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        fanScrollPane = new javax.swing.JScrollPane();
+        fanPanel = new javax.swing.JPanel();
+        jToolBar2 = new javax.swing.JToolBar();
+        selectAll = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         unselectAll = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        speedSlider = new javax.swing.JSlider();
+        jLabel4 = new javax.swing.JLabel();
+        showSpeed = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        updateSpeed = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        stopAllFans = new javax.swing.JButton();
+        speedScrollPane = new javax.swing.JScrollPane();
+        speedPanel = new javax.swing.JTabbedPane();
+        realSpeedPanel = new javax.swing.JPanel();
+        jToolBar1 = new javax.swing.JToolBar();
+        dragAndDropFunctionality = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        browseFunctionality = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        funExecution = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        stopRealFunctionality = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        funAction = new javax.swing.JLabel();
+        prevSpeedPanel = new javax.swing.JPanel();
+        jToolBar4 = new javax.swing.JToolBar();
+        funPreview = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        stopPreviewFunctionality = new javax.swing.JButton();
+        preassurePanel = new javax.swing.JPanel();
+        jToolBar3 = new javax.swing.JToolBar();
+        pressureSensor = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        preassureList = new javax.swing.JList<>();
+        preassureFileSavings = new javax.swing.JLabel();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -143,7 +170,35 @@ public class ControlFrame extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(153, 255, 153));
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        fanPanel.setBackground(new java.awt.Color(255, 255, 255));
+        fanPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jToolBar2.setRollover(true);
+
+        selectAll.setText("Select All");
+        selectAll.setToolTipText("");
+        selectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(selectAll);
+
+        jLabel1.setText(" ");
+        jToolBar2.add(jLabel1);
+
+        unselectAll.setText("Unselect All");
+        unselectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unselectAllActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(unselectAll);
+
+        jLabel3.setText(" ");
+        jToolBar2.add(jLabel3);
 
         speedSlider.setMajorTickSpacing(100);
         speedSlider.setPaintLabels(true);
@@ -154,215 +209,67 @@ public class ControlFrame extends javax.swing.JFrame {
                 speedSliderStateChanged(evt);
             }
         });
+        jToolBar2.add(speedSlider);
+
+        jLabel4.setText(" ");
+        jToolBar2.add(jLabel4);
 
         showSpeed.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         showSpeed.setText("0");
+        jToolBar2.add(showSpeed);
 
-        updateSpeed.setBackground(new java.awt.Color(255, 204, 255));
+        jLabel11.setText(" ");
+        jToolBar2.add(jLabel11);
+
+        updateSpeed.setBackground(new java.awt.Color(51, 51, 255));
+        updateSpeed.setForeground(new java.awt.Color(255, 255, 255));
         updateSpeed.setText("UPDATE");
         updateSpeed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateSpeedActionPerformed(evt);
             }
         });
+        jToolBar2.add(updateSpeed);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setText("WIND TUNEL GUI");
+        jLabel6.setText(" ");
+        jToolBar2.add(jLabel6);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Active fans:");
-
-        numActiveFans.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        numActiveFans.setText("x fans");
-
-        selectedFan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        selectedFan.setText("Selected fan");
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Current Speed:");
-
-        currentSpeed.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        currentSpeed.setText("0 %");
-
-        stopAllFans.setBackground(new java.awt.Color(255, 255, 153));
+        stopAllFans.setBackground(new java.awt.Color(255, 51, 51));
+        stopAllFans.setForeground(new java.awt.Color(255, 255, 255));
         stopAllFans.setText("STOP ALL");
         stopAllFans.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 stopAllFansMouseClicked(evt);
             }
         });
-
-        fan1.setText("1");
-        fan1.addActionListener(new java.awt.event.ActionListener() {
+        stopAllFans.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan1ActionPerformed(evt);
+                stopAllFansActionPerformed(evt);
             }
         });
+        jToolBar2.add(stopAllFans);
 
-        jLabel1.setBackground(new java.awt.Color(255, 204, 204));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("FANS SCHEMA");
+        javax.swing.GroupLayout fanPanelLayout = new javax.swing.GroupLayout(fanPanel);
+        fanPanel.setLayout(fanPanelLayout);
+        fanPanelLayout.setHorizontalGroup(
+            fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fanPanelLayout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 189, Short.MAX_VALUE))
+        );
+        fanPanelLayout.setVerticalGroup(
+            fanPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fanPanelLayout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(310, Short.MAX_VALUE))
+        );
 
-        fan2.setText("2");
-        fan2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan2ActionPerformed(evt);
-            }
-        });
+        fanScrollPane.setViewportView(fanPanel);
 
-        fan3.setText("3");
-        fan3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan3ActionPerformed(evt);
-            }
-        });
+        realSpeedPanel.setBackground(new java.awt.Color(255, 255, 255));
+        realSpeedPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        fan4.setText("4");
-        fan4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan4ActionPerformed(evt);
-            }
-        });
-
-        fan5.setText("5");
-        fan5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan5ActionPerformed(evt);
-            }
-        });
-
-        fan6.setText("6");
-        fan6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan6ActionPerformed(evt);
-            }
-        });
-
-        fan7.setText("7");
-        fan7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan7ActionPerformed(evt);
-            }
-        });
-
-        fan8.setText("8");
-        fan8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan8ActionPerformed(evt);
-            }
-        });
-
-        fan9.setText("9");
-        fan9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan9ActionPerformed(evt);
-            }
-        });
-
-        fan10.setText("10");
-        fan10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan10ActionPerformed(evt);
-            }
-        });
-
-        fan11.setText("11");
-        fan11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan11ActionPerformed(evt);
-            }
-        });
-
-        fan12.setText("12");
-        fan12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan12ActionPerformed(evt);
-            }
-        });
-
-        fan13.setText("13");
-        fan13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan13ActionPerformed(evt);
-            }
-        });
-
-        fan14.setText("14");
-        fan14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan14ActionPerformed(evt);
-            }
-        });
-
-        fan15.setText("15");
-        fan15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan15ActionPerformed(evt);
-            }
-        });
-
-        fan16.setText("16");
-        fan16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan16ActionPerformed(evt);
-            }
-        });
-
-        fan17.setText("17");
-        fan17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan17ActionPerformed(evt);
-            }
-        });
-
-        fan18.setText("18");
-        fan18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan18ActionPerformed(evt);
-            }
-        });
-
-        fan19.setText("19");
-        fan19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan19ActionPerformed(evt);
-            }
-        });
-
-        fan20.setText("20");
-        fan20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan20ActionPerformed(evt);
-            }
-        });
-
-        fan21.setText("21");
-        fan21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan21ActionPerformed(evt);
-            }
-        });
-
-        fan22.setText("22");
-        fan22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan22ActionPerformed(evt);
-            }
-        });
-
-        fan23.setText("23");
-        fan23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan23ActionPerformed(evt);
-            }
-        });
-
-        fan24.setText("24");
-        fan24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fan24ActionPerformed(evt);
-            }
-        });
+        jToolBar1.setRollover(true);
 
         dragAndDropFunctionality.setText("Drag and Drop");
         dragAndDropFunctionality.addActionListener(new java.awt.event.ActionListener() {
@@ -370,39 +277,10 @@ public class ControlFrame extends javax.swing.JFrame {
                 dragAndDropFunctionalityActionPerformed(evt);
             }
         });
+        jToolBar1.add(dragAndDropFunctionality);
 
-        funExecution.setText("Execute Functionality");
-        funExecution.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                funExecutionActionPerformed(evt);
-            }
-        });
-
-        stopFun.setText("Stop Execution");
-        stopFun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopFunActionPerformed(evt);
-            }
-        });
-
-        funPreview.setText("Execute Preview");
-        funPreview.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                funPreviewMouseClicked(evt);
-            }
-        });
-
-        pressureSensor.setBackground(new java.awt.Color(255, 153, 153));
-        pressureSensor.setText("Show Pressure");
-        pressureSensor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pressureSensorMouseClicked(evt);
-            }
-        });
-
-        funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        funAction.setText("functionality info");
-        funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText(" ");
+        jToolBar1.add(jLabel5);
 
         browseFunctionality.setText("Browse");
         browseFunctionality.addActionListener(new java.awt.event.ActionListener() {
@@ -410,391 +288,189 @@ public class ControlFrame extends javax.swing.JFrame {
                 browseFunctionalityActionPerformed(evt);
             }
         });
+        jToolBar1.add(browseFunctionality);
 
-        jLabel3.setText("Add Functionality File");
+        jLabel7.setText(" ");
+        jToolBar1.add(jLabel7);
 
-        unselectAll.setBackground(new java.awt.Color(102, 255, 255));
-        unselectAll.setText("Unselect All");
-        unselectAll.addActionListener(new java.awt.event.ActionListener() {
+        funExecution.setBackground(new java.awt.Color(51, 51, 255));
+        funExecution.setForeground(new java.awt.Color(255, 255, 255));
+        funExecution.setText("Execute Functionality");
+        funExecution.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unselectAllActionPerformed(evt);
+                funExecutionActionPerformed(evt);
             }
         });
+        jToolBar1.add(funExecution);
+
+        jLabel9.setText(" ");
+        jToolBar1.add(jLabel9);
+
+        stopRealFunctionality.setBackground(new java.awt.Color(255, 51, 51));
+        stopRealFunctionality.setForeground(new java.awt.Color(255, 255, 255));
+        stopRealFunctionality.setText("Stop Execution");
+        stopRealFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopRealFunctionalityActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(stopRealFunctionality);
+
+        jLabel8.setText(" ");
+        jToolBar1.add(jLabel8);
+
+        funAction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        funAction.setText("functionality info");
+        funAction.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToolBar1.add(funAction);
+
+        javax.swing.GroupLayout realSpeedPanelLayout = new javax.swing.GroupLayout(realSpeedPanel);
+        realSpeedPanel.setLayout(realSpeedPanelLayout);
+        realSpeedPanelLayout.setHorizontalGroup(
+            realSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        realSpeedPanelLayout.setVerticalGroup(
+            realSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(realSpeedPanelLayout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 453, Short.MAX_VALUE))
+        );
+
+        speedPanel.addTab("Fans speed schema", realSpeedPanel);
+
+        prevSpeedPanel.setBackground(new java.awt.Color(255, 255, 255));
+        prevSpeedPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jToolBar4.setRollover(true);
+
+        funPreview.setBackground(new java.awt.Color(51, 51, 255));
+        funPreview.setForeground(new java.awt.Color(255, 255, 255));
+        funPreview.setText("Execute Preview");
+        funPreview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                funPreviewMouseClicked(evt);
+            }
+        });
+        jToolBar4.add(funPreview);
+
+        jLabel10.setText(" ");
+        jToolBar4.add(jLabel10);
+
+        stopPreviewFunctionality.setBackground(new java.awt.Color(255, 51, 51));
+        stopPreviewFunctionality.setForeground(new java.awt.Color(255, 255, 255));
+        stopPreviewFunctionality.setText("Stop Preview");
+        stopPreviewFunctionality.setFocusable(false);
+        stopPreviewFunctionality.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stopPreviewFunctionality.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stopPreviewFunctionality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopPreviewFunctionalityActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(stopPreviewFunctionality);
+
+        javax.swing.GroupLayout prevSpeedPanelLayout = new javax.swing.GroupLayout(prevSpeedPanel);
+        prevSpeedPanel.setLayout(prevSpeedPanelLayout);
+        prevSpeedPanelLayout.setHorizontalGroup(
+            prevSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar4, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+        );
+        prevSpeedPanelLayout.setVerticalGroup(
+            prevSpeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(prevSpeedPanelLayout.createSequentialGroup()
+                .addComponent(jToolBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 454, Short.MAX_VALUE))
+        );
+
+        speedPanel.addTab("Preview", prevSpeedPanel);
+
+        speedScrollPane.setViewportView(speedPanel);
+
+        preassurePanel.setBackground(new java.awt.Color(255, 255, 255));
+        preassurePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jToolBar3.setRollover(true);
+
+        pressureSensor.setText("Connect");
+        pressureSensor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pressureSensorActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(pressureSensor);
+
+        preassureList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        preassureList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(preassureList);
+
+        preassureFileSavings.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        preassureFileSavings.setText("No sensors detected");
+
+        javax.swing.GroupLayout preassurePanelLayout = new javax.swing.GroupLayout(preassurePanel);
+        preassurePanel.setLayout(preassurePanelLayout);
+        preassurePanelLayout.setHorizontalGroup(
+            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(preassurePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(preassurePanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(preassureFileSavings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(preassurePanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        preassurePanelLayout.setVerticalGroup(
+            preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(preassurePanelLayout.createSequentialGroup()
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(preassureFileSavings)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(fan17, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(fan18, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(fan23, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(fan24, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan13, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan14, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fan15, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fan16, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fan21, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan7, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan11, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fan19, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fan10, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fan12, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fan20, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fan22, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fan8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(fan1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(fan2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(115, 115, 115)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numActiveFans, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(stopAllFans)
-                        .addGap(60, 60, 60)
-                        .addComponent(unselectAll)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(speedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(funAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(dragAndDropFunctionality)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(browseFunctionality))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(35, 35, 35)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(stopFun)
-                                                .addGap(14, 14, 14))
-                                            .addComponent(funPreview, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(61, 61, 61)
-                                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(2, 2, 2)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(selectedFan, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(currentSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pressureSensor)
-                            .addComponent(updateSpeed))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(233, 233, 233))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(speedScrollPane)
+                    .addComponent(fanScrollPane))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(347, 347, 347))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(703, Short.MAX_VALUE)
+                .addComponent(executing)
+                .addGap(26, 26, 26))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(149, Short.MAX_VALUE)
-                        .addComponent(executing))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(selectedFan)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(currentSpeed)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(numActiveFans))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan7, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan11, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan13, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan14, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan19, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan20, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan15, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan16, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan21, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan22, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fan17, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan18, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan23, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fan24, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(stopAllFans)
-                            .addComponent(unselectAll)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(updateSpeed)
-                            .addComponent(showSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(pressureSensor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
+                        .addComponent(fanScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dragAndDropFunctionality)
-                            .addComponent(browseFunctionality))
-                        .addGap(30, 30, 30)
-                        .addComponent(funExecution, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(funPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(funAction)
-                        .addGap(12, 12, 12)
-                        .addComponent(stopFun)))
-                .addGap(12, 12, 12))
+                        .addComponent(speedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(preassurePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
-        showSpeed.setText(""+speedSlider.getValue());
-    }//GEN-LAST:event_speedSliderStateChanged
-
-    private void updateSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSpeedActionPerformed
-        if(!functionalityExecuting){
-            boolean anySelected = false;
-            for (int i = 0; i < fanButtons.size(); i++){
-                if(fanButtons.get(i).selected){
-                    anySelected = true;
-                    speedMessage[i] = speedSlider.getValue();
-                    fanButtons.get(i).speed = speedSlider.getValue();
-                }
-            }
-            if (anySelected){
-                server.updateSpeed(speedMessage);
-                speedDrawing.updateDrawing();
-                currentSpeed.setText(""+speedSlider.getValue());
-            }
-        }
-    }//GEN-LAST:event_updateSpeedActionPerformed
-
-    private void stopAllFansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopAllFansMouseClicked
-        for (int i = 0; i < fanButtons.size(); i++){
-            speedMessage[i] = 0;
-            fanButtons.get(i).speed = 0;
-        }
-        server.updateSpeed(speedMessage);
-        speedDrawing.updateDrawing();
-        currentSpeed.setText("0");
-        speedSlider.setValue(0);
-    }//GEN-LAST:event_stopAllFansMouseClicked
-
-    private void fan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan2ActionPerformed
-        activeFan = 1;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan2ActionPerformed
-
-    private void fan3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan3ActionPerformed
-        activeFan = 2;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan3ActionPerformed
-
-    private void fan4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan4ActionPerformed
-        activeFan = 3;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan4ActionPerformed
-
-    private void fan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan5ActionPerformed
-        activeFan = 4;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan5ActionPerformed
-
-    private void fan6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan6ActionPerformed
-        activeFan = 5;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan6ActionPerformed
-
-    private void fan7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan7ActionPerformed
-        activeFan = 6;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan7ActionPerformed
-
-    private void fan8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan8ActionPerformed
-        activeFan = 7;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan8ActionPerformed
-
-    private void fan9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan9ActionPerformed
-        activeFan = 8;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan9ActionPerformed
-
-    private void fan10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan10ActionPerformed
-        activeFan = 9;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan10ActionPerformed
-
-    private void fan11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan11ActionPerformed
-        activeFan = 10;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan11ActionPerformed
-
-    private void fan12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan12ActionPerformed
-        activeFan = 11;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan12ActionPerformed
-
-    private void fan13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan13ActionPerformed
-        activeFan = 12;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan13ActionPerformed
-
-    private void fan14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan14ActionPerformed
-        activeFan = 13;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan14ActionPerformed
-
-    private void fan15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan15ActionPerformed
-        activeFan = 14;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan15ActionPerformed
-
-    private void fan16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan16ActionPerformed
-        activeFan = 15;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan16ActionPerformed
-
-    private void fan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan1ActionPerformed
-        activeFan = 0;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan1ActionPerformed
-
-    private void fan17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan17ActionPerformed
-        activeFan = 16;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan17ActionPerformed
-
-    private void fan18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan18ActionPerformed
-        activeFan = 17;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan18ActionPerformed
-
-    private void fan19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan19ActionPerformed
-        activeFan = 18;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan19ActionPerformed
-
-    private void fan20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan20ActionPerformed
-        activeFan = 19;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan20ActionPerformed
-
-    private void fan21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan21ActionPerformed
-        activeFan = 20;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan21ActionPerformed
-
-    private void fan22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan22ActionPerformed
-        activeFan = 21;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan22ActionPerformed
-
-    private void fan23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan23ActionPerformed
-        activeFan = 22;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan23ActionPerformed
-
-    private void fan24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fan24ActionPerformed
-        activeFan = 23;
-        fanControl(activeFan);
-    }//GEN-LAST:event_fan24ActionPerformed
-
-    private void dragAndDropFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dragAndDropFunctionalityActionPerformed
-        try {
-            funFile = null;
-            Principal principal = new Principal(this);
-            principal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            index.getFunFile(principal);
-            firstTime = true;
-        } catch (Exception e) {
-            System.out.println("Error adding functionality file");
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
 
     private static String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf('.');
@@ -804,84 +480,49 @@ public class ControlFrame extends javax.swing.JFrame {
         return "";
     }
     
-    private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
-        try {
-            functionality = new Functionality(this, speedDrawing,true);
-            functionalityList.add(functionality);
-            functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("csv")){
-                functionalityExecuting = false;
-                funAction.setText("Wrong file");
-            }else{
-                functionalityExecuting = true;
-                funAction.setText("Functionality is executing... please wait");
-            }
-            
-        } catch (Exception ex) {
-            System.out.println("Error reading functionality file");
-            funAction.setText("Error reading functionality file");
+    public void setSizesForScroll(){
+        fanScrollPane.setPreferredSize(new Dimension(700,400));
+        int w = (50*2*cols)+50;
+        if (w < 700){
+            w = 660;
         }
-    }//GEN-LAST:event_funExecutionActionPerformed
+        int h = (50*3*rows)+150;
+        if (h < 350){
+            h = 580;
+        }
+        fanPanel.setPreferredSize(new Dimension(w,h));
 
-    private void stopFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopFunActionPerformed
-        try{
-            for (Functionality f : functionalityList) {
-                f.interrupt();
-            }
-            functionalityExecuting = false;
-            funAction.setText("No functionality executing");
-        }catch(Exception e){
-            System.out.println("Error on the stop of the functionality execution");
+        w = 75+120*cols;
+        if (w < 700){
+            w = 660;
         }
+        h = 75+185*rows;
+        if (h < 350){
+            h = 580;
+        }
+        speedScrollPane.setPreferredSize(new Dimension(700,400));
+        speedPanel.setPreferredSize(new Dimension(w,h));
         
-    }//GEN-LAST:event_stopFunActionPerformed
-
-    private void funPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
-        try {
-            SpeedDrawing speedDrawing_aux = new SpeedDrawing(this);
-            speedDrawing_aux.setVisible(true);
-            speedDrawing_aux.setTitle("PREVIEW");
-            speedDrawing_aux.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            speedDrawing_aux.setResizable(false);
-            speedDrawing_aux.setLocation(500, 100);
-            
-            functionality = new Functionality(this, speedDrawing_aux,false);
-            functionalityList.add(functionality);
-            functionality.start();
-            functionalityExecuting = true;
-            funAction.setText("Preview is executing...");
-            
-        } catch (Exception ex) {
-            System.out.println("Error reading functionality file");
-            funAction.setText("Error reading functionality file");
+        preassurePanel.setPreferredSize(new Dimension(250,715));
+    }
+    
+    public DefaultListModel<String> sensorsListModel = new DefaultListModel<>();
+    public void setPreassureLabels() {
+        sensorsListModel.addElement("Timestamp:");
+        int count = 1;
+        for (int j = 1; j <= 32; j++) {
+            sensorsListModel.addElement("Sensor " + count + ":");
+            count++;
         }
-    }//GEN-LAST:event_funPreviewMouseClicked
+        preassureList.setModel(sensorsListModel);
+        preassurePanel.revalidate();
+        preassurePanel.repaint();
+    }
 
     
-    
-    private void pressureSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pressureSensorMouseClicked
-        try {
-           Thread pressureThread = new Thread(() -> {
-                PressureSensor pressure = new PressureSensor(this);
-                pressure.setVisible(true);
-                pressure.setTitle("PRESSURE");
-                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                pressure.setResizable(false);
-                pressure.setLocation(800, 200);
-               try {
-                   pressure.run();
-               } catch (Exception e) {System.out.println("Error with the sensor");}
-            });
-            pressureThread.start();
-            
-        } catch (Exception ex) {
-            System.out.println("Error showing pressure sensor info");
-        }
-    }//GEN-LAST:event_pressureSensorMouseClicked
-
     private void browseFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFunctionalityActionPerformed
         int returnValue = openFileChooser.showOpenDialog(this);
-        
+
         if(returnValue == JFileChooser.APPROVE_OPTION){
             try{
                 funFile = openFileChooser.getSelectedFile();
@@ -896,22 +537,173 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_browseFunctionalityActionPerformed
 
+    private void stopRealFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopRealFunctionalityActionPerformed
+        try{
+            for (Functionality f : functionalityList) {
+                if (f.realExec){
+                    f.interrupt();
+                    functionalityList.remove(f);
+                }
+            }
+            functionalityExecuting = false;
+            funAction.setText("No functionality executing");
+        }catch(Exception e){
+            System.out.println("Error on the stop of the functionality execution");
+        }
+    }//GEN-LAST:event_stopRealFunctionalityActionPerformed
+
+    private void funExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funExecutionActionPerformed
+        try {
+            functionality = new Functionality(this,true);
+            functionalityList.add(functionality);
+            functionality.start();
+            if(!getFileExtension(funFile.getName()).equals("svg")){
+                functionalityExecuting = false;
+                funAction.setText("Wrong file");
+            }else{
+                functionalityExecuting = true;
+                funAction.setText("Functionality "+funFile.getName()+" executing");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error reading functionality file");
+            funAction.setText("Error reading functionality file");
+        }
+    }//GEN-LAST:event_funExecutionActionPerformed
+
+    private void dragAndDropFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dragAndDropFunctionalityActionPerformed
+        try {
+            funFile = null;
+            Principal principal = new Principal(this);
+            principal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            index.getFunFile(principal);
+            firstTime = true;
+        } catch (Exception e) {
+            System.out.println("Error adding functionality file");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_dragAndDropFunctionalityActionPerformed
+
+    private void pressureSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressureSensorActionPerformed
+        try {
+            Thread pressureThread = new Thread(() -> {
+                PressureSensor pressure = new PressureSensor(this);
+                pressure.setVisible(false); // para que no se muestre
+                pressure.setTitle("PRESSURE");
+                pressure.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                pressure.setResizable(false);
+                pressure.setLocation(800, 200);
+                pressure.setSize(640, 370);
+                try {
+                    pressure.run();
+                } catch (Exception e) {System.out.println("Error with the sensor");}
+            });
+            pressureThread.start();
+            preassureFileSavings.setText("Saving experiment to "+preassureFileName); // no se si este es el lugar correcto
+
+        } catch (Exception ex) {
+            System.out.println("Error showing pressure sensor info");
+        }
+    }//GEN-LAST:event_pressureSensorActionPerformed
+
+    public String preassureFileName;
+    
+    private void stopAllFansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopAllFansMouseClicked
+        for (int i = 0; i < fanButtons.size(); i++){
+            speedMessage[i] = 0;
+            fanButtons.get(i).speed = 0;
+        }
+        server.updateSpeed(speedMessage);
+        updateDrawing();
+        speedSlider.setValue(0);
+    }//GEN-LAST:event_stopAllFansMouseClicked
+
+    private void updateSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSpeedActionPerformed
+        if(!functionalityExecuting){
+            boolean anySelected = false;
+            for (int i = 0; i < fanButtons.size(); i++){
+                if(fanButtons.get(i).selected){
+                    anySelected = true;
+                    speedMessage[i] = speedSlider.getValue();
+                    fanButtons.get(i).speed = speedSlider.getValue();
+                }
+            }
+            if (anySelected){
+                server.updateSpeed(speedMessage);
+                updateDrawing();
+            }
+        }
+    }//GEN-LAST:event_updateSpeedActionPerformed
+
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
+        showSpeed.setText(""+speedSlider.getValue());
+    }//GEN-LAST:event_speedSliderStateChanged
+
     private void unselectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllActionPerformed
         for (Fan f : fanButtons) {
             f.selected = false;
             f.button.setBackground(Color.white);
         }
+        
     }//GEN-LAST:event_unselectAllActionPerformed
 
-    
+    private void selectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllActionPerformed
+        
+        for (Fan f : fanButtons) {
+            f.selected = true;
+            f.button.setBackground(new Color(204,229,255));
+        }
+    }//GEN-LAST:event_selectAllActionPerformed
+
+    private void funPreviewMouseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funPreviewMouseClicked
+        try {
+            functionality = new Functionality(this,false);
+            functionalityList.add(functionality);
+            functionality.start();
+            if(!getFileExtension(funFile.getName()).equals("svg")){
+                functionalityExecuting = false;
+                funAction.setText("Wrong file");
+            }else{
+                functionalityExecuting = true;
+                funAction.setText("Functionality is executing");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error reading functionality file");
+            funAction.setText("Error reading functionality file");
+        }
+    }//GEN-LAST:event_funPreviewMouseClicked
+
+    private void stopPreviewFunctionalityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPreviewFunctionalityActionPerformed
+        try{
+            for (Functionality f : functionalityList) {
+                if(!f.realExec){
+                    f.interrupt();
+                    functionalityList.remove(f);
+                }
+            }
+            functionalityExecuting = false;
+            funAction.setText("No functionality executing");
+        }catch(Exception e){
+            System.out.println("Error on the stop of the functionality execution");
+        }
+    }//GEN-LAST:event_stopPreviewFunctionalityActionPerformed
+
+    private void stopAllFansActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopAllFansActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stopAllFansActionPerformed
+
     
     public void run() throws InterruptedException{
-        enterFans(fanButtons);
         int cant = server.clients.size();
+        enterFans(fanButtons);
         setFansColor(cant,fanButtons);
+        enterSpeedBoxes(realSpeedBoxes, prevSpeedBoxes);
         funExecution.setEnabled(false);
         funPreview.setEnabled(false);
-        stopFun.setEnabled(false);
+        stopRealFunctionality.setEnabled(false);
+        stopPreviewFunctionality.setEnabled(false);
+        setPreassureLabels();
         while(true){
             Thread.sleep(50);
             if(funAction.getText().equals("No functionality executing")){
@@ -922,7 +714,8 @@ public class ControlFrame extends javax.swing.JFrame {
                 funAction.setText("File "+funFile.getName()+" added");
                 funExecution.setEnabled(true);
                 funPreview.setEnabled(true);
-                stopFun.setEnabled(true);
+                stopRealFunctionality.setEnabled(true);
+                stopPreviewFunctionality.setEnabled(true);
                 firstTime = false;
             }else if (funFile == null){
                 funAction.setText("No file added");
@@ -930,99 +723,183 @@ public class ControlFrame extends javax.swing.JFrame {
         }
     }
     
-    public void enterFans(List<Fan> fanBottons){
-        fanBottons.add(new Fan(fan1));
-        fanBottons.add(new Fan(fan2));
-        fanBottons.add(new Fan(fan3));
-        fanBottons.add(new Fan(fan4));
-        fanBottons.add(new Fan(fan5));
-        fanBottons.add(new Fan(fan6));
-        fanBottons.add(new Fan(fan7));
-        fanBottons.add(new Fan(fan8));
-        fanBottons.add(new Fan(fan9));
-        fanBottons.add(new Fan(fan10));
-        fanBottons.add(new Fan(fan11));
-        fanBottons.add(new Fan(fan12));
-        fanBottons.add(new Fan(fan13));
-        fanBottons.add(new Fan(fan14));
-        fanBottons.add(new Fan(fan15));
-        fanBottons.add(new Fan(fan16));
-        fanBottons.add(new Fan(fan17));
-        fanBottons.add(new Fan(fan18));
-        fanBottons.add(new Fan(fan19));
-        fanBottons.add(new Fan(fan20));
-        fanBottons.add(new Fan(fan21));
-        fanBottons.add(new Fan(fan22));
-        fanBottons.add(new Fan(fan23));
-        fanBottons.add(new Fan(fan24));
+    private void enterFans(List<Fan> fanButtons) {
+        int buttonWidth = 50;
+        int buttonHeight = 50;
+        int verticalSpacing = 100;
+        int horizontalSpacing = 100;
+        int hDist = 40, vDist = 70;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int start = (i * cols + j) * 6 + 1;
+                int end = start + 5;
+
+                for (int k = start; k <= end; k++) {
+                    JButton f = new JButton("" + k);
+                    int xOffset = hDist+j * horizontalSpacing;
+                    int yOffset = vDist+i * (buttonHeight + verticalSpacing);
+
+                    if (k % 2 != 0) {
+                        f.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    } else {
+                        f.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                    }
+                    this.add(f);
+                    fanPanel.add(f);
+                    fanButtons.add(new Fan(f));
+                    final int n = k-1;
+                    f.addActionListener((ActionEvent evt) -> {
+                        fanActionPerformed(evt, n);
+                    });
+                }
+            }
+        }
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void fanActionPerformed(ActionEvent evt, int fanNumber){
+        activeFan = fanNumber;
+        fanControl(activeFan);
     }
         
-    public void setFansColor(int cant, List<Fan> fanBottons){
-        for (int i = fanBottons.size()-1; i >= 6*cant; i--) {
-            fanBottons.get(i).button.setBackground(Color.red);
-            fanBottons.get(i).button.removeNotify();
-            fanBottons.remove(i);
+    public void setFansColor(int cant, List<Fan> fanButtons){
+        for (int i = fanButtons.size()-1; i >= 6*cant; i--) {
+            fanButtons.get(i).button.setBackground(new Color(128,128,128));
+            fanButtons.get(i).button.removeNotify();
+            fanButtons.remove(i);
         }
-        speedMessage = new int[fanBottons.size()];
-        numActiveFans.setText(""+cant*6);
+        System.out.println("La cantidad de clientes es: "+fanButtons.size());
+        speedMessage = new int[fanButtons.size()];
+        speedMessagePrev = new int[fanButtons.size()];
         for (int i = 0; i < 6*cant; i++) {
-            fanBottons.get(i).button.setBackground(Color.white);
+            fanButtons.get(i).button.setBackground(Color.white);
             speedMessage[i] = 0;
+            speedMessagePrev[i] = 0;
         }
     }
     
+    private void enterSpeedBoxes(List<JButton> realSpeedBoxes, List<JButton> prevSpeedBoxes) {
+        int buttonWidth = 50;
+        int buttonHeight = 50;
+        int verticalSpacing = 100;
+        int horizontalSpacing = 100;
+        int hDist = 40, vDist = 70;
+        
+        realSpeedPanel.setLayout(null);
+        prevSpeedPanel.setLayout(null);
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int start = (i * cols + j) * 6 + 1;
+                int end = start + 5;
+
+                for (int k = start; k <= end; k++) {
+                    System.out.println("k = "+k+" and total = "+fanButtons.size());
+                    if (k <= fanButtons.size()){
+                        JButton f_real = new JButton();
+                        for (MouseListener listener : f_real.getMouseListeners()) {
+                            f_real.removeMouseListener(listener);
+                        }
+                        f_real.setBorder(null);
+                        JButton f_prev = new JButton();
+                        for (MouseListener listener : f_prev.getMouseListeners()) {
+                            f_prev.removeMouseListener(listener);
+                        }
+                        f_prev.setBorder(null);
+
+                        int xOffset = hDist+j * horizontalSpacing;
+                        int yOffset = vDist+i * (buttonHeight + verticalSpacing);
+
+                        if (k % 2 != 0) {
+                            f_real.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                            f_prev.setBounds(xOffset, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        } else {
+                            f_real.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                            f_prev.setBounds(xOffset + buttonWidth, yOffset + ((k - start) / 2) * buttonHeight, buttonWidth, buttonHeight);
+                        }
+                        this.add(f_real);
+                        this.add(f_prev);
+                        realSpeedPanel.add(f_real);
+                        prevSpeedPanel.add(f_prev);
+                        realSpeedBoxes.add(f_real);
+                        prevSpeedBoxes.add(f_prev);
+                    }
+                }
+            }
+        }
+        this.revalidate();
+        this.repaint();
+    }
+    
     public void fanControl(int i){
-        selectedFan.setText("Fan "+(i+1)+" info");
         if (fanButtons.get(i).selected){
             fanButtons.get(i).selected = false;
             fanButtons.get(i).button.setBackground(Color.white);
         }else{
             fanButtons.get(i).selected = true;
-            fanButtons.get(i).button.setBackground(Color.green);
+            fanButtons.get(i).button.setBackground(new Color(204,229,255));
         }
-        currentSpeed.setText(""+fanButtons.get(i).speed);
         speedSlider.setValue(fanButtons.get(i).speed);
         showSpeed.setText(""+speedSlider.getValue());
+    }
+    
+    private Color getColorForSpeed(int speed) {
+        int red = (int) (speed * 2.55);
+        int greenBlue = 255 - red;
+        return new Color(255, greenBlue, greenBlue);
+    }
+    
+    
+    @Override
+    public void paint(Graphics g) {
+        try{
+            if (speedMessage != null && speedPanel.getSelectedIndex() == tab1Index) {
+                for (int i = 0; i < speedMessage.length; i++) {
+                    int speed = (int) speedMessage[i]; // Velocidad entre 0 y 100
+                    realSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
+                }
+            } else if (speedMessagePrev != null && speedPanel.getSelectedIndex() == tab2Index) {
+                for (int i = 0; i < speedMessagePrev.length; i++) {
+                    int speed = (int) speedMessagePrev[i]; // Velocidad entre 0 y 100
+                    prevSpeedBoxes.get(i).setBackground(getColorForSpeed(speed));
+                }
+            }      
+        }catch(Exception e){
+            System.out.println("Not ready yet");
+        }
+    }
+    
+    public void updateDrawing (){
+        repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseFunctionality;
-    private javax.swing.JLabel currentSpeed;
     private javax.swing.JButton dragAndDropFunctionality;
     private javax.swing.JLabel executing;
-    private javax.swing.JButton fan1;
-    private javax.swing.JButton fan10;
-    private javax.swing.JButton fan11;
-    private javax.swing.JButton fan12;
-    private javax.swing.JButton fan13;
-    private javax.swing.JButton fan14;
-    private javax.swing.JButton fan15;
-    private javax.swing.JButton fan16;
-    private javax.swing.JButton fan17;
-    private javax.swing.JButton fan18;
-    private javax.swing.JButton fan19;
-    private javax.swing.JButton fan2;
-    private javax.swing.JButton fan20;
-    private javax.swing.JButton fan21;
-    private javax.swing.JButton fan22;
-    private javax.swing.JButton fan23;
-    private javax.swing.JButton fan24;
-    private javax.swing.JButton fan3;
-    private javax.swing.JButton fan4;
-    private javax.swing.JButton fan5;
-    private javax.swing.JButton fan6;
-    private javax.swing.JButton fan7;
-    private javax.swing.JButton fan8;
-    private javax.swing.JButton fan9;
+    private javax.swing.JPanel fanPanel;
+    private javax.swing.JScrollPane fanScrollPane;
     private javax.swing.JLabel funAction;
     private javax.swing.JButton funExecution;
     private javax.swing.JButton funPreview;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JToolBar jToolBar4;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
@@ -1032,13 +909,20 @@ public class ControlFrame extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
     private java.awt.MenuBar menuBar3;
-    private javax.swing.JLabel numActiveFans;
+    private javax.swing.JLabel preassureFileSavings;
+    private javax.swing.JList<String> preassureList;
+    private javax.swing.JPanel preassurePanel;
     private javax.swing.JButton pressureSensor;
-    private javax.swing.JLabel selectedFan;
+    private javax.swing.JPanel prevSpeedPanel;
+    private javax.swing.JPanel realSpeedPanel;
+    private javax.swing.JButton selectAll;
     private javax.swing.JLabel showSpeed;
+    private javax.swing.JTabbedPane speedPanel;
+    private javax.swing.JScrollPane speedScrollPane;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton stopAllFans;
-    private javax.swing.JButton stopFun;
+    private javax.swing.JButton stopPreviewFunctionality;
+    private javax.swing.JButton stopRealFunctionality;
     private javax.swing.JButton unselectAll;
     private javax.swing.JButton updateSpeed;
     // End of variables declaration//GEN-END:variables

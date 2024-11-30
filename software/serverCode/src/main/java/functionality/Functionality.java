@@ -2,7 +2,6 @@ package functionality;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import representation.SpeedDrawing;
 import userInterface.ControlFrame;
 
 
@@ -12,12 +11,10 @@ import userInterface.ControlFrame;
  */
 public class Functionality extends Thread{
     public ControlFrame control;
-    public SpeedDrawing speedDrawing;
     public boolean realExec;
 
-    public Functionality(ControlFrame control, SpeedDrawing speedDrawing,boolean realExec) {
+    public Functionality(ControlFrame control,boolean realExec) {
         this.control = control;
-        this.speedDrawing = speedDrawing;
         this.realExec = realExec;
     }
     
@@ -27,21 +24,28 @@ public class Functionality extends Thread{
             String line;
             while ((line = reader.readLine()) != null) {
                 String info[] = line.split(",");
-                for (int i = 1; (i < control.speedMessage.length+1) && (i < info.length); i++) {
-                    control.speedMessage[i-1] = Integer.parseInt(info[i]);
-                }
                 if(realExec){
+                    for (int i = 1; (i < control.speedMessage.length+1) && (i < info.length); i++) {
+                        control.speedMessage[i-1] = Integer.parseInt(info[i]);
+                    }
                     control.server.updateSpeed(control.speedMessage);
+                    Thread.sleep(Integer.parseInt(info[0]));
+                } else{
+                    for (int i = 1; (i < control.speedMessagePrev.length+1) && (i < info.length); i++) {
+                        control.speedMessagePrev[i-1] = Integer.parseInt(info[i]);
+                    }                    
+                    Thread.sleep(Integer.parseInt(info[0]));
                 }
-                speedDrawing.updateDrawing();
-                Thread.sleep(Integer.parseInt(info[0]));
+                control.updateDrawing();
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Functionality interrupted");
         }
+        
+        
         if(!realExec){
-            speedDrawing.dispose();
+            //speedDrawing.dispose();
         }
         
     }
