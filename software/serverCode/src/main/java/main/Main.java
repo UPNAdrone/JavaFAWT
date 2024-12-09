@@ -2,7 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 import connection.InterfaceServer;
-import userInterface.ConectionFrame;
+import userInterface.ConnectionFrame;
 import userInterface.ControlFrame;
 import userInterface.PortFrame;
 
@@ -22,7 +22,7 @@ public class Main {
             Thread.sleep(100); // it is necessary
         }
         
-        ConectionFrame connection = new ConectionFrame();
+        ConnectionFrame connection = new ConnectionFrame();
         InterfaceServer server = new InterfaceServer(portFrame.port,connection);
         portFrame.dispose(); 
         server.start();
@@ -48,7 +48,7 @@ public class Main {
         control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         control.setResizable(false);
         control.setLocation(0, 0);
-        control.setSize(1000, 770);
+        control.setSize(1100, 770);
         
         Thread controlThread = new Thread(() -> {
             control.setVisible(true); 
@@ -59,8 +59,6 @@ public class Main {
             }
             control.dispose();  
         });
-        
-        //Thread.sleep(2000);
         
         controlThread.start();
         controlThread.join();

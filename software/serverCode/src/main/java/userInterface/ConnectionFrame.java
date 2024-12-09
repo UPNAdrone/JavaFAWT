@@ -6,11 +6,11 @@ import connection.AcceptClient;
  *
  * @author Mintxoo - mintxosola@gmail.com
  */
-public class ConectionFrame extends javax.swing.JFrame {
+public class ConnectionFrame extends javax.swing.JFrame {
     public boolean ready = false;
     public int rows, cols;
 
-    public ConectionFrame() {
+    public ConnectionFrame() {
         initComponents();
     }
 

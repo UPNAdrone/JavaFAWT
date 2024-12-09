@@ -7,13 +7,13 @@ import userInterface.ControlFrame;
  *
  * @author mintxo
  */
-public class NewPSensor extends javax.swing.JFrame {
+public class NewPS extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewPSensor
+     * Creates new form NewPS
      */
     public ControlFrame control;
-    public NewPSensor(ControlFrame c) {
+    public NewPS(ControlFrame c) {
         initComponents();
         this.control = c;
     }

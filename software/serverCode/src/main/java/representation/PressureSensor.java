@@ -114,16 +114,18 @@ public class PressureSensor extends javax.swing.JFrame {
                 PacketData parsedData = parsePacket(packet);
                 String t = parsedData.timestamp.toString();
                 control.sensorsListModel.setElementAt("Timestap: "+t, 0);
-                System.out.printf(t+"\n");
-                writeLine(t+"\n");
+                writeLine(t);
                 String s = "";
+                System.out.println("parsedData.pressures.length: "+parsedData.pressures.length);
+                int j;
+                control.sensorsListModel.setElementAt("Sensor "+1+": "+parsedData.pressures[0], 1);
+                s = s.concat(""+parsedData.pressures[0]);
                 for (int i = 1; i < parsedData.pressures.length; i++) {
-                    control.sensorsListModel.setElementAt("Sensor "+i+": "+parsedData.pressures[i], i);
+                    j = i+1;
+                    control.sensorsListModel.setElementAt("Sensor "+j+": "+parsedData.pressures[i], j);
                     s = s.concat(", "+parsedData.pressures[i]);
-                    System.out.printf("%.2f, ", parsedData.pressures[i]);
                 }
-                writeLine(s);
-                System.out.println("\n\n--------------------\n\n");
+                writeLine(s+"\n");
                 
                 Thread.sleep(10);
             } catch (Exception e) {
@@ -134,7 +136,7 @@ public class PressureSensor extends javax.swing.JFrame {
 
     public void connectPressureServer() throws InterruptedException, IOException {
         if (control.pressureSensorIP == null || control.pressureSensorPort == -1 || !control.pressureSensorConected) {
-            NewPSensor ps = new NewPSensor(control);
+            NewPS ps = new NewPS(control);
             ps.run();
             ps.dispose();
         }
@@ -211,14 +213,14 @@ public class PressureSensor extends javax.swing.JFrame {
         control.preassureFileName = preassureFile.getName();
     }
     
-    public void writeLine(String line) throws IOException{
-        // Escribir en el archivo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(preassureFile))) {
+    public void writeLine(String line) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(preassureFile, true))) { // true para modo apéndice
             writer.write(line);
             writer.newLine();
         }
-        System.out.println("Escritura completada en: " + preassureFile.getName());
+        //System.out.println("Escritura completada en: " + preassureFile.getName());
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;

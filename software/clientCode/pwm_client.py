@@ -1,7 +1,7 @@
 # Program: pwm_client.py
 # User: Mintxo
 # Date: 10/04/2024
-# Version: 2
+# Version: 3
 
 import socket
 import RPi.GPIO as GPIO
@@ -31,9 +31,10 @@ def main():
 
     try:
         client_socket.connect((server_ip, server_port))
-        print("Waiting for connectivity...")
+        print("Waiting for connection...")
 
         client_number = int(client_socket.recv(1024).decode())
+        print("Connection established succesfully")
         print(f"I am client {client_number}")
 
         my_fans = [0] * 6

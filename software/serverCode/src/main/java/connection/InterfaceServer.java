@@ -16,21 +16,21 @@ import java.util.List;
 import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import userInterface.ConectionFrame;
+import userInterface.ConnectionFrame;
 
 /**
  *
  * @author Mintxoo - mintxosola@gmail.com
  */
 public class InterfaceServer extends Thread{
-    ConectionFrame conection;
+    ConnectionFrame conection;
     public boolean ready = false, connected = false;
     public int port;
     private int num = 0;
     public String ip;
     public List<ClientThread> clients = new LinkedList<>();
     
-    public InterfaceServer(int port, ConectionFrame conection) {
+    public InterfaceServer(int port, ConnectionFrame conection) {
         this.port = port;
         this.conection = conection;
     }
@@ -110,17 +110,16 @@ public class InterfaceServer extends Thread{
         public void run() {
             try {
 		num++;
-		String name = "Cliente "+num;
-		this.setName(name);
+		String client_name = "Cliente "+num;
+		this.setName(client_name);
 		
                 System.out.println("Connection from " + 
-                        socket.getInetAddress() + ":" + socket.getPort()+" ("+name+")");
+                        socket.getInetAddress() + ":" + socket.getPort()+" ("+client_name+")");
                 
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
-                //now that we have managed to stablish proper connection, we add ourselve into the list
-                synchronized (clients) { //we must sync because other clients may be iterating over it
+                synchronized (clients) { 
                     clients.add(this);
                 }
                 out.println(num);
@@ -129,8 +128,8 @@ public class InterfaceServer extends Thread{
                 }
                 
             } catch (IOException ex) {
-            } finally { //we have finished or failed so let's close the socket and remove ourselves from the list
-                try{ socket.close(); } catch(IOException ex){} //this will make sure that the socket closes
+            } finally { 
+                try{ socket.close(); } catch(IOException ex){} 
                 synchronized (clients) {
                     clients.remove(this);
                 }

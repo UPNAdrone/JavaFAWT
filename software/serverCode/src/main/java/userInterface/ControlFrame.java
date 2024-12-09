@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import connection.InterfaceServer;
-import java.awt.Component;
+//import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -18,8 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
@@ -39,26 +37,21 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Mintxoo - mintxosola@gmail.com
  */
 public class ControlFrame extends javax.swing.JFrame {
-    public int activeFan = 0;
+    public int activeFan = 0, pressureSensorPort = -1, tab1Index, tab2Index;
+    public final int rows, cols;
     public InterfaceServer server;
-    
     public List<Fan> fanButtons = new LinkedList<>();
     public List<Functionality> functionalityList = new LinkedList<>();
     public List<JButton> realSpeedBoxes = new LinkedList<>();
     public List<JButton> prevSpeedBoxes = new LinkedList<>();
     public int[] speedMessage, speedMessagePrev;
-    public boolean functionalityExecuting = false, pressureSensorConected = false;
-    
+    public boolean functionalityExecuting = false, pressureSensorConected = false, firstTime = true;
     public File funFile = null;
     public Index index = new Index();
     public Functionality functionality;
-    public boolean firstTime = true;
     public String pressureSensorIP = null;
-    public int pressureSensorPort = -1;
-    public final int rows, cols;
-    public int tab1Index, tab2Index;
-    
     public final JFileChooser openFileChooser;
+    public DefaultListModel<String> sensorsListModel = new DefaultListModel<>();
     
     /**
      * Creates new form MainFrame
@@ -417,15 +410,12 @@ public class ControlFrame extends javax.swing.JFrame {
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(preassurePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(preassurePanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(preassureFileSavings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(preassurePanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addGap(12, 12, 12)
+                .addComponent(preassureFileSavings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(preassurePanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         preassurePanelLayout.setVerticalGroup(
             preassurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,8 +437,8 @@ public class ControlFrame extends javax.swing.JFrame {
                     .addComponent(speedScrollPane)
                     .addComponent(fanScrollPane))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(preassurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(preassurePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(executing, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(347, 347, 347))
         );
@@ -503,10 +493,10 @@ public class ControlFrame extends javax.swing.JFrame {
         speedScrollPane.setPreferredSize(new Dimension(700,400));
         speedPanel.setPreferredSize(new Dimension(w,h));
         
-        preassurePanel.setPreferredSize(new Dimension(250,715));
+        preassurePanel.setPreferredSize(new Dimension(300,715));
     }
     
-    public DefaultListModel<String> sensorsListModel = new DefaultListModel<>();
+    
     public void setPreassureLabels() {
         sensorsListModel.addElement("Timestamp:");
         int count = 1;
@@ -599,14 +589,13 @@ public class ControlFrame extends javax.swing.JFrame {
                 } catch (Exception e) {System.out.println("Error with the sensor");}
             });
             pressureThread.start();
-            preassureFileSavings.setText("Saving experiment to "+preassureFileName); // no se si este es el lugar correcto
 
         } catch (Exception ex) {
             System.out.println("Error showing pressure sensor info");
         }
     }//GEN-LAST:event_pressureSensorActionPerformed
 
-    public String preassureFileName;
+    public String preassureFileName = null;
     
     private void stopAllFansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopAllFansMouseClicked
         for (int i = 0; i < fanButtons.size(); i++){
@@ -706,6 +695,12 @@ public class ControlFrame extends javax.swing.JFrame {
         setPreassureLabels();
         while(true){
             Thread.sleep(50);
+            if(preassureFileName != null){
+                preassureFileSavings.setText("Saving experiment to "+preassureFileName);
+                preassureFileName = null;
+            }
+            
+            
             if(funAction.getText().equals("No functionality executing")){
                 functionalityExecuting = false;
             }
