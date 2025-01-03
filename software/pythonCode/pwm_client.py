@@ -57,7 +57,7 @@ def main():
 
         while True:
             data = client_socket.recv(1024).decode()
-            if data:g
+            if data:
                 if "Server says: exit" in data:
                     print("EXIT")
                     break
