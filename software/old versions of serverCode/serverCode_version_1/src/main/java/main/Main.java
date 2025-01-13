@@ -5,7 +5,6 @@ import connection.InterfaceServer;
 import representation.SpeedDrawing;
 import userInterface.ConectionFrame;
 import userInterface.ControlFrame;
-import userInterface.PortFrame;
 
 /**
  *
@@ -13,19 +12,8 @@ import userInterface.PortFrame;
  */
 public class Main {
     public static void main(String args[]) throws InterruptedException {      
-        PortFrame portFrame = new PortFrame();
-        portFrame.setTitle("PORT SELECTION");
-        portFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        portFrame.setResizable(false);
-        portFrame.setLocationRelativeTo(null);
-        portFrame.setVisible(true);
-        while (!portFrame.ready){
-            Thread.sleep(100); // it is necessary
-        }
-        
         ConectionFrame connection = new ConectionFrame();
-        InterfaceServer server = new InterfaceServer(portFrame.port,connection);
-        portFrame.dispose(); 
+        InterfaceServer server = new InterfaceServer(125,connection); // default port is 125
         server.start();
         
         connection.setTitle("FAN CONECTION");

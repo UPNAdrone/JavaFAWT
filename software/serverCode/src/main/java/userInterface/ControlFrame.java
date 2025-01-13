@@ -65,7 +65,7 @@ public class ControlFrame extends javax.swing.JFrame {
         this.server = server;
         openFileChooser = new JFileChooser();
         openFileChooser.setCurrentDirectory(new File("../../functionalities"));
-        openFileChooser.setFileFilter(new FileNameExtensionFilter("SVG","svg"));
+        openFileChooser.setFileFilter(new FileNameExtensionFilter("CSV","csv"));
         this.rows = rows;
         this.cols = cols;
         tab1Index = speedPanel.indexOfComponent(realSpeedPanel);
@@ -547,7 +547,7 @@ public class ControlFrame extends javax.swing.JFrame {
             functionality = new Functionality(this,true);
             functionalityList.add(functionality);
             functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("svg")){
+            if(!getFileExtension(funFile.getName()).equals("csv")){
                 functionalityExecuting = false;
                 funAction.setText("Wrong file");
             }else{
@@ -649,7 +649,7 @@ public class ControlFrame extends javax.swing.JFrame {
             functionality = new Functionality(this,false);
             functionalityList.add(functionality);
             functionality.start();
-            if(!getFileExtension(funFile.getName()).equals("svg")){
+            if(!getFileExtension(funFile.getName()).equals("csv")){
                 functionalityExecuting = false;
                 funAction.setText("Wrong file");
             }else{

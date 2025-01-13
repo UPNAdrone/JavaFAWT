@@ -39,7 +39,7 @@ public class NewPSensor extends javax.swing.JFrame {
 
         jLabel2.setText("Input Sensor Port");
 
-        sIP.setText("192.168.1.190");
+        sIP.setText("192.168.2.190");
         sIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sIPActionPerformed(evt);
@@ -108,14 +108,12 @@ public class NewPSensor extends javax.swing.JFrame {
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         control.pressureSensorIP = sensorIP;
         control.pressureSensorPort = sensorPort;
-        System.out.println(""+sensorIP);
-        System.out.println(""+sensorPort);
         finished = true;
     }//GEN-LAST:event_confirmActionPerformed
 
     
-    public String sensorIP = null;
-    public int sensorPort = -1;
+    public String sensorIP = "192.168.2.190";
+    public int sensorPort = 101;
     public boolean finished = false;
     
     public void run() throws InterruptedException {

@@ -2,6 +2,7 @@ package representation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -13,7 +14,7 @@ import userInterface.ControlFrame;
  */
 public class PressureSensor extends javax.swing.JFrame {
     public ControlFrame control;
-    BufferedReader in;
+    InputStream in;
             
     public PressureSensor(ControlFrame c) {
         initComponents();
@@ -80,7 +81,7 @@ public class PressureSensor extends javax.swing.JFrame {
      */
     public void run() throws InterruptedException, IOException {
         conectPressureServer();
-        char[] buffer = new char[1024]; // Buffer para almacenar los datos recibidos
+        byte[] buffer = new byte[1024]; // Buffer para almacenar los datos recibidos
         int bytesRead;
 
         while (true) {
@@ -104,21 +105,22 @@ public class PressureSensor extends javax.swing.JFrame {
         showPressure.add("----Fin de lectura----");
     }
 
-    public void conectPressureServer() throws InterruptedException{
+    public void conectPressureServer() throws InterruptedException {
         if(control.pressureSensorIP == null || control.pressureSensorPort == -1){
             NewPSensor ps = new NewPSensor(control);
             ps.run();
             ps.dispose();
         }
         try {
-            //Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
-            Socket socket = new Socket("192.168.1.190", 101);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println("ip: "+control.pressureSensorIP+", port: "+control.pressureSensorPort);
+            Socket socket = new Socket(control.pressureSensorIP, control.pressureSensorPort);
+            in = socket.getInputStream();
             showPressure.add("----Conectado correctamente----");      
         } catch (Exception e) {
             System.err.println("No se pudo conectar al host: " + control.pressureSensorIP);
-        }
+        } 
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
