@@ -38,6 +38,8 @@ A Tutorial/Manual of use can be found [here](https://github.com/UPNAdrone/JavaFA
   - serverCode -> JavaFAWT server software.
 
 
+## Dataset for inverse flow control
+Our recorded dataset consists of approximately 45,176 samples recorded with our experimental 6x4 wind tunnel. It includes two CSV files: one for relative pressures (directly extracted from the nanoDAQ LTS-32 pressure scanner readings), one for velocities (extracted by converting the relative pressure, temperature and density values to velocity). The dataset can be found in Hugging Face: [https://huggingface.co/datasets/UPNAdrone/WindTunnel](https://huggingface.co/datasets/UPNAdrone/WindTunnel)
 
   
 ## Work in progress
